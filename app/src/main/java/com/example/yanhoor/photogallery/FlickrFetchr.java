@@ -68,9 +68,9 @@ public class FlickrFetchr {
                     .appendQueryParameter("api_key",API_KEY)
                     .appendQueryParameter(PARAM_EXTRAS,EXTRA_SMALL_URL)
                     .build().toString();
-            Log.i(TAG,"Query url is "+url);
+            Log.d(TAG,"Query url is "+url);
             String xmlString=getUrl(url);
-            Log.i(TAG,"Received xml: "+xmlString);
+            Log.d(TAG,"Received xml: "+xmlString);
 
             //将返回的xmlstring创建为xmlpullparser实例
             XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
