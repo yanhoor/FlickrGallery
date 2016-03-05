@@ -16,7 +16,7 @@ import android.widget.ImageView;
 
 import java.util.ArrayList;
 /*
-key: 0964378968b9ce3044e29838e2fc0cd8
+Flickr的key: 0964378968b9ce3044e29838e2fc0cd8
 密钥:a0e8c8d18675b5e2
 */
 
@@ -102,9 +102,15 @@ public class PhotoGalleryFragment extends Fragment {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mThumbnaiThread.clearQueue();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
-        mThumbnaiThread.quit();
+        mThumbnaiThread.quit();//结束线程
         Log.d(TAG,"Background thread destroyed");
     }
 }
