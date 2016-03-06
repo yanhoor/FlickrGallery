@@ -21,10 +21,14 @@ import java.util.ArrayList;
 public class FlickrFetchr {
     public static final String TAG="FlickrFetchr";
 
+    public static final String PRE_SEARCH_QUERY="searchQuery";
+
     private static final String ENDPOINT="https://api.flickr.com/services/rest/";
     private static final String API_KEY="0964378968b9ce3044e29838e2fc0cd8";
     private static final String METHOD_GET_RECENT="flickr.photos.getRecent";
+    private static final String METHOD_SEARCH="flickr.photos.search";
     private static final String PARAM_EXTRAS="extras";
+    private static final String PARAM_TEXT="text";
     private static final String EXTRA_SMALL_URL="url_s";
 
     private static final String XML_PHOTO="photo";
@@ -60,14 +64,9 @@ public class FlickrFetchr {
     }
 
     //构建适当的url并获取所需内容
-    public ArrayList<GalleryItem> fetchItems(){
+    public ArrayList<GalleryItem> downloadGalleryItems(String url){
         ArrayList<GalleryItem> items=new ArrayList<>();
         try {
-            String url= Uri.parse(ENDPOINT).buildUpon()
-                    .appendQueryParameter("method",METHOD_GET_RECENT)//自动转义查询字符串
-                    .appendQueryParameter("api_key",API_KEY)
-                    .appendQueryParameter(PARAM_EXTRAS,EXTRA_SMALL_URL)
-                    .build().toString();
             Log.d(TAG,"Query url is "+url);
             String xmlString=getUrl(url);
             Log.d(TAG,"Received xml: "+xmlString);
@@ -76,13 +75,32 @@ public class FlickrFetchr {
             XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
             XmlPullParser parser=factory.newPullParser();
             parser.setInput(new StringReader(xmlString));//事件类型初始化为START_DOCUMENT
-            parseItems(items,parser);//解析flickr图片
+            parseItems(items,parser);//解析资源
         }catch (IOException ioe){
             Log.e(TAG,"Failed to fetch items",ioe);
         }catch (XmlPullParserException xppe){
             Log.e(TAG,"Failed to parse items",xppe);
         }
         return items;
+    }
+
+    public ArrayList<GalleryItem> fetchItems(){
+        String url= Uri.parse(ENDPOINT).buildUpon()
+                .appendQueryParameter("method",METHOD_GET_RECENT)//自动转义查询字符串
+                .appendQueryParameter("api_key",API_KEY)
+                .appendQueryParameter(PARAM_EXTRAS,EXTRA_SMALL_URL)
+                .build().toString();
+        return downloadGalleryItems(url);
+    }
+
+    public ArrayList<GalleryItem> search(String query){
+        String url= Uri.parse(ENDPOINT).buildUpon()
+                .appendQueryParameter("method",METHOD_SEARCH)
+                .appendQueryParameter("api_key",API_KEY)
+                .appendQueryParameter(PARAM_EXTRAS,EXTRA_SMALL_URL)
+                .appendQueryParameter(PARAM_TEXT,query)
+                .build().toString();
+        return downloadGalleryItems(url);
     }
 
     //解析flickr图片
