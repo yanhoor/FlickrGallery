@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
 import android.util.Log;
-import android.util.LruCache;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -22,20 +21,8 @@ import java.util.Map;
 public class ThumbnaiDownloader<Token> extends HandlerThread {
     private static final String TAG="ThumbnaiDownloader";
     private static final int MESSAGE_DOWNLOAD=0;
-    private static final int MEM_MAX_SIZE = 4 * 1024 * 1024;
 
     Handler mHandler;
-    private LruCache<String,Bitmap> mBitmapCache=new LruCache<String,Bitmap>(MEM_MAX_SIZE){
-        @Override
-        protected int sizeOf(String key, Bitmap value) {
-            return value.getRowBytes() * value.getHeight();
-        }
-
-        @Override
-        protected void entryRemoved(boolean evicted, String key, Bitmap oldValue, Bitmap newValue) {
-            super.entryRemoved(evicted, key, oldValue, newValue);
-        }
-    };
 
     //创建键为Token类型，值为string类型的同步hashMap
     //Collections.synchronizedMap允许需要同步的用户可以拥有同步，而不需要同步的用户则不必为同步付出代价。
