@@ -95,7 +95,7 @@ public class PhotoGalleryFragment extends Fragment {
                 return new ArrayList<>();
 
             String query= PreferenceManager.getDefaultSharedPreferences(activity)
-                    .getString(FlickrFetchr.PRE_SEARCH_QUERY,null);
+                    .getString(FlickrFetchr.PREF_SEARCH_QUERY,null);
 
             if (query!=null){
                 return new FlickrFetchr().search(query);
@@ -160,15 +160,37 @@ public class PhotoGalleryFragment extends Fragment {
             case R.id.menu_item_search:
                 getActivity().onSearchRequested();
                 return true;
+
             case R.id.menu_item_clear:
                 PreferenceManager.getDefaultSharedPreferences(getActivity())
                         .edit()
-                        .putString(FlickrFetchr.PRE_SEARCH_QUERY,null)
+                        .putString(FlickrFetchr.PREF_SEARCH_QUERY,null)
                         .commit();
                 updateItems();
                 return true;
+
+            case R.id.menu_item_toggle_polling:
+                boolean shouldStartAlarm=!PollService.isServiceAlarmOn(getActivity());
+                PollService.setServiceAlarm(getActivity(),shouldStartAlarm);
+                if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB)
+                    getActivity().invalidateOptionsMenu();//刷新菜单项
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    //更新选项菜单，除了菜单的首次创建外，每次菜单需要配置都会调用
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        MenuItem toggleItem=menu.findItem(R.id.menu_item_toggle_polling);
+        if (PollService.isServiceAlarmOn(getActivity())){
+            toggleItem.setTitle(R.string.stop_polling);
+        }else {
+            toggleItem.setTitle(R.string.start_polling);
         }
     }
 
