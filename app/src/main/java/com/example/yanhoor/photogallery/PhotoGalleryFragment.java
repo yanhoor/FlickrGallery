@@ -37,7 +37,7 @@ Flickr的key: 0964378968b9ce3044e29838e2fc0cd8
  */
 public class PhotoGalleryFragment extends Fragment {
     private static final String TAG="PhotoGalleryFragment";
-    
+
     GridView mGridView;
     ArrayList<GalleryItem> mItems;
     ThumbnaiDownloader<ImageView> mThumbnaiThread;

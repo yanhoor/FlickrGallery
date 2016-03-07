@@ -70,7 +70,7 @@ public class PollService extends IntentService {
                 .putString(FlickrFetchr.PREF_LAST_RESULT_ID,null)
                 .commit();
 
-        Log.d(TAG,"Received an intent"+intent);
+        Log.d(TAG,"Received an intent "+intent);
     }
 
     public static void setServiceAlarm(Context context,boolean isOn){
