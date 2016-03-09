@@ -1,9 +1,9 @@
 package com.example.yanhoor.photogallery;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +22,10 @@ public class PollService extends IntentService {
     private static final String TAG="PollService";
 
     private static final int POLL_TNTERVAL=1000*15;//15秒
+    public static final String PREF_IS_ALARM_ON="isAlarmOn";
+
+    public static final String ACTION_SHOW_NOTIFICATION="com.example.yanhoor.photogallery.SHOW_NOTIFICATION";
+    public static final String PERM_PRIVATE="com.example.yanhoor.photogallery.PRIVATE";
 
     public PollService(){
         super(TAG);
@@ -61,8 +65,7 @@ public class PollService extends IntentService {
                     .setContentIntent(pi)
                     .setAutoCancel(true)
                     .build();
-            NotificationManager notificationManager=(NotificationManager)getSystemService(NOTIFICATION_SERVICE);
-            notificationManager.notify(0,notification);
+            showBackgrooundNotification(0,notification);
         }else {
             Log.d(TAG,"Got an old result: "+resultId);
         }
@@ -85,6 +88,11 @@ public class PollService extends IntentService {
             alarmManager.cancel(pi);
             pi.cancel();
         }
+
+        PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putBoolean(PollService.PREF_IS_ALARM_ON,isOn)
+                .commit();
     }
 
     //判断定时器是否开启
@@ -93,6 +101,15 @@ public class PollService extends IntentService {
         //PendingIntent.FLAG_NO_CREATE标志如果pi不存在，返回null
         PendingIntent pi=PendingIntent.getService(context,0,i,PendingIntent.FLAG_NO_CREATE);
         return pi!=null;
+    }
+
+    //发送有序broadcasat
+    void showBackgrooundNotification(int requestCode,Notification notification){
+        Intent i=new Intent(ACTION_SHOW_NOTIFICATION);
+        i.putExtra("RESULT_CODE",requestCode);
+        i.putExtra("NOTIFICATION",notification);
+
+        sendOrderedBroadcast(i,PERM_PRIVATE,null,null, Activity.RESULT_OK,null,null);
     }
 
 }
