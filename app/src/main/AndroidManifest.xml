@@ -31,6 +31,9 @@
 
         <activity android:name=".SingleFragmentActivity"></activity>
 
+        <activity android:name=".PhotoPageActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"></activity>
+
         <service android:name=".PollService"/>
 
         <receiver android:name=".StartupReceiver">
