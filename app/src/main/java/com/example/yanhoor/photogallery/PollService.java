@@ -106,7 +106,7 @@ public class PollService extends IntentService {
     //发送有序broadcasat
     void showBackgrooundNotification(int requestCode,Notification notification){
         Intent i=new Intent(ACTION_SHOW_NOTIFICATION);
-        i.putExtra("RESULT_CODE",requestCode);
+        i.putExtra("REQUEST_CODE",requestCode);
         i.putExtra("NOTIFICATION",notification);
 
         sendOrderedBroadcast(i,PERM_PRIVATE,null,null, Activity.RESULT_OK,null,null);

@@ -17,7 +17,9 @@ public class NotificationReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG,"received result: "+getResultCode());
-        //VisibleFragment设置ResultCode为Activity.RESULT_CANCELED
+
+        //VisibleFragment在运行，总是比这里早接收广播（Notificationreceiver设置的优先级低），
+        // 因而ResultCode总是Activity.RESULT_CANCELED
         if (getResultCode()!= Activity.RESULT_OK){
             return;
         }
