@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -75,6 +76,25 @@ public class PhotoGalleryFragment extends VisibleFragment {
         View v=inflater.inflate(R.layout.fragment_photo_gallery,container,false);
         mGridView=(GridView)v.findViewById(R.id.gridView);
         setupAdapter();
+
+        //下拉刷新颜色
+        final SwipeRefreshLayout mSRL=(SwipeRefreshLayout)v.findViewById(R.id.swipeLayout);
+        mSRL.setColorSchemeColors(R.color.colorGreenLight,R.color.colorOrangeLight,
+                R.color.colorRedLight,R.color.colorPrimary);
+        mSRL.setProgressBackgroundColorSchemeResource(R.color.colorAccent);
+
+        mSRL.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mSRL.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        updateItems();
+                        mSRL.setRefreshing(false);
+                    }
+                },3000);
+            }
+        });
 
         mGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
