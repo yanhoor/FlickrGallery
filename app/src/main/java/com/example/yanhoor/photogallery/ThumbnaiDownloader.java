@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.example.yanhoor.photogallery.util.CountMD5OfString;
@@ -34,6 +35,9 @@ import libcore.io.DiskLruCache;
 public class ThumbnaiDownloader<Token> extends HandlerThread {
     private static final String TAG="ThumbnaiDownloader";
     private static final int MESSAGE_DOWNLOAD=0;
+
+    public static int REFRESH_ALL_PIC=0;
+    public static final String PRE_HAS_CACHE="hasCache";
 
     Handler mHandler;
     DiskLruCache mDiskLruCache = null;
@@ -103,26 +107,40 @@ public class ThumbnaiDownloader<Token> extends HandlerThread {
             e.printStackTrace();
         }
 
-            //下载图片并写入缓存
+        Log.d(TAG,"REFRESH_ALL_PIC is "+REFRESH_ALL_PIC);
+        DiskLruCache.Snapshot snapShot=null;
         try {
+            snapShot = mDiskLruCache.get(key);
+        }catch (IOException ioe){
+            ioe.printStackTrace();
+        }
+
+        //检查对应url是否有缓存
+        if (snapShot==null){
+            //下载图片并写入缓存
+            try {
                 DiskLruCache.Editor editor=mDiskLruCache.edit(key);
                 if (editor != null) {
                     OutputStream outputStream = editor.newOutputStream(0);
                     if (downloadUrlToStream(urlString, outputStream)) {
                         Log.d(TAG,"Write to cache finished");
                         editor.commit();
+                        PreferenceManager.getDefaultSharedPreferences(mContext)
+                                .edit()
+                                .putBoolean(PRE_HAS_CACHE,true)
+                                .commit();
                     } else {
                         editor.abort();
                     }
                 }
                 mDiskLruCache.flush();
-        } catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
-        }
+            }
 
             //读取缓存
-        try {
-                DiskLruCache.Snapshot snapShot = mDiskLruCache.get(key);
+            try {
+                snapShot=mDiskLruCache.get(key);
                 Log.d(TAG,"snapShot is "+snapShot);
                 if (snapShot != null) {
                     InputStream is = snapShot.getInputStream(0);
@@ -139,8 +157,34 @@ public class ThumbnaiDownloader<Token> extends HandlerThread {
                         }
                     });
                 }
-        }catch (IOException e) {
+            }catch (IOException e) {
                 e.printStackTrace();
+            }
+
+        }else {
+            //读取缓存
+            try {
+                snapShot = mDiskLruCache.get(key);
+                Log.d(TAG,"snapShot is "+snapShot);
+                if (snapShot != null) {
+                    InputStream is = snapShot.getInputStream(0);
+                    final Bitmap bitmap = BitmapFactory.decodeStream(is);
+                    mResponseHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (requestMap.get(token)!=urlString)
+                                return;
+
+                            requestMap.remove(token);//删除键对应的条目
+                            mListener.onThumbnailDownloaded(token,bitmap);
+                            Log.d(TAG,"Reading from cache");
+                        }
+                    });
+                }
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
 
         /*

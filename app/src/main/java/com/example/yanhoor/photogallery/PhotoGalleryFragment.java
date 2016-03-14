@@ -8,6 +8,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -28,6 +30,7 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 /*
@@ -52,11 +55,18 @@ public class PhotoGalleryFragment extends VisibleFragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
+        hasCache=PreferenceManager.getDefaultSharedPreferences(getActivity())
+                .getBoolean(ThumbnaiDownloader.PRE_HAS_CACHE,false);
+        Log.d(TAG,"onCreate, hasCache is "+hasCache);
+        if (!hasCache){
+            updateItems();
+        }
         mThumbnaiThread=new ThumbnaiDownloader<>(getActivity(),new Handler());//创建的handler默认与当前线程相关联
         mThumbnaiThread.setListener( new ThumbnaiDownloader.Listener<ImageView>(){
             @Override
             public void onThumbnailDownloaded(ImageView imageView, Bitmap thumbnail) {
                 if (isVisible()){
+                    Log.d(TAG,"setListener");
                     imageView.setImageBitmap(thumbnail);
                 }
             }
@@ -70,7 +80,6 @@ public class PhotoGalleryFragment extends VisibleFragment {
         new FetchItemsTask().execute();
     }
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v=inflater.inflate(R.layout.fragment_photo_gallery,container,false);
@@ -81,7 +90,7 @@ public class PhotoGalleryFragment extends VisibleFragment {
         final SwipeRefreshLayout mSRL=(SwipeRefreshLayout)v.findViewById(R.id.swipeLayout);
         mSRL.setColorSchemeColors(R.color.colorGreenLight,R.color.colorOrangeLight,
                 R.color.colorRedLight,R.color.colorPrimary);
-        mSRL.setProgressBackgroundColorSchemeResource(R.color.colorAccent);
+        mSRL.setProgressBackgroundColorSchemeResource(R.color.colorWhite);
 
         mSRL.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -89,7 +98,15 @@ public class PhotoGalleryFragment extends VisibleFragment {
                 mSRL.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        updateItems();
+                        ConnectivityManager connectivityManager=(ConnectivityManager)getActivity()
+                                .getSystemService(Context.CONNECTIVITY_SERVICE);
+                        NetworkInfo networkInfo=connectivityManager.getActiveNetworkInfo();
+                        if (networkInfo!=null&&networkInfo.isAvailable()){
+                            ThumbnaiDownloader.REFRESH_ALL_PIC=0;
+                            updateItems();
+                        }else{
+                            Toast.makeText(getActivity(),R.string.networt_unavailable,Toast.LENGTH_SHORT).show();
+                        }
                         mSRL.setRefreshing(false);
                     }
                 },3000);
@@ -153,6 +170,7 @@ public class PhotoGalleryFragment extends VisibleFragment {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
+            Log.d(TAG,"arrayAdapter, getView");
             if (convertView==null){
                 convertView=getActivity().getLayoutInflater().inflate(R.layout.gallery_item,parent,false);
             }
