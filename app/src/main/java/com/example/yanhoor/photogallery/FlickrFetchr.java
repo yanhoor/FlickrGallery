@@ -64,7 +64,7 @@ public class FlickrFetchr {
         return new String(getUrlBytes(urlSpec));
     }
 
-    //构建适当的url并获取所需内容
+    //构建适当的url并获取xml文件
     public ArrayList<GalleryItem> downloadGalleryItems(String url){
         ArrayList<GalleryItem> items=new ArrayList<>();
         try {
@@ -104,7 +104,7 @@ public class FlickrFetchr {
         return downloadGalleryItems(url);
     }
 
-    //解析flickr图片
+    //解析xml文件
     void parseItems(ArrayList<GalleryItem> items, XmlPullParser parser) throws XmlPullParserException,IOException{
         int eventType=parser.next();
 
@@ -124,6 +124,7 @@ public class FlickrFetchr {
             }
             eventType=parser.next();
         }
+        Log.d(TAG,"Update Gallryitem");
 
     }
 

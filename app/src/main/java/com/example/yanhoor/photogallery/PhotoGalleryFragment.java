@@ -45,15 +45,15 @@ public class PhotoGalleryFragment extends VisibleFragment {
     ArrayList<GalleryItem> mItems;
     ThumbnaiDownloader<ImageView> mThumbnaiThread;
 
+    boolean hasCache=false;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
-        updateItems();
-
-        mThumbnaiThread=new ThumbnaiDownloader<>(new Handler());//创建的handler默认与当前线程相关联
-        mThumbnaiThread.setListener(new ThumbnaiDownloader.Listener<ImageView>(){
+        mThumbnaiThread=new ThumbnaiDownloader<>(getActivity(),new Handler());//创建的handler默认与当前线程相关联
+        mThumbnaiThread.setListener( new ThumbnaiDownloader.Listener<ImageView>(){
             @Override
             public void onThumbnailDownloaded(ImageView imageView, Bitmap thumbnail) {
                 if (isVisible()){

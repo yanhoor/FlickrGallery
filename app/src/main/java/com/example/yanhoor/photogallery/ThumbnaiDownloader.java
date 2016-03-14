@@ -1,5 +1,6 @@
 package com.example.yanhoor.photogallery;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
@@ -7,10 +8,22 @@ import android.os.HandlerThread;
 import android.os.Message;
 import android.util.Log;
 
+import com.example.yanhoor.photogallery.util.CountMD5OfString;
+import com.example.yanhoor.photogallery.util.DiskLRUCacheUtil;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+
+import libcore.io.DiskLruCache;
 
 /**
  * Created by yanhoor on 2016/3/3.
@@ -23,6 +36,8 @@ public class ThumbnaiDownloader<Token> extends HandlerThread {
     private static final int MESSAGE_DOWNLOAD=0;
 
     Handler mHandler;
+    DiskLruCache mDiskLruCache = null;
+    Context mContext;
 
     //创建键为Token类型，值为string类型的同步hashMap
     //Collections.synchronizedMap允许需要同步的用户可以拥有同步，而不需要同步的用户则不必为同步付出代价。
@@ -38,9 +53,10 @@ public class ThumbnaiDownloader<Token> extends HandlerThread {
         mListener=listener;//主线程的listener实例
     }
 
-    public ThumbnaiDownloader(Handler responseHandler){
+    public ThumbnaiDownloader(Context context,Handler responseHandler){
         super(TAG);
         mResponseHandler=responseHandler;//主线程Handler
+        mContext=context;
     }
 
     //该方法的调用发生在Looper第一次检查消息队列之前
@@ -69,6 +85,65 @@ public class ThumbnaiDownloader<Token> extends HandlerThread {
     }
 
     private void handleRequest(final Token token){
+        final String urlString=requestMap.get(token);
+        Log.d(TAG,"urlString is "+urlString);
+        if (urlString==null)return;
+        String key= CountMD5OfString.countStringMD5(urlString);
+        Log.d(TAG,"key is "+key);
+
+        //获取DiskLruCache实例
+        try {
+            File cacheDir=new DiskLRUCacheUtil().getDiskCacheDir(mContext,"bitmap");
+            if (!cacheDir.exists()) {
+                cacheDir.mkdirs();
+            }
+            mDiskLruCache = DiskLruCache.open(cacheDir,
+                    new DiskLRUCacheUtil().getAppVersion(mContext), 1, 10 * 1024 * 1024);//缓存10M
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+
+            //下载图片并写入缓存
+        try {
+                DiskLruCache.Editor editor=mDiskLruCache.edit(key);
+                if (editor != null) {
+                    OutputStream outputStream = editor.newOutputStream(0);
+                    if (downloadUrlToStream(urlString, outputStream)) {
+                        Log.d(TAG,"Write to cache finished");
+                        editor.commit();
+                    } else {
+                        editor.abort();
+                    }
+                }
+                mDiskLruCache.flush();
+        } catch (IOException e) {
+                e.printStackTrace();
+        }
+
+            //读取缓存
+        try {
+                DiskLruCache.Snapshot snapShot = mDiskLruCache.get(key);
+                Log.d(TAG,"snapShot is "+snapShot);
+                if (snapShot != null) {
+                    InputStream is = snapShot.getInputStream(0);
+                    final Bitmap bitmap = BitmapFactory.decodeStream(is);
+                    mResponseHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (requestMap.get(token)!=urlString)
+                                return;
+
+                            requestMap.remove(token);//删除键对应的条目
+                            mListener.onThumbnailDownloaded(token,bitmap);
+                            Log.d(TAG,"Reading from cache");
+                        }
+                    });
+                }
+        }catch (IOException e) {
+                e.printStackTrace();
+        }
+
+        /*
         try {
             final String url=requestMap.get(token);
             if (url==null)
@@ -92,6 +167,42 @@ public class ThumbnaiDownloader<Token> extends HandlerThread {
         }catch (IOException ioe){
             Log.e(TAG,"Error downloading image",ioe);
         }
+        */
+
+    }
+
+    private boolean downloadUrlToStream(String urlString, OutputStream outputStream) {
+        HttpURLConnection urlConnection = null;
+        BufferedOutputStream out = null;
+        BufferedInputStream in = null;
+        try {
+            final URL url = new URL(urlString);
+            urlConnection = (HttpURLConnection) url.openConnection();
+            in = new BufferedInputStream(urlConnection.getInputStream(), 8 * 1024);
+            out = new BufferedOutputStream(outputStream, 8 * 1024);
+            int b;
+            while ((b = in.read()) != -1) {
+                out.write(b);
+            }
+            return true;
+        } catch (final IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (urlConnection != null) {
+                urlConnection.disconnect();
+            }
+            try {
+                if (out != null) {
+                    out.close();
+                }
+                if (in != null) {
+                    in.close();
+                }
+            } catch (final IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return false;
     }
 
     //清除队列外的所有请求
