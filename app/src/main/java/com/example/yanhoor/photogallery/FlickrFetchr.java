@@ -3,6 +3,8 @@ package com.example.yanhoor.photogallery;
 import android.net.Uri;
 import android.util.Log;
 
+import com.example.yanhoor.photogallery.model.GalleryItem;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -117,7 +119,7 @@ public class FlickrFetchr {
 
                 GalleryItem item=new GalleryItem();
                 item.setId(id);
-                item.setCaption(caption);
+                item.setTitle(caption);
                 item.setUrl(smallUrl);
                 item.setOwner(owner);
                 items.add(item);

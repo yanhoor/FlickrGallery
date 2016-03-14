@@ -32,6 +32,8 @@ import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.example.yanhoor.photogallery.model.GalleryItem;
+
 import java.util.ArrayList;
 /*
 Flickr的key: 0964378968b9ce3044e29838e2fc0cd8

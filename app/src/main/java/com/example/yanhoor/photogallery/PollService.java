@@ -13,6 +13,8 @@ import android.net.ConnectivityManager;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.example.yanhoor.photogallery.model.GalleryItem;
+
 import java.util.ArrayList;
 
 /**
