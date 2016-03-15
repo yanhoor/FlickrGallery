@@ -238,6 +238,11 @@ public class PhotoGalleryFragment extends VisibleFragment {
                     getActivity().invalidateOptionsMenu();//刷新菜单项
                 return true;
 
+            case R.id.menu_item_login:
+                Intent i=new Intent(getActivity(),LogInActivity.class);
+                startActivity(i);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

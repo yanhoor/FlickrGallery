@@ -33,7 +33,11 @@
         <activity android:name=".SingleFragmentActivity"></activity>
 
         <activity android:name=".PhotoPageActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"></activity>
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
+
+        <activity android:name=".LogInActivity"/>
+
+        <activity android:name=".VerifyActivity"/>
 
         <service android:name=".PollService"/>
 

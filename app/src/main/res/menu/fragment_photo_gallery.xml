@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:compat="http://schemas.android.com/apk/res-auto">
+      xmlns:compat="http://schemas.android.com/apk/res-auto"
+    android:background="#ffffff">
 
     <item android:id="@+id/menu_item_search"
           android:title="@string/search"
@@ -15,6 +16,10 @@
 
     <item android:id="@+id/menu_item_toggle_polling"
           android:title="@string/start_polling"
+          compat:showAsAction="ifRoom"/>
+
+    <item android:id="@+id/menu_item_login"
+          android:title="@string/login_menu"
           compat:showAsAction="ifRoom"/>
 
 </menu>
