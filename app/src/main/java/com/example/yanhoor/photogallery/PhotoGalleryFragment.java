@@ -33,6 +33,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.yanhoor.photogallery.model.GalleryItem;
+import com.example.yanhoor.photogallery.model.GalleryItemLab;
 
 import java.util.ArrayList;
 /*
@@ -57,6 +58,7 @@ public class PhotoGalleryFragment extends VisibleFragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
+        mItems=GalleryItemLab.get(getActivity()).getGalleryItems();
         hasCache=PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .getBoolean(ThumbnaiDownloader.PRE_HAS_CACHE,false);
         Log.d(TAG,"onCreate, hasCache is "+hasCache);
@@ -161,6 +163,8 @@ public class PhotoGalleryFragment extends VisibleFragment {
         @Override
         protected void onPostExecute(ArrayList<GalleryItem> galleryItems) {
             mItems=galleryItems;
+            Log.d(TAG,"mItems size is "+mItems.size());
+            GalleryItemLab.get(getActivity()).addGalleryItems(mItems);
             setupAdapter();
         }
     }
@@ -246,6 +250,12 @@ public class PhotoGalleryFragment extends VisibleFragment {
         }else {
             toggleItem.setTitle(R.string.start_polling);
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        GalleryItemLab.get(getActivity()).saveGalleryItems();
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.yanhoor.photogallery.model;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.yanhoor.photogallery.util.GalleryItemToJSONSerializer;
 
@@ -23,6 +24,14 @@ public class GalleryItemLab {
 
     private GalleryItemLab(Context appContext){
         mAppContext=appContext;
+        mSerializer=new GalleryItemToJSONSerializer(mAppContext,FILE_NAME);
+
+        try{
+            mGalleryItems=mSerializer.loadGalleryItem();
+        }catch(Exception e){
+            mGalleryItems=new ArrayList<>();//如果加载数据失败，新建空数组列表
+            Log.e(TAG,"Error loading galleryItems: ",e);
+        }
     }
 
     public static GalleryItemLab get(Context c){
@@ -46,6 +55,10 @@ public class GalleryItemLab {
 
     public void addGalleryItem(GalleryItem g){
         mGalleryItems.add(g);
+    }
+
+    public void addGalleryItems(ArrayList<GalleryItem> galleryItems){
+        mGalleryItems.addAll(galleryItems);
     }
 
     public void deleteGalleryItem(GalleryItem g){
