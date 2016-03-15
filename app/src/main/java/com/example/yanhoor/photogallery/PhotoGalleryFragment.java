@@ -59,9 +59,11 @@ public class PhotoGalleryFragment extends VisibleFragment {
         setRetainInstance(true);
         setHasOptionsMenu(true);
         mItems=GalleryItemLab.get(getActivity()).getGalleryItems();//获取文件中的items
+        /*
         hasCache=PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .getBoolean(ThumbnaiDownloader.PRE_HAS_CACHE,false);
         Log.d(TAG,"onCreate, hasCache is "+hasCache);
+        */
         if (mItems==null){
             updateItems();
         }
