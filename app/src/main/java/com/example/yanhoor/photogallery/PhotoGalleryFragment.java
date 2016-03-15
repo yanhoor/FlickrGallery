@@ -58,11 +58,11 @@ public class PhotoGalleryFragment extends VisibleFragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
-        mItems=GalleryItemLab.get(getActivity()).getGalleryItems();
+        mItems=GalleryItemLab.get(getActivity()).getGalleryItems();//获取文件中的items
         hasCache=PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .getBoolean(ThumbnaiDownloader.PRE_HAS_CACHE,false);
         Log.d(TAG,"onCreate, hasCache is "+hasCache);
-        if (!hasCache){
+        if (mItems==null){
             updateItems();
         }
         mThumbnaiThread=new ThumbnaiDownloader<>(getActivity(),new Handler());//创建的handler默认与当前线程相关联
@@ -81,6 +81,8 @@ public class PhotoGalleryFragment extends VisibleFragment {
     }
 
     public void updateItems(){
+        //获取新的图片前先删除之前的
+        GalleryItemLab.get(getActivity()).deleteGalleryItems(mItems);
         new FetchItemsTask().execute();
     }
 

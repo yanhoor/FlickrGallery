@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.example.yanhoor.photogallery.util.GalleryItemToJSONSerializer;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -65,7 +66,13 @@ public class GalleryItemLab {
         mGalleryItems.remove(g);
     }
 
+    public void deleteGalleryItems(ArrayList<GalleryItem> galleryItems){
+        Log.d(TAG,"Remove Galleryitems "+galleryItems);
+        mGalleryItems.removeAll(galleryItems);
+    }
+
     public boolean saveGalleryItems(){
+        //deleteGalleryItemsFile();//先清空之前保存的内容
         try {
             mSerializer.saveGalleryItems(mGalleryItems);
             return true;
@@ -73,6 +80,14 @@ public class GalleryItemLab {
             e.printStackTrace();
             return false;
         }
+    }
+
+    //删除之前保存的GalleryItems文件
+    public boolean deleteGalleryItemsFile(){
+        String path=mAppContext.getFileStreamPath(FILE_NAME).getAbsolutePath();
+        File file=new File(path,FILE_NAME);
+        Log.d(TAG,"Delete file "+path);
+        return file.delete();
     }
 
 }

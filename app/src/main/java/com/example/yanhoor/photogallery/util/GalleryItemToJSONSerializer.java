@@ -1,6 +1,7 @@
 package com.example.yanhoor.photogallery.util;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.example.yanhoor.photogallery.model.GalleryItem;
 
@@ -23,6 +24,8 @@ import java.util.ArrayList;
  */
 //用于创建和解析JSON数据
 public class GalleryItemToJSONSerializer {
+    private static final String TAG="GalleryItemToSerializer";
+
     private Context mContext;
     private String mFilename;
 
@@ -53,6 +56,7 @@ public class GalleryItemToJSONSerializer {
             if (reader!=null)
                 reader.close();
         }
+        Log.d(TAG,"loadGalleryItems");
         return galleryItems;
     }
 
