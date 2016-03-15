@@ -56,7 +56,7 @@ public class LogInFragment extends Fragment {
         mVerifyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Intent i=new Intent(getActivity(),VerifyActivity.class);
+                /*Intent i=new Intent(getActivity(),GetAccessActivity.class);
                 startActivity(i);*/
                 Uri pageUri= Uri.parse("https://www.flickr.com/auth-72157664677091449");
                 Intent i=new Intent(Intent.ACTION_VIEW,pageUri);

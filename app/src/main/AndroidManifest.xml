@@ -37,7 +37,7 @@
 
         <activity android:name=".LogInActivity"/>
 
-        <activity android:name=".VerifyActivity"/>
+        <activity android:name=".GetAccessActivity"/>
 
         <service android:name=".PollService"/>
 

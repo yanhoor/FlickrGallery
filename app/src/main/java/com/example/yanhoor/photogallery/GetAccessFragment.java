@@ -15,8 +15,8 @@ import android.widget.ProgressBar;
 /**
  * Created by yanhoor on 2016/3/10.
  */
-public class VerifyFragment extends Fragment {
-    private static final String TAG="VerifyFragment";
+public class GetAccessFragment extends Fragment {
+    private static final String TAG="GetAccessFragment";
     private WebView mWebView;
 
     @Override
