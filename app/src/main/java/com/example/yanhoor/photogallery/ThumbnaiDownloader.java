@@ -102,7 +102,7 @@ public class ThumbnaiDownloader<Token> extends HandlerThread {
                 cacheDir.mkdirs();
             }
             mDiskLruCache = DiskLruCache.open(cacheDir,
-                    new DiskLRUCacheUtil().getAppVersion(mContext), 1, 10 * 1024 * 1024);//缓存10M
+                    new DiskLRUCacheUtil().getAppVersion(mContext), 1, 5 * 1024 * 1024);//缓存5M
         }catch (IOException e) {
             e.printStackTrace();
         }

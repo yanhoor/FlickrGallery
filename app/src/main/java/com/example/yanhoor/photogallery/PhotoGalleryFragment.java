@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -125,10 +124,14 @@ public class PhotoGalleryFragment extends VisibleFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 GalleryItem item=mItems.get(position);
+                Intent i=new Intent(getActivity(),PhotoDetailActivity.class);
+                i.putExtra(PhotoDetailFragment.EXTRA_GALLERYITEM_uuid,item.getUUID());
+                startActivity(i);
+                /*
                 Uri photoPageUri=Uri.parse(item.getPhotoPageUrl());
                 Intent i=new Intent(getActivity(),PhotoPageActivity.class);
                 i.setData(photoPageUri);
-                startActivity(i);
+                startActivity(i);*/
             }
         });
 

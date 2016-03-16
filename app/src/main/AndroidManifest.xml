@@ -39,6 +39,8 @@
 
         <activity android:name=".GetAccessActivity"/>
 
+        <activity android:name=".PhotoDetailActivity"/>
+
         <service android:name=".PollService"/>
 
         <receiver android:name=".StartupReceiver">

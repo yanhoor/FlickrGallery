@@ -3,20 +3,29 @@ package com.example.yanhoor.photogallery.util;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.util.Log;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
+import libcore.io.DiskLruCache;
 
 /**
  * Created by yanhoor on 2016/3/13.
  */
 public class DiskLRUCacheUtil {
+    private static final String TAG="DiskLRUCacheUtil";
+
+    DiskLruCache mDiskLruCache = null;
 
     //获取缓存地址，通常为/sdcard/Android/data/<application package>/cache
     public File getDiskCacheDir(Context context, String uniqueName) {
@@ -47,6 +56,71 @@ public class DiskLRUCacheUtil {
             e.printStackTrace();
         }
         return 1;
+    }
+
+    //获取DiskLruCache实例
+    public DiskLruCache getDiskLruCacheInstance(Context mContext){
+        mContext=mContext.getApplicationContext();
+        try {
+            File cacheDir=getDiskCacheDir(mContext,"bitmap");
+            if (!cacheDir.exists()) {
+                cacheDir.mkdirs();
+            }
+            mDiskLruCache = DiskLruCache.open(cacheDir,
+                    new DiskLRUCacheUtil().getAppVersion(mContext), 1, 5 * 1024 * 1024);//缓存5M
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+        return mDiskLruCache;
+    }
+
+    public void writeToCache(String url){
+        if (url==null)return;
+        String key= CountMD5OfString.countStringMD5(url);
+        //下载图片并写入缓存
+        try {
+            DiskLruCache.Editor editor=mDiskLruCache.edit(key);
+            if (editor != null) {
+                OutputStream outputStream = editor.newOutputStream(0);
+                if (downloadUrlToStream(url, outputStream)) {
+                    Log.d(TAG,"Write to cache finished");
+                    editor.commit();
+                } else {
+                    editor.abort();
+                }
+            }
+            mDiskLruCache.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Bitmap getFromCache(String url){
+        Bitmap bitmap=null;
+        String key= CountMD5OfString.countStringMD5(url);
+        DiskLruCache.Snapshot snapShot=null;
+        try {
+            snapShot = mDiskLruCache.get(key);
+        }catch (IOException ioe){
+            ioe.printStackTrace();
+        }
+
+        if (snapShot==null){
+            writeToCache(url);
+        }else {
+            //读取缓存
+            try {
+                snapShot=mDiskLruCache.get(key);
+                Log.d(TAG,"snapShot is "+snapShot);
+                if (snapShot != null) {
+                    InputStream is = snapShot.getInputStream(0);
+                    bitmap=BitmapFactory.decodeStream(is);
+                }
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return bitmap;
     }
 
     //从传入的urlstring下载并缓存图片

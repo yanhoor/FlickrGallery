@@ -116,18 +116,23 @@ public class FlickrFetchr {
                 String caption=parser.getAttributeValue(null,"title");
                 String smallUrl=parser.getAttributeValue(null,EXTRA_SMALL_URL);
                 String owner=parser.getAttributeValue(null,"owner");
+                String secret=parser.getAttributeValue(null,"secret");
+                String server=parser.getAttributeValue(null,"server");
+                String farm=parser.getAttributeValue(null,"farm");
 
                 GalleryItem item=new GalleryItem();
                 item.setId(id);
                 item.setTitle(caption);
                 item.setUrl(smallUrl);
                 item.setOwner(owner);
+                item.setSecret(secret);
+                item.setServer(server);
+                item.setFarm(farm);
                 items.add(item);
             }
             eventType=parser.next();
         }
-        Log.d(TAG,"Update Gallryitem");
-
+        Log.d(TAG,"Update GalleryItem");
     }
 
 }
