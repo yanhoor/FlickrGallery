@@ -33,6 +33,7 @@ import android.widget.Toast;
 
 import com.example.yanhoor.photogallery.model.GalleryItem;
 import com.example.yanhoor.photogallery.model.GalleryItemLab;
+import com.example.yanhoor.photogallery.util.DiskLRUCacheUtil;
 
 import java.util.ArrayList;
 /*
@@ -58,6 +59,7 @@ public class PhotoGalleryFragment extends VisibleFragment {
         setRetainInstance(true);
         setHasOptionsMenu(true);
         mItems=GalleryItemLab.get(getActivity()).getGalleryItems();//获取文件中的items
+        Log.d(TAG,"mItems is "+mItems);
         /*
         hasCache=PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .getBoolean(ThumbnaiDownloader.PRE_HAS_CACHE,false);
@@ -82,8 +84,6 @@ public class PhotoGalleryFragment extends VisibleFragment {
     }
 
     public void updateItems(){
-        //获取新的图片前先删除之前的
-        GalleryItemLab.get(getActivity()).deleteGalleryItems(mItems);
         new FetchItemsTask().execute();
     }
 
@@ -124,9 +124,12 @@ public class PhotoGalleryFragment extends VisibleFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 GalleryItem item=mItems.get(position);
-                Intent i=new Intent(getActivity(),PhotoDetailActivity.class);
-                i.putExtra(PhotoDetailFragment.EXTRA_GALLERYITEM_uuid,item.getUUID());
-                startActivity(i);
+                //先判断是否有缓存,防止进入主线程联网
+                if (DiskLRUCacheUtil.get(getActivity()).getSnapShot(item.getUrl())!=null){
+                    Intent i=new Intent(getActivity(),PhotoDetailActivity.class);
+                    i.putExtra(PhotoDetailFragment.EXTRA_GALLERYITEM_uuid,item.getUUID());
+                    startActivity(i);
+                }
                 /*
                 Uri photoPageUri=Uri.parse(item.getPhotoPageUrl());
                 Intent i=new Intent(getActivity(),PhotoPageActivity.class);
@@ -171,6 +174,8 @@ public class PhotoGalleryFragment extends VisibleFragment {
         protected void onPostExecute(ArrayList<GalleryItem> galleryItems) {
             mItems=galleryItems;
             Log.d(TAG,"mItems size is "+mItems.size());
+            //添加新的图片前先删除原有的
+            GalleryItemLab.get(getActivity()).deleteGalleryItems(mItems);
             GalleryItemLab.get(getActivity()).addGalleryItems(mItems);
             setupAdapter();
         }

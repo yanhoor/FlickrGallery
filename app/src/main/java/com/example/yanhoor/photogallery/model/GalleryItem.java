@@ -126,6 +126,4 @@ public class GalleryItem {
         return "http://www.flickr.com/photos/"+mOwner+"/"+mId;
     }
 
-    public String get
-
 }

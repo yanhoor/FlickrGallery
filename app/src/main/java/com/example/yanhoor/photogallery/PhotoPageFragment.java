@@ -33,7 +33,7 @@ public class PhotoPageFragment extends VisibleFragment {
 
         final ProgressBar progressBar=(ProgressBar)v.findViewById(R.id.progressBar);
         progressBar.setMax(100);
-        final TextView titleTextView=(TextView)v.findViewById(R.id.titleTextVeiew);
+        final TextView titleTextView=(TextView)v.findViewById(R.id.titleTextView);
 
         mWebView=(WebView)v.findViewById(R.id.webView);
         mWebView.getSettings().setJavaScriptEnabled(true);

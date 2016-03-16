@@ -25,7 +25,21 @@ import libcore.io.DiskLruCache;
 public class DiskLRUCacheUtil {
     private static final String TAG="DiskLRUCacheUtil";
 
-    DiskLruCache mDiskLruCache = null;
+    private static DiskLRUCacheUtil sDiskLRUCacheUtil;
+    DiskLruCache mDiskLruCache;
+    private Context mAppContext;
+
+    private DiskLRUCacheUtil(Context appContext){
+        mAppContext=appContext;
+        mDiskLruCache=getDiskLruCacheInstance(appContext);
+    }
+
+    public static DiskLRUCacheUtil get(Context c){
+        if (sDiskLRUCacheUtil==null){
+            sDiskLRUCacheUtil=new DiskLRUCacheUtil(c.getApplicationContext());
+        }
+        return sDiskLRUCacheUtil;
+    }
 
     //获取缓存地址，通常为/sdcard/Android/data/<application package>/cache
     public File getDiskCacheDir(Context context, String uniqueName) {
@@ -67,7 +81,7 @@ public class DiskLRUCacheUtil {
                 cacheDir.mkdirs();
             }
             mDiskLruCache = DiskLruCache.open(cacheDir,
-                    new DiskLRUCacheUtil().getAppVersion(mContext), 1, 5 * 1024 * 1024);//缓存5M
+                    getAppVersion(mContext), 1, 15 * 1024 * 1024);//缓存15M
         }catch (IOException e) {
             e.printStackTrace();
         }
@@ -75,8 +89,8 @@ public class DiskLRUCacheUtil {
     }
 
     public void writeToCache(String url){
-        if (url==null)return;
         String key= CountMD5OfString.countStringMD5(url);
+        Log.d(TAG,"key is "+key);
         //下载图片并写入缓存
         try {
             DiskLruCache.Editor editor=mDiskLruCache.edit(key);
@@ -95,8 +109,7 @@ public class DiskLRUCacheUtil {
         }
     }
 
-    public Bitmap getFromCache(String url){
-        Bitmap bitmap=null;
+    public DiskLruCache.Snapshot getSnapShot(String url){
         String key= CountMD5OfString.countStringMD5(url);
         DiskLruCache.Snapshot snapShot=null;
         try {
@@ -104,6 +117,13 @@ public class DiskLRUCacheUtil {
         }catch (IOException ioe){
             ioe.printStackTrace();
         }
+        return snapShot;
+    }
+
+    public Bitmap getBitmapFromCache(String url){
+        Bitmap bitmap=null;
+        String key= CountMD5OfString.countStringMD5(url);
+        DiskLruCache.Snapshot snapShot=getSnapShot(url);
 
         if (snapShot==null){
             writeToCache(url);
@@ -111,10 +131,10 @@ public class DiskLRUCacheUtil {
             //读取缓存
             try {
                 snapShot=mDiskLruCache.get(key);
-                Log.d(TAG,"snapShot is "+snapShot);
                 if (snapShot != null) {
                     InputStream is = snapShot.getInputStream(0);
                     bitmap=BitmapFactory.decodeStream(is);
+                    Log.d(TAG,"Reading from cache");
                 }
             }catch (IOException e) {
                 e.printStackTrace();
