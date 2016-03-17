@@ -66,9 +66,9 @@ public class GalleryItemLab {
         mGalleryItems.remove(g);
     }
 
-    public void deleteGalleryItems(ArrayList<GalleryItem> galleryItems){
-        Log.d(TAG,"Remove Galleryitems "+galleryItems);
-        mGalleryItems.removeAll(galleryItems);
+    public void deleteGalleryItems(){
+        Log.d(TAG,"Clear mGalleryItems in "+TAG);
+        mGalleryItems.clear();
     }
 
     public boolean saveGalleryItems(){

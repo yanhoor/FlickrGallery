@@ -89,7 +89,7 @@ public class DiskLRUCacheUtil {
     }
 
     public void writeToCache(String url){
-        String key= CountMD5OfString.countStringMD5(url);
+        String key= StaticMethodUtil.countMD5OfString(url);
         Log.d(TAG,"key is "+key);
         //下载图片并写入缓存
         try {
@@ -110,7 +110,7 @@ public class DiskLRUCacheUtil {
     }
 
     public DiskLruCache.Snapshot getSnapShot(String url){
-        String key= CountMD5OfString.countStringMD5(url);
+        String key= StaticMethodUtil.countMD5OfString(url);
         DiskLruCache.Snapshot snapShot=null;
         try {
             snapShot = mDiskLruCache.get(key);
@@ -122,7 +122,7 @@ public class DiskLRUCacheUtil {
 
     public Bitmap getBitmapFromCache(String url){
         Bitmap bitmap=null;
-        String key= CountMD5OfString.countStringMD5(url);
+        String key= StaticMethodUtil.countMD5OfString(url);
         DiskLruCache.Snapshot snapShot=getSnapShot(url);
 
         if (snapShot==null){

@@ -23,8 +23,6 @@ public class ThumbnaiDownloader<Token> extends HandlerThread {
     private static final String TAG="ThumbnaiDownloader";
     private static final int MESSAGE_DOWNLOAD=0;
 
-    public static int REFRESH_ALL_PIC=0;
-
     Handler mHandler;
     Context mContext;
 

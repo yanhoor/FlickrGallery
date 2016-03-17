@@ -49,9 +49,8 @@ public class PhotoGalleryFragment extends VisibleFragment {
 
     GridView mGridView;
     ArrayList<GalleryItem> mItems;
+    ArrayList<GalleryItem> mOldItems;
     ThumbnaiDownloader<ImageView> mThumbnaiThread;
-
-    boolean hasCache=false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,6 +74,14 @@ public class PhotoGalleryFragment extends VisibleFragment {
                 if (isVisible()){
                     Log.d(TAG,"setListener");
                     imageView.setImageBitmap(thumbnail);
+                    /*
+                    //先压缩图片
+                    int reqWidth=imageView.getWidth();
+                    int reqHeight=imageView.getHeight();
+                    Bitmap bitmap= StaticMethodUtil.decodeSampledBitmapFromResource(getResources()
+                    ,R.id.gallery_item_imageView,reqWidth,reqHeight);
+                    imageView.setImageBitmap(bitmap);
+                    */
                 }
             }
         });
@@ -109,7 +116,6 @@ public class PhotoGalleryFragment extends VisibleFragment {
                                 .getSystemService(Context.CONNECTIVITY_SERVICE);
                         NetworkInfo networkInfo=connectivityManager.getActiveNetworkInfo();
                         if (networkInfo!=null&&networkInfo.isAvailable()){
-                            ThumbnaiDownloader.REFRESH_ALL_PIC=0;
                             updateItems();
                         }else{
                             Toast.makeText(getActivity(),R.string.networt_unavailable,Toast.LENGTH_SHORT).show();
@@ -174,8 +180,10 @@ public class PhotoGalleryFragment extends VisibleFragment {
         protected void onPostExecute(ArrayList<GalleryItem> galleryItems) {
             mItems=galleryItems;
             Log.d(TAG,"mItems size is "+mItems.size());
-            //添加新的图片前先删除原有的
-            GalleryItemLab.get(getActivity()).deleteGalleryItems(mItems);
+            if (mItems.size()!=0){
+                //添加新的图片前先删除原有的
+                GalleryItemLab.get(getActivity()).deleteGalleryItems();
+            }
             GalleryItemLab.get(getActivity()).addGalleryItems(mItems);
             setupAdapter();
         }

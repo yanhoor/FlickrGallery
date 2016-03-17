@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.yanhoor.photogallery.util.CountMD5OfString;
+import com.example.yanhoor.photogallery.util.StaticMethodUtil;
 import com.example.yanhoor.photogallery.util.DecodeXMLFile;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -98,7 +98,7 @@ public class LogInFragment extends Fragment {
     }
 
     public String GetFullToken(){
-        mApiSig= CountMD5OfString.countStringMD5(mSignString);
+        mApiSig= StaticMethodUtil.countMD5OfString(mSignString);
         Log.d(TAG,"api_sign is "+mApiSig);
         try {
             String url=Uri.parse(ENDPOINT).buildUpon()
