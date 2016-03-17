@@ -14,7 +14,7 @@ public class DecodeXMLFile {
     private static final String TAG="DecodeXMLFile";
 
     //解析xml文件获取full token即auth_token
-    public String decodeXml(XmlPullParser parser) throws XmlPullParserException,IOException {
+    public String decodeFullTokenXml(XmlPullParser parser) throws XmlPullParserException,IOException {
         int eventType=parser.next();
         String fullToken=null;
 

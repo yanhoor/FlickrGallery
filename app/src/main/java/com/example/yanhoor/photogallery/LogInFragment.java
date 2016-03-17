@@ -112,7 +112,7 @@ public class LogInFragment extends Fragment {
             XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
             XmlPullParser parser=factory.newPullParser();
             parser.setInput(new StringReader(xmlResult));
-            mFullToken=new DecodeXMLFile().decodeXml(parser);//解析xml文件并获得fulltoken
+            mFullToken=new DecodeXMLFile().decodeFullTokenXml(parser);//解析xml文件并获得fulltoken
             PreferenceManager.getDefaultSharedPreferences(getActivity())
                     .edit()
                     .putString(PREF_FULL_TOKEN,mFullToken)

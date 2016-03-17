@@ -47,6 +47,7 @@ public class StaticMethodUtil {
         return new String(resultCharArray);
     }
 
+    //用于压缩图片
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
                                                          int reqWidth, int reqHeight) {
         // 第一次解析将inJustDecodeBounds设置为true，来获取图片大小
