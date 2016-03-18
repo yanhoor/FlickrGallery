@@ -3,9 +3,13 @@ package com.example.yanhoor.photogallery.util;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
+
+import com.example.yanhoor.photogallery.LogInFragment;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 
 /**
  * Created by yanhoor on 2016/3/12.
@@ -13,6 +17,7 @@ import java.security.NoSuchAlgorithmException;
 //计算传入string的MD5值
 
 public class StaticMethodUtil {
+    private static final String TAG="StaticMethodUtil ";
 
     public static String countMD5OfString(String input){
         try{
@@ -45,6 +50,19 @@ public class StaticMethodUtil {
         }
         // 字符数组组合成字符串返回
         return new String(resultCharArray);
+    }
+
+    public static String buildApiSigForMethod(String method, String mFullToken){
+        String[] mSignFullTokenStringArray={"method"+method,"api_key"+ LogInFragment.API_KEY,
+        "auth_token"+mFullToken,LogInFragment.PUBLIC_CODE};
+        Arrays.sort(mSignFullTokenStringArray);
+        StringBuilder mSB=new StringBuilder();
+        for (String s:mSignFullTokenStringArray) {
+            mSB.append(s);
+        }
+        String apiSig=countMD5OfString(mSB.toString());
+        Log.d(TAG,"apiSig is "+apiSig);
+        return apiSig;
     }
 
     //用于压缩图片

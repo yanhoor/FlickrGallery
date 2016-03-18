@@ -32,13 +32,13 @@ public class LogInFragment extends Fragment {
     private static final String TAG="LogInFragment";
 
     public static final String PREF_FULL_TOKEN="fullToken";
+    public static final String API_KEY="0964378968b9ce3044e29838e2fc0cd8";
+    public static final String PUBLIC_CODE="a0e8c8d18675b5e2";
     private static final String ENDPOINT="https://api.flickr.com/services/rest/";
     private static final String METHOD_GET_FULL_TOKEN="flickr.auth.getFullToken";
-    private static final String API_KEY="0964378968b9ce3044e29838e2fc0cd8";
-    private static final String PUBLIC_CODE="a0e8c8d18675b5e2";
     private String mMiniToken;
     private String mApiSig;
-    private String mFullToken;
+    private String mFullToken;//即auth_token
     private String mSignString;
 
     private EditText mMiniTokenEditText;
@@ -109,6 +109,7 @@ public class LogInFragment extends Fragment {
                     .build().toString();
             Log.d(TAG,"Get full token from "+url);
             String xmlResult=new FlickrFetchr().getUrl(url);//从url获取xml文件
+            Log.d(TAG,"Get full token from "+xmlResult);
             XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
             XmlPullParser parser=factory.newPullParser();
             parser.setInput(new StringReader(xmlResult));

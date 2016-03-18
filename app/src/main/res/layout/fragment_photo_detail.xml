@@ -40,23 +40,22 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_gravity="end">
+                    android:layout_gravity="start">
 
                     <TextView
-                        android:id="@+id/comment_number"
+                        android:id="@+id/views_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="10dp"
-                        android:text="0"/>
+                        android:text="0"
+                        android:layout_marginEnd="10dp"/>
 
                     <TextView
-                        android:id="@+id/comment_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_toStartOf="@+id/views_number"
                         android:layout_marginEnd="10dp"
-                        android:layout_toStartOf="@+id/comment_number"
-                        android:text="@string/comment"/>
+                        android:text="@string/views"/>
 
                 </RelativeLayout>
 
@@ -88,22 +87,23 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:layout_gravity="start">
+                    android:layout_gravity="end">
 
                     <TextView
-                        android:id="@+id/views_number"
+                        android:id="@+id/comment_number"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:text="0"
-                        android:layout_marginEnd="10dp"/>
+                        android:layout_marginEnd="10dp"
+                        android:text="0"/>
 
                     <TextView
+                        android:id="@+id/comment_textView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_toStartOf="@+id/views_number"
                         android:layout_marginEnd="10dp"
-                        android:text="@string/views"/>
+                        android:layout_toStartOf="@+id/comment_number"
+                        android:text="@string/comment"/>
 
                 </RelativeLayout>
 
