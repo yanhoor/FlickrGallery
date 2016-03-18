@@ -86,6 +86,8 @@ public class PhotoDetailFragment extends Fragment {
         Date mCurrentDate=new Date();
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         String mCurrentDateString=sdf.format(mCurrentDate);
+
+        //获取api_sig
         String[] mSignFullTokenStringArray={"method"+METHOD,"date"+mCurrentDateString,
                 "api_key"+ LogInFragment.API_KEY, "auth_token"+mFullToken,
                 LogInFragment.PUBLIC_CODE,"photo_id"+mGalleryItem.getId()};
@@ -96,6 +98,7 @@ public class PhotoDetailFragment extends Fragment {
         }
         String apiSig=StaticMethodUtil.countMD5OfString(mSB.toString());
         Log.d(TAG,"apiSig is "+apiSig);
+
         String url= Uri.parse(ENDPOINT).buildUpon()
                 .appendQueryParameter("method","flickr.stats.getPhotoStats")
                 .appendQueryParameter("api_key",API_KEY)
