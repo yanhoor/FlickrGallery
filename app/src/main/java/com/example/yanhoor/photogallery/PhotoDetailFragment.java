@@ -51,9 +51,9 @@ public class PhotoDetailFragment extends Fragment {
 
     private GalleryItem mGalleryItem;
 
-    private int mComment=0;
-    private int mViews=0;
-    private int mFavorites=0;
+    private String mComment="0";
+    private String mViews="0";
+    private String mFavorites="0";
 
     public static PhotoDetailFragment newPhotoDetailFragmentInstance(UUID mUUID){
         Bundle args=new Bundle();
@@ -121,13 +121,13 @@ public class PhotoDetailFragment extends Fragment {
 
 
         TextView commentNumber=(TextView)v.findViewById(R.id.comment_number);
-        //commentNumber.setText(mComment);
+        commentNumber.setText(mComment);
 
         TextView favoritesNumber=(TextView)v.findViewById(R.id.favorites_number);
-       // favoritesNumber.setText(mFavorites);
+       favoritesNumber.setText(mFavorites);
 
         TextView viewsNumber=(TextView)v.findViewById(R.id.views_number);
-        //viewsNumber.setText(mViews);
+        viewsNumber.setText(mViews);
 
         return v;
     }
@@ -156,10 +156,13 @@ public class PhotoDetailFragment extends Fragment {
                     parser.setInput(new StringReader(s));
                     int eventType = parser.getEventType();
                     while (eventType != XmlPullParser.END_DOCUMENT) {
-                        if (eventType == XmlPullParser.START_TAG && "stats".equals(parser.getName())) {
-                            mViews = Integer.parseInt(parser.getAttributeValue(null, "views"));
-                            mComment = Integer.parseInt(parser.getAttributeValue(null, "comments"));
-                            mFavorites = Integer.parseInt(parser.getAttributeValue(null, "favorites"));
+                        if ("err".equals(parser.getName())){
+                            Log.d(TAG,"Error occur when getting states");
+                            break;
+                        }else if (eventType == XmlPullParser.START_TAG && "stats".equals(parser.getName())) {
+                            mViews = parser.getAttributeValue(null, "views");
+                            mComment = parser.getAttributeValue(null, "comments");
+                            mFavorites = parser.getAttributeValue(null, "favorites");
                         }
                         eventType = parser.next();
                     }
