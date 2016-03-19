@@ -1,6 +1,7 @@
 package com.example.yanhoor.photogallery;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -21,9 +22,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.yanhoor.photogallery.model.GalleryItem;
 import com.example.yanhoor.photogallery.model.GalleryItemLab;
-import com.example.yanhoor.photogallery.util.DiskLRUCacheUtil;
 import com.example.yanhoor.photogallery.util.StaticMethodUtil;
 
+import org.kymjs.kjframe.KJBitmap;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -70,7 +71,6 @@ public class PhotoDetailFragment extends Fragment {
         super.onCreate(savedInstanceState);
         UUID mUUID=(UUID) getArguments().getSerializable(EXTRA_GALLERYITEM_uuid);
         mGalleryItem= GalleryItemLab.get(getActivity()).getGalleryItem(mUUID);
-
     }
 
     @Nullable
@@ -87,7 +87,7 @@ public class PhotoDetailFragment extends Fragment {
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         String mCurrentDateString=sdf.format(mCurrentDate);
 
-        //获取api_sig
+        //为flickr.stats.getPhotoStats方法获取api_sig
         String[] mSignFullTokenStringArray={"method"+METHOD,"date"+mCurrentDateString,
                 "api_key"+ LogInFragment.API_KEY, "auth_token"+mFullToken,
                 LogInFragment.PUBLIC_CODE,"photo_id"+mGalleryItem.getId()};
@@ -108,17 +108,46 @@ public class PhotoDetailFragment extends Fragment {
                 .appendQueryParameter("api_sig",apiSig)
                 .build().toString();
         getPhotoStates(getActivity(),url);
-        TextView owner=(TextView)v.findViewById(R.id.owner);
-        owner.setText(mGalleryItem.getOwner());
+
+        Log.d(TAG,"username is "+mGalleryItem.getUserName());
+        TextView owner=(TextView)v.findViewById(R.id.user_name);
+        owner.setText(mGalleryItem.getUserName());
+
         TextView title=(TextView)v.findViewById(R.id.photo_title);
+        title.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);//下划线
         if (mGalleryItem.getTitle()!=null){
             title.setText(mGalleryItem.getTitle());
+        }else {
+            title.setVisibility(View.GONE);
         }
 
-        ImageView mImageView=(ImageView) v.findViewById(R.id.photo_imageView);
-        mImageView.setImageBitmap(DiskLRUCacheUtil.get(getActivity())
-                .getBitmapFromCache(mGalleryItem.getUrl()));
+        TextView description=(TextView)v.findViewById(R.id.Photo_description);
+        Log.d(TAG,"description is "+mGalleryItem.getDescription());
+        if (mGalleryItem.getDescription()!=null){
+            description.setText(mGalleryItem.getDescription());
+        }else {
+            description.setVisibility(View.GONE);
+        }
 
+        TextView location=(TextView)v.findViewById(R.id.location_text);
+        if (mGalleryItem.getLocation()!=null){
+            location.setText(mGalleryItem.getLocation());
+        }else {
+            location.setVisibility(View.GONE);
+        }
+
+        TextView postedTime=(TextView)v.findViewById(R.id.posted_time_text);
+        //防止存在空格出现java.lang.NumberFormatException: Invalid long: "null"
+        String mPostedTime=mGalleryItem.getPostedDate().trim();
+        //unix timetamp转化为现在的ms要乘1000
+        Date mDate=new Date(Long.parseLong(mPostedTime)*1000);
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm",Locale.US);
+        String dateString=simpleDateFormat.format(mDate);
+        postedTime.setText(dateString);
+
+        ImageView mImageView=(ImageView) v.findViewById(R.id.photo_imageView);
+        Log.d(TAG,"Getting detail photo from "+mGalleryItem.getDetailPhotoUrl());
+        new KJBitmap.Builder().view(mImageView).imageUrl(mGalleryItem.getDetailPhotoUrl()).display();
 
         TextView commentNumber=(TextView)v.findViewById(R.id.comment_number);
         commentNumber.setText(mComment);
@@ -130,16 +159,6 @@ public class PhotoDetailFragment extends Fragment {
         viewsNumber.setText(mViews);
 
         return v;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 
     public void getPhotoStates(Context context,String url){
