@@ -29,7 +29,6 @@ public class StaticMethodUtil {
 
     public  static final String ENDPOINT="https://api.flickr.com/services/rest/";
     public static final String API_KEY="0964378968b9ce3044e29838e2fc0cd8";
-    public static final String METHOD_GET_RECENT="flickr.photos.getRecent";
 
     public static String countMD5OfString(String input){
         try{

@@ -16,4 +16,5 @@
     <string name="favorites">Favorites: </string>
     <string name="views">Views: </string>
     <string name="fullToken_unavailable">You haven\'t login</string>
+    <string name="following">Followings: </string>
 </resources>

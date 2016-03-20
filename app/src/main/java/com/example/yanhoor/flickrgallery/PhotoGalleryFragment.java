@@ -49,7 +49,6 @@ public class PhotoGalleryFragment extends VisibleFragment {
 
     GridView mGridView;
     ArrayList<GalleryItem> mItems;
-    ArrayList<GalleryItem> mOldItems;
     ThumbnaiDownloader<ImageView> mThumbnaiThread;
 
     @Override
@@ -59,11 +58,6 @@ public class PhotoGalleryFragment extends VisibleFragment {
         setHasOptionsMenu(true);
         mItems=GalleryItemLab.get(getActivity()).getGalleryItems();//获取文件中的items
         Log.d(TAG,"mItems is "+mItems);
-        /*
-        hasCache=PreferenceManager.getDefaultSharedPreferences(getActivity())
-                .getBoolean(ThumbnaiDownloader.PRE_HAS_CACHE,false);
-        Log.d(TAG,"onCreate, hasCache is "+hasCache);
-        */
         if (mItems==null){
             updateItems();
         }
@@ -196,7 +190,7 @@ public class PhotoGalleryFragment extends VisibleFragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             Log.d(TAG,"arrayAdapter, getView");
             if (convertView==null){
-                convertView=getActivity().getLayoutInflater().inflate(R.layout.gallery_item,parent,false);
+                convertView=getActivity().getLayoutInflater().inflate(R.layout.image_view,parent,false);
             }
             ImageView imageView=(ImageView)convertView.findViewById(R.id.gallery_item_imageView);
             imageView.setImageResource(R.drawable.brain_up_close);

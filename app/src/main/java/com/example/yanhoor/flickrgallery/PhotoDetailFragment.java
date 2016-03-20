@@ -83,6 +83,7 @@ public class PhotoDetailFragment extends Fragment {
             Toast.makeText(getActivity(),R.string.fullToken_unavailable,Toast.LENGTH_LONG).show();
             getActivity().finish();
         }
+
         Date mCurrentDate=new Date();
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         String mCurrentDateString=sdf.format(mCurrentDate);
@@ -147,13 +148,14 @@ public class PhotoDetailFragment extends Fragment {
 
         ImageView mImageView=(ImageView) v.findViewById(R.id.photo_imageView);
         Log.d(TAG,"Getting detail photo from "+mGalleryItem.getDetailPhotoUrl());
+        //使用kjbitmap
         new KJBitmap.Builder().view(mImageView).imageUrl(mGalleryItem.getDetailPhotoUrl()).display();
 
         TextView commentNumber=(TextView)v.findViewById(R.id.comment_number);
         commentNumber.setText(mComment);
 
         TextView favoritesNumber=(TextView)v.findViewById(R.id.favorites_number);
-       favoritesNumber.setText(mFavorites);
+        favoritesNumber.setText(mFavorites);
 
         TextView viewsNumber=(TextView)v.findViewById(R.id.views_number);
         viewsNumber.setText(mViews);
@@ -199,6 +201,7 @@ public class PhotoDetailFragment extends Fragment {
                 Log.e(TAG,"onErrorResponse");
             }
         });
+
         mQueue.add(stringRequest);
 
     }

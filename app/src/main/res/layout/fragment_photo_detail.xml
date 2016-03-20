@@ -24,7 +24,7 @@
                 android:textStyle="italic"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="12dp"
-                android:textSize="14sp"/>
+                android:textSize="15sp"/>
 
             <TextView
                 android:id="@+id/Photo_description"
@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="12dp"
-                android:textSize="12sp"/>
+                android:textSize="14sp"/>
 
             <RelativeLayout
                 android:layout_width="match_parent"

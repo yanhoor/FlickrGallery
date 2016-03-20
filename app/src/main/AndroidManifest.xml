@@ -43,6 +43,8 @@
 
         <activity android:name="com.example.yanhoor.flickrgallery.PhotoDetailPagerActivity"/>
 
+        <activity android:name=".UserProfileActivity"/>
+
         <service android:name="com.example.yanhoor.flickrgallery.PollService"/>
 
         <receiver android:name="com.example.yanhoor.flickrgallery.StartupReceiver">
