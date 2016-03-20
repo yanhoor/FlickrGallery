@@ -131,6 +131,8 @@ public class PhotoGalleryFragment extends VisibleFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 GalleryItem item=mItems.get(position);
                 Intent i=new Intent(getActivity(),PhotoDetailActivity.class);
+                //用于代替PhotoDetailActivity实现滑动查看图片详情
+                //Intent i=new Intent(getActivity(),PhotoPageActivity.class);
                 i.putExtra(PhotoDetailFragment.EXTRA_GALLERYITEM_uuid,item.getUUID());
                 startActivity(i);
             }

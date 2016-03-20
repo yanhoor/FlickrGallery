@@ -41,6 +41,8 @@
 
         <activity android:name=".PhotoDetailActivity"/>
 
+        <activity android:name=".PhotoDetailPagerActivity"/>
+
         <service android:name=".PollService"/>
 
         <receiver android:name=".StartupReceiver">
