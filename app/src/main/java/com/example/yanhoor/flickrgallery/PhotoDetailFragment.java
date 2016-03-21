@@ -36,7 +36,6 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
-import java.util.UUID;
 
 /**
  * Created by yanhoor on 2016/3/15.
@@ -49,7 +48,7 @@ public class PhotoDetailFragment extends Fragment {
 
     private String mFullToken;
 
-    public static final String EXTRA_GALLERYITEM_uuid ="com.example.yanhoor.photogallery.galleryItem_id";
+    public static final String EXTRA_GALLERYITEM_mId ="com.example.yanhoor.photogallery.galleryItem_id";
 
     private GalleryItem mGalleryItem;
 
@@ -57,9 +56,9 @@ public class PhotoDetailFragment extends Fragment {
     private String mViews="0";
     private String mFavorites="0";
 
-    public static PhotoDetailFragment newPhotoDetailFragmentInstance(UUID mUUID){
+    public static PhotoDetailFragment newPhotoDetailFragmentInstance(String mId){
         Bundle args=new Bundle();
-        args.putSerializable(EXTRA_GALLERYITEM_uuid,mUUID);
+        args.putSerializable(EXTRA_GALLERYITEM_mId,mId);
 
         PhotoDetailFragment fragment=new PhotoDetailFragment();
         fragment.setArguments(args);
@@ -70,8 +69,8 @@ public class PhotoDetailFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        UUID mUUID=(UUID) getArguments().getSerializable(EXTRA_GALLERYITEM_uuid);
-        mGalleryItem= GalleryItemLab.get(getActivity()).getGalleryItem(mUUID);
+        String mId=(String) getArguments().getSerializable(EXTRA_GALLERYITEM_mId);
+        mGalleryItem= GalleryItemLab.get(getActivity()).getGalleryItem(mId);
     }
 
     @Nullable

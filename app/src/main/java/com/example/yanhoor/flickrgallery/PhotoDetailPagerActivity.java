@@ -36,7 +36,7 @@ public class PhotoDetailPagerActivity extends FragmentActivity {
             @Override
             public Fragment getItem(int position) {
                 GalleryItem galleryItem=mGalleryItems.get(position);
-                return PhotoDetailFragment.newPhotoDetailFragmentInstance(galleryItem.getUUID());
+                return PhotoDetailFragment.newPhotoDetailFragmentInstance(galleryItem.getId());
             }
 
             @Override
@@ -46,7 +46,7 @@ public class PhotoDetailPagerActivity extends FragmentActivity {
         });
 
         UUID galleryItemUUID=(UUID)getIntent()
-                .getSerializableExtra(PhotoDetailFragment.EXTRA_GALLERYITEM_uuid);
+                .getSerializableExtra(PhotoDetailFragment.EXTRA_GALLERYITEM_mId);
         for (int i=0;i<mGalleryItems.size();i++){
             if (mGalleryItems.get(i).getUUID().equals(galleryItemUUID)){
                 mViewPager.setCurrentItem(i);

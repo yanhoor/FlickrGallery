@@ -127,7 +127,7 @@ public class PhotoGalleryFragment extends VisibleFragment {
                     Intent i=new Intent(getActivity(),PhotoDetailActivity.class);
                     //用于代替PhotoDetailActivity实现滑动查看图片详情
                     //Intent i=new Intent(getActivity(),PhotoPageActivity.class);
-                    i.putExtra(PhotoDetailFragment.EXTRA_GALLERYITEM_uuid,item.getUUID());
+                    i.putExtra(PhotoDetailFragment.EXTRA_GALLERYITEM_mId,item.getId());
                     startActivity(i);
                 }
             }

@@ -7,7 +7,6 @@ import com.example.yanhoor.flickrgallery.util.GalleryItemToJSONSerializer;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.UUID;
 
 /**
  * Created by yanhoor on 2016/3/14.
@@ -46,9 +45,9 @@ public class GalleryItemLab {
         return mGalleryItems;
     }
 
-    public GalleryItem getGalleryItem(UUID uuid){
+    public GalleryItem getGalleryItem(String mId){
         for (GalleryItem g:mGalleryItems){
-            if (g.getUUID().equals(uuid))
+            if (g.getId().equals(mId))
                 return g;
         }
         return null;

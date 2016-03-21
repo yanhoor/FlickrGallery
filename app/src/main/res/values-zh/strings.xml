@@ -11,7 +11,7 @@
     <string name="networt_unavailable">网络不可用</string>
     <string name="comment">评论：</string>
     <string name="confirm_button">确认</string>
-    <string name="get_token_button">登录Flickr</string>
-    <string name="log_in_text">输入验证码（包含连接符）</string>
+    <string name="get_token_button">获取Flickr账号权限</string>
+    <string name="log_in_text">请输入验证码（包含连接符）：</string>
     <string name="login_menu">登录Flickr</string>
 </resources>
