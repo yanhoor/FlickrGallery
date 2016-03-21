@@ -19,6 +19,7 @@ import java.util.ArrayList;
 /**
  * Created by yanhoor on 2016/3/20.
  */
+//在需要获取信息的地方调用getUserProfile(String userId)，最后设置listener获取更新后的user
 public class GetUserProfileUtil {
     private static final String TAG="GetUserProfileUtil";
 
@@ -60,7 +61,7 @@ public class GetUserProfileUtil {
             public void onFinish() {
                 super.onFinish();
                 getFollowings();
-                Log.d(TAG,"userName is "+mUser.getUserName());
+                Log.d(TAG,"location is0"+mUser.getLocation()+"0");
             }
 
             @Override
@@ -93,7 +94,7 @@ public class GetUserProfileUtil {
 
                         if (eventType == XmlPullParser.START_TAG && "location".equals(parser.getName())) {
                             String location = parser.nextText();
-                            mUser.setLocation(location);
+                            mUser.setLocation(location.trim());
                         }
                         eventType = parser.next();
                     }
@@ -134,6 +135,11 @@ public class GetUserProfileUtil {
 
                     int eventType=parser.getEventType();
                     while (eventType!=XmlPullParser.END_DOCUMENT){
+                        if (eventType==XmlPullParser.START_TAG&&"contacts".equals(parser.getName())){
+                            String total=parser.getAttributeValue(null,"total");
+                            mUser.setFollowingsNumber(total);
+                        }
+
                         if (eventType==XmlPullParser.START_TAG&&"contact".equals(parser.getName())){
                             User following=new User();
                             String followingId=parser.getAttributeValue(null,"nsid");

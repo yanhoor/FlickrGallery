@@ -1,5 +1,7 @@
 package com.example.yanhoor.flickrgallery.model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -14,6 +16,7 @@ public class User {
     private String mIconServer;
     private String mIconFarm;
     private String mLocation;
+    private String mFollowingsNumber;
 
     private ArrayList<User>mFollowingUsers=new ArrayList<>();
     private ArrayList<GalleryItem>mGalleryItems=new ArrayList<>();
@@ -82,16 +85,27 @@ public class User {
         mFollowingUsers.addAll(followingUsers);
     }
 
+    public String getFollowingsNumber() {
+        return mFollowingsNumber;
+    }
+
+    public void setFollowingsNumber(String followingsNumber) {
+        mFollowingsNumber = followingsNumber;
+    }
+
     public String getUserIconUrl(){
+        String iconUrl;
         //http://farm{icon-farm}.staticflickr.com/{icon-server}/buddyicons/{nsid}.jpg
         if (mIconServer!=null){
             if (Integer.parseInt(mIconServer)>0){
-                return "http://farm"+mIconFarm+".staticflickr.com/"+mIconServer+"/buddyicons/"+mId+".jpg";
+                iconUrl= "http://farm"+mIconFarm+".staticflickr.com/"+mIconServer+"/buddyicons/"+mId+".jpg";
             }else {
-                return "https://www.flickr.com/images/buddyicon.gif";
+                iconUrl= "https://www.flickr.com/images/buddyicon.gif";
             }
         }else {
-            return "https://www.flickr.com/images/buddyicon.gif";
+            iconUrl= "https://www.flickr.com/images/buddyicon.gif";
         }
+        Log.d(TAG,"IconUrl is "+iconUrl);
+        return iconUrl;
     }
 }

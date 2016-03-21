@@ -32,6 +32,7 @@ public class UserProfileFragment extends Fragment {
     TextView userName;
     TextView followingNumber;
     TextView locationTextView;
+    TextView location;
     GetUserProfileUtil mGetUserProfileUtil;
 
     public static final String EXTRA_USER_ID="com.example.yanhoor.flickrgallery.UserProfileFragment.user_Id";
@@ -70,11 +71,39 @@ public class UserProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v=inflater.inflate(R.layout.fragment_user_profile,container,false);
 
+        //final SwipeRefreshLayout mSRL=(SwipeRefreshLayout)v.findViewById(R.id.SwipeRefreshLayout_user_profile);
         ImageView buddyIconImageView=(ImageView)v.findViewById(R.id.buddy_icon_profile);
         userName=(TextView)v.findViewById(R.id.user_name_profile);
         followingNumber=(TextView)v.findViewById(R.id.following_number_profile);
         locationTextView=(TextView)v.findViewById(R.id.location_profile);
         userPhotoGridView=(GridView)v.findViewById(R.id.photo_gridView_profile);
+        location=(TextView)v.findViewById(R.id.location_text_profile);
+
+        /*
+        mSRL.setColorSchemeColors(R.color.colorGreenLight,R.color.colorOrangeLight,
+                R.color.colorRedLight,R.color.colorPrimary);
+        mSRL.setProgressBackgroundColorSchemeResource(R.color.colorWhite);
+
+        mSRL.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mSRL.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ConnectivityManager connectivityManager=(ConnectivityManager)getActivity()
+                                .getSystemService(Context.CONNECTIVITY_SERVICE);
+                        NetworkInfo networkInfo=connectivityManager.getActiveNetworkInfo();
+                        if (networkInfo!=null&&networkInfo.isAvailable()){
+                            mGetUserProfileUtil.getUserProfile(mUserId);
+                        }else{
+                            Toast.makeText(getActivity(),R.string.networt_unavailable,Toast.LENGTH_SHORT).show();
+                        }
+                        mSRL.setRefreshing(false);
+                    }
+                },3000);
+            }
+        });
+        */
 
         updateUI();
         //加载icon
@@ -98,14 +127,14 @@ public class UserProfileFragment extends Fragment {
             userName.setText(mUser.getUserName());
         }
 
-        if (mUser.getGalleryItems()!=null){
-            followingNumber.setText(String.valueOf(mUser.getFollowingUsers().size()));
+        if (mUser.getFollowingsNumber()!=null){
+            followingNumber.setText(mUser.getFollowingsNumber());
         }
 
-        if (mUser.getLocation()!=null){
+        //Log.d(TAG,"location length is "+mUser.getLocation().length());
+        if (mUser.getLocation()!=null&&mUser.getLocation().length()!=0){
+            location.setVisibility(View.VISIBLE);
             locationTextView.setText(mUser.getLocation());
-        }else {
-            locationTextView.setVisibility(View.GONE);
         }
 
         if (mUser.getGalleryItems().size()>0){

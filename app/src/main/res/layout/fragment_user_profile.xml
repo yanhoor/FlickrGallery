@@ -47,6 +47,15 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="10dp"/>
 
+        <TextView
+            android:id="@+id/location_text_profile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/location_profile"
+            android:layout_marginEnd="10dp"
+            android:text="@string/location"
+            android:visibility="gone"/>
+
     </RelativeLayout>
 
     <GridView
