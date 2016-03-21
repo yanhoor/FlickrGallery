@@ -37,7 +37,7 @@ public class GalleryItem {
     private String mRealName;
     private String mDescription=null;
     private String mLocation=null;
-    private String mPostedDate;
+    private String mPostedTime;
 
     public GalleryItem(){
         mUUID=UUID.randomUUID();
@@ -62,7 +62,7 @@ public class GalleryItem {
             mDescription=jsonObject.getString(JSON_DESCRIPTION);
         if (jsonObject.has(JSON_LOCATION))
             mLocation=jsonObject.getString(JSON_LOCATION);
-        mPostedDate=jsonObject.getString(JSON_POSTED_DATE);
+        mPostedTime =jsonObject.getString(JSON_POSTED_DATE);
     }
 
     public JSONObject toJSON() throws JSONException{
@@ -79,7 +79,7 @@ public class GalleryItem {
         jsonObject.put(JSON_REAL_NAME,mRealName);
         jsonObject.put(JSON_DESCRIPTION,mDescription);
         jsonObject.put(JSON_LOCATION,mLocation);
-        jsonObject.put(JSON_POSTED_DATE,mPostedDate);
+        jsonObject.put(JSON_POSTED_DATE, mPostedTime);
         return jsonObject;
     }
 
@@ -183,12 +183,12 @@ public class GalleryItem {
         mLocation = location;
     }
 
-    public String getPostedDate() {
-        return mPostedDate;
+    public String getPostedTime() {
+        return mPostedTime;
     }
 
-    public void setPostedDate(String postedDate) {
-        mPostedDate = postedDate;
+    public void setPostedTime(String postedTime) {
+        mPostedTime = postedTime;
     }
 
     public String getPhotoPageUrl(){

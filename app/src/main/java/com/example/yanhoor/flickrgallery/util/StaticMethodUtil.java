@@ -3,19 +3,7 @@ package com.example.yanhoor.flickrgallery.util;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.util.Log;
 
-import com.example.yanhoor.flickrgallery.model.GalleryItem;
-
-import org.kymjs.kjframe.KJHttp;
-import org.kymjs.kjframe.http.HttpCallBack;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
-import org.xmlpull.v1.XmlPullParserFactory;
-
-import java.io.IOException;
-import java.io.StringReader;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -26,9 +14,6 @@ import java.security.NoSuchAlgorithmException;
 
 public class StaticMethodUtil {
     private static final String TAG="StaticMethodUtil ";
-
-    public  static final String ENDPOINT="https://api.flickr.com/services/rest/";
-    public static final String API_KEY="0964378968b9ce3044e29838e2fc0cd8";
 
     public static String countMD5OfString(String input){
         try{
@@ -61,58 +46,6 @@ public class StaticMethodUtil {
         }
         // 字符数组组合成字符串返回
         return new String(resultCharArray);
-    }
-
-    public static GalleryItem getPhotoInfo(final GalleryItem galleryItem){
-        String photo_id=galleryItem.getId();
-        String url= Uri.parse(ENDPOINT).buildUpon()
-                .appendQueryParameter("method","flickr.photos.getInfo")
-                .appendQueryParameter("api_key",API_KEY)
-                .appendQueryParameter("photo_id",photo_id)
-                .build().toString();
-        KJHttp kjHttp=new KJHttp();
-        kjHttp.get(url, new HttpCallBack() {
-            @Override
-            public void onSuccess(String t) {
-                super.onSuccess(t);
-                Log.d(TAG,"Getting photo info from "+t);
-
-                try{
-                    XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
-                    XmlPullParser parser=factory.newPullParser();
-                    parser.setInput(new StringReader(t));
-                    int eventType=parser.getEventType();
-                    while (eventType!=XmlPullParser.END_DOCUMENT){
-                        if (eventType==XmlPullParser.START_TAG&&"owner".equals(parser.getName())){
-                            String userName=parser.getAttributeValue(null,"username");
-                            String realName=parser.getAttributeValue(null,"realname");
-                            String location=parser.getAttributeValue(null,"location");
-                            Log.d(TAG,"username is "+userName);
-                            Log.d(TAG,"realname is "+realName);
-
-                            galleryItem.setUserName(userName);
-                            galleryItem.setRealName(realName);
-                            galleryItem.setLocation(location);
-                        }
-                        if (eventType==XmlPullParser.START_TAG&&"description".equals(parser.getName())){
-                            String description=parser.nextText();
-                            Log.d(TAG,"description is "+description);
-                            galleryItem.setDescription(description);
-                        }
-                        if (eventType==XmlPullParser.START_TAG&&"dates".equals(parser.getName())){
-                            String postedDate=parser.getAttributeValue(null,"posted");
-                            galleryItem.setPostedDate(postedDate);
-                        }
-                        eventType=parser.next();
-                    }
-                }catch (XmlPullParserException xppe){
-                    xppe.printStackTrace();
-                }catch (IOException ioe){
-                    ioe.printStackTrace();
-                }
-            }
-        });
-        return galleryItem;
     }
 
     //用于压缩图片
