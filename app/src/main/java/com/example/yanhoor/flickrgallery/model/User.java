@@ -75,11 +75,7 @@ public class User {
     }
 
     public ArrayList<User> getFollowingUsers() {
-        if (mFollowingUsers.size()==0){
-            return null;
-        }else {
-            return mFollowingUsers;
-        }
+        return mFollowingUsers;
     }
 
     public void setFollowingUsers(ArrayList<User> followingUsers) {
@@ -88,8 +84,12 @@ public class User {
 
     public String getUserIconUrl(){
         //http://farm{icon-farm}.staticflickr.com/{icon-server}/buddyicons/{nsid}.jpg
-        if (Integer.parseInt(mIconServer)>0){
-            return "http://farm"+mIconFarm+".staticflickr.com/"+mIconServer+"/buddyicons/"+mId+".jpg";
+        if (mIconServer!=null){
+            if (Integer.parseInt(mIconServer)>0){
+                return "http://farm"+mIconFarm+".staticflickr.com/"+mIconServer+"/buddyicons/"+mId+".jpg";
+            }else {
+                return "https://www.flickr.com/images/buddyicon.gif";
+            }
         }else {
             return "https://www.flickr.com/images/buddyicon.gif";
         }

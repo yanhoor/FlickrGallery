@@ -17,9 +17,7 @@ public class UserLab {
 
     private UserLab(Context appContext){
         mAppContext=appContext;
-        if (mUsers.size()==0){
-            mUsers=new ArrayList<>();
-        }
+        mUsers=new ArrayList<>();
     }
 
     public static UserLab get(Context c){

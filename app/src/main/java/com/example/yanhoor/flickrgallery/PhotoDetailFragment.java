@@ -1,6 +1,7 @@
 package com.example.yanhoor.flickrgallery;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
@@ -111,8 +112,17 @@ public class PhotoDetailFragment extends Fragment {
         getPhotoStates(getActivity(),url);
 
         Log.d(TAG,"username is "+mGalleryItem.getUserName());
-        TextView owner=(TextView)v.findViewById(R.id.user_name);
-        owner.setText(mGalleryItem.getUserName());
+        TextView userName=(TextView)v.findViewById(R.id.user_name);
+        userName.setText(mGalleryItem.getUserName());
+        userName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(getActivity(),UserProfileActivity.class);
+                i.putExtra(UserProfileFragment.EXTRA_USER_ID,mGalleryItem.getUserId());
+                startActivity(i);
+                Log.d(TAG,"Going to user profile");
+            }
+        });
 
         TextView title=(TextView)v.findViewById(R.id.photo_title);
         title.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);//下划线
@@ -163,6 +173,7 @@ public class PhotoDetailFragment extends Fragment {
         return v;
     }
 
+    //获取照片评论等
     public void getPhotoStates(Context context,String url){
         Log.d(TAG,"Get photo states from "+url);
         RequestQueue mQueue= Volley.newRequestQueue(context);

@@ -33,7 +33,6 @@ import android.widget.Toast;
 
 import com.example.yanhoor.flickrgallery.model.GalleryItem;
 import com.example.yanhoor.flickrgallery.model.GalleryItemLab;
-import com.example.yanhoor.flickrgallery.util.StaticMethodUtil;
 
 import java.util.ArrayList;
 /*
@@ -124,11 +123,13 @@ public class PhotoGalleryFragment extends VisibleFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 GalleryItem item=mItems.get(position);
-                Intent i=new Intent(getActivity(),PhotoDetailActivity.class);
-                //用于代替PhotoDetailActivity实现滑动查看图片详情
-                //Intent i=new Intent(getActivity(),PhotoPageActivity.class);
-                i.putExtra(PhotoDetailFragment.EXTRA_GALLERYITEM_uuid,item.getUUID());
-                startActivity(i);
+                if (item.getPostedDate()!=null){
+                    Intent i=new Intent(getActivity(),PhotoDetailActivity.class);
+                    //用于代替PhotoDetailActivity实现滑动查看图片详情
+                    //Intent i=new Intent(getActivity(),PhotoPageActivity.class);
+                    i.putExtra(PhotoDetailFragment.EXTRA_GALLERYITEM_uuid,item.getUUID());
+                    startActivity(i);
+                }
             }
         });
 
@@ -167,10 +168,6 @@ public class PhotoGalleryFragment extends VisibleFragment {
         @Override
         protected void onPostExecute(ArrayList<GalleryItem> galleryItems) {
             mItems=galleryItems;
-            //获取用户名，地址，描述信息
-            for (GalleryItem g:mItems){
-                StaticMethodUtil.getPhotoInfo(g);
-            }
             Log.d(TAG,"mItems size is "+mItems.size());
             if (mItems.size()!=0){
                 //添加新的图片前先删除原有的

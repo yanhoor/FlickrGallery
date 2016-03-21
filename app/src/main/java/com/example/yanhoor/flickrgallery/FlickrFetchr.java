@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.example.yanhoor.flickrgallery.model.GalleryItem;
+import com.example.yanhoor.flickrgallery.util.StaticMethodUtil;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -124,13 +125,17 @@ public class FlickrFetchr {
                 item.setId(id);
                 item.setTitle(caption);
                 item.setUrl(smallUrl);
-                item.setOwner(owner);
+                item.setUserId(owner);
                 item.setSecret(secret);
                 item.setServer(server);
                 item.setFarm(farm);
                 items.add(item);
             }
             eventType=parser.next();
+        }
+        //获取用户名，地址，描述信息
+        for (GalleryItem g:items){
+            StaticMethodUtil.getPhotoInfo(g);
         }
         Log.d(TAG,"Update GalleryItem");
     }

@@ -27,61 +27,81 @@ public class GetUserProfileUtil {
 
     private User mUser;
     private ArrayList<GalleryItem>mGalleryItems;
+    listener mMainThreadListener;
 
-    public User getUserProfile(User user){
-        mUser=user;
+    public interface listener {
+        void onUpdateFinish(User user);
+    }
+
+    public void setListener(listener mListener){
+        mMainThreadListener=mListener;
+    }
+
+    public User getUserProfile(String userId){
+        Log.d(TAG,"getUserProfile");
+        mUser=new User();
+        mUser.setId(userId);
+        //在一个完成之后再启动另一个
         getUserInfo();
-        getFollowings();
-        getUserPhoto();
+        Log.d(TAG,"user name is "+mUser.getUserName());
         return mUser;
     }
 
-    public void getUserInfo(){
+    public void getUserInfo() {
 
-        String url= Uri.parse(ENDPOINT).buildUpon()
-                .appendQueryParameter("method","flickr.people.getInfo")
-                .appendQueryParameter("api_key",API_KEY)
-                .appendQueryParameter("user_id",mUser.getId())
+        String url = Uri.parse(ENDPOINT).buildUpon()
+                .appendQueryParameter("method", "flickr.people.getInfo")
+                .appendQueryParameter("api_key", API_KEY)
+                .appendQueryParameter("user_id", mUser.getId())
                 .build().toString();
 
-        new KJHttp.Builder().url(url).callback(new HttpCallBack() {
+        new KJHttp().get(url, new HttpCallBack() {
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                getFollowings();
+                Log.d(TAG,"userName is "+mUser.getUserName());
+            }
+
             @Override
             public void onSuccess(String t) {
-                Log.d(TAG,"Getting user info from "+t);
-                try{
-                    XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
-                    XmlPullParser parser=factory.newPullParser();
+                Log.d(TAG, "Getting user info from " + t);
+                try {
+                    XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+                    XmlPullParser parser = factory.newPullParser();
                     parser.setInput(new StringReader(t));//事件类型初始化为START_DOCUMENT
 
-                    int eventType=parser.getEventType();
-                    while (eventType!=XmlPullParser.END_DOCUMENT){
-                        if (eventType==XmlPullParser.START_TAG&&"person".equals(parser.getName())){
-                            String iconSever=parser.getAttributeValue(null,"iconserver");
-                            String iconFarm=parser.getAttributeValue(null,"iconfarm");
+                    int eventType = parser.getEventType();
+                    while (eventType != XmlPullParser.END_DOCUMENT) {
+                        if (eventType == XmlPullParser.START_TAG && "person".equals(parser.getName())) {
+                            String iconSever = parser.getAttributeValue(null, "iconserver");
+                            String iconFarm = parser.getAttributeValue(null, "iconfarm");
 
                             mUser.setIconServer(iconSever);
                             mUser.setIconFarm(iconFarm);
                         }
-                        if (eventType==XmlPullParser.START_TAG&&"username".equals(parser.getName())){
-                            String userName=parser.nextText();
+                        if (eventType == XmlPullParser.START_TAG && "username".equals(parser.getName())) {
+                            String userName = parser.nextText();
+                            Log.d(TAG,"userName is "+userName);
                             mUser.setUserName(userName);
                         }
 
-                        if (eventType==XmlPullParser.START_TAG&&"realname".equals(parser.getName())){
-                            String realName=parser.nextText();
+                        if (eventType == XmlPullParser.START_TAG && "realname".equals(parser.getName())) {
+                            String realName = parser.nextText();
                             mUser.setRealName(realName);
                         }
 
-                        if (eventType==XmlPullParser.START_TAG&&"location".equals(parser.getName())){
-                            String location=parser.nextText();
+                        if (eventType == XmlPullParser.START_TAG && "location".equals(parser.getName())) {
+                            String location = parser.nextText();
                             mUser.setLocation(location);
                         }
-                        eventType=parser.next();
+                        eventType = parser.next();
                     }
+                    Log.d(TAG,"userName is "+mUser.getUserName());
 
-                }catch (XmlPullParserException xppe){
+                } catch (XmlPullParserException xppe) {
                     xppe.printStackTrace();
-                }catch (IOException ioe){
+                } catch (IOException ioe) {
                     ioe.printStackTrace();
                 }
             }
@@ -96,7 +116,13 @@ public class GetUserProfileUtil {
                 .appendQueryParameter("user_id",mUser.getId())
                 .build().toString();
 
-        new KJHttp.Builder().url(url).callback(new HttpCallBack() {
+        new KJHttp().get(url,new HttpCallBack() {
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                getUserPhoto();
+            }
+
             @Override
             public void onSuccess(String t) {
                 Log.d(TAG,"Getting following from "+t);
@@ -140,7 +166,13 @@ public class GetUserProfileUtil {
                 .appendQueryParameter("extras","url_s")
                 .build().toString();
 
-        new KJHttp.Builder().url(photoUrl).callback(new HttpCallBack() {
+        new KJHttp().get(photoUrl,new HttpCallBack() {
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                mMainThreadListener.onUpdateFinish(mUser);
+            }
+
             @Override
             public void onSuccess(String t) {
                 Log.d(TAG,"Getting user photo from "+t);
@@ -167,9 +199,9 @@ public class GetUserProfileUtil {
                 }catch (IOException ioe){
                     ioe.printStackTrace();
                 }
+                mUser.setGalleryItems(mGalleryItems);
             }
         });
-
     }
 
 }

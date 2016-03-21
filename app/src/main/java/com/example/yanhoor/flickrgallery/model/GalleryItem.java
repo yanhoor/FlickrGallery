@@ -26,7 +26,7 @@ public class GalleryItem {
     private String mTitle;//说明文字
     private String mId;
     private String mUrl;
-    private String mOwner;
+    private String mUserId;
     private UUID mUUID;
     private String mSecret;
     private String mServer;
@@ -50,7 +50,7 @@ public class GalleryItem {
         }
         mId=jsonObject.getString(JSON_ID);
         mUrl=jsonObject.getString(JSON_URL);
-        mOwner=jsonObject.getString(JSON_OWNER);
+        mUserId =jsonObject.getString(JSON_OWNER);
         mSecret=jsonObject.getString(JSON_SECRET);
         mServer=jsonObject.getString(JSON_SERVER);
         mFarm=jsonObject.getString(JSON_FARM);
@@ -71,7 +71,7 @@ public class GalleryItem {
         jsonObject.put(JSON_TITLE,mTitle);
         jsonObject.put(JSON_ID,mId);
         jsonObject.put(JSON_URL,mUrl);
-        jsonObject.put(JSON_OWNER,mOwner);
+        jsonObject.put(JSON_OWNER, mUserId);
         jsonObject.put(JSON_SECRET,mSecret);
         jsonObject.put(JSON_SERVER,mServer);
         jsonObject.put(JSON_FARM, mFarm);
@@ -111,12 +111,12 @@ public class GalleryItem {
         mUrl = url;
     }
 
-    public String getOwner() {
-        return mOwner;
+    public String getUserId() {
+        return mUserId;
     }
 
-    public void setOwner(String owner) {
-        mOwner = owner;
+    public void setUserId(String userId) {
+        mUserId = userId;
     }
 
     public UUID getUUID() {
@@ -192,7 +192,7 @@ public class GalleryItem {
     }
 
     public String getPhotoPageUrl(){
-        return "http://www.flickr.com/photos/"+mOwner+"/"+mId;
+        return "http://www.flickr.com/photos/"+ mUserId +"/"+mId;
     }
 
     public String getDetailPhotoUrl(){
