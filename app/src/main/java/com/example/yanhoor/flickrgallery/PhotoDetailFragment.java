@@ -138,24 +138,12 @@ public class PhotoDetailFragment extends Fragment {
 
         title.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);//下划线
         Log.d(TAG,"title is "+mGalleryItem.getTitle());
-        if (mGalleryItem.getTitle()==null){
-            title.setVisibility(View.GONE);
-        }else {
             title.setText(mGalleryItem.getTitle());
-        }
 
         Log.d(TAG,"description is "+mGalleryItem.getDescription());
-        if (mGalleryItem.getDescription()==null){
-            description.setVisibility(View.GONE);
-        }else {
             description.setText(mGalleryItem.getDescription());
-        }
 
-        if (mGalleryItem.getLocation()==null){
-            location.setVisibility(View.GONE);
-        }else {
             location.setText(mGalleryItem.getLocation());
-        }
 
         postedTime.setText(mGalleryItem.getPostedTime());
 
