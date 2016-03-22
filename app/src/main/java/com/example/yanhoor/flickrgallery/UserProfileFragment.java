@@ -1,5 +1,6 @@
 package com.example.yanhoor.flickrgallery;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -112,6 +114,19 @@ public class UserProfileFragment extends Fragment {
         if (mUser.getGalleryItems().size()!=0){
             userPhotoGridView.setAdapter(new GalleryItemAdapter(mUser.getGalleryItems()));
         }
+
+        userPhotoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                GalleryItem item=mUser.getGalleryItems().get(position);
+                Intent i=new Intent(getActivity(),PhotoDetailActivity.class);
+                //用于代替PhotoDetailActivity实现滑动查看图片详情
+                //Intent i=new Intent(getActivity(),PhotoPageActivity.class);
+                i.putExtra(PhotoDetailFragment.EXTRA_GALLERYITEM_mId,item.getId());
+                startActivity(i);
+            }
+        });
 
         return v;
     }
