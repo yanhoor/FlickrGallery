@@ -32,7 +32,7 @@ public class GalleryItem {
     private String mServer;
     private String mFarm;
 
-    //需要调用StaticMethodUtil才能获取
+    //需要调用PhotoInfoUtil才能获取
     private String mUserName;
     private String mRealName;
     private String mDescription=null;

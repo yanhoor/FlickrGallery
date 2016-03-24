@@ -180,7 +180,13 @@ public class UserProfileFragment extends Fragment {
             }
             ImageView imageView=(ImageView)convertView.findViewById(R.id.gallery_item_imageView);
             imageView.setImageResource(R.drawable.brain_up_close);
-            new KJBitmap.Builder().view(imageView).imageUrl(mUser.getGalleryItems().get(position).getUrl()).display();
+
+            new KJBitmap.Builder()
+                    .view(imageView)
+                    .imageUrl(mUser.getGalleryItems().get(position).getUrl())
+                    .size(imageView.getWidth(),imageView.getHeight())
+                    .display();
+
             return convertView;
         }
     }

@@ -245,6 +245,7 @@ public class PhotoDetailFragment extends Fragment {
         });
     }
 
+    //获取评论
     public void getComments(final ArrayList<Comment>oldComments,String id){
         final ArrayList<Comment> comments=new ArrayList<>();
 
@@ -321,8 +322,12 @@ public class PhotoDetailFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final RVViewHolder holder, final int position) {
-            new KJBitmap.Builder().view(holder.authorIcon)
-                    .imageUrl(mComments.get(position).getIconUrl()).display();
+            holder.authorIcon.setImageResource(R.drawable.brain_up_close);
+            new KJBitmap.Builder()
+                    .view(holder.authorIcon)
+                    .imageUrl(mComments.get(position).getIconUrl())
+                    .size(holder.authorIcon.getWidth(),holder.authorIcon.getHeight())
+                    .display();
             holder.author.setText(mComments.get(position).getAuthorName());
             holder.content.setText(mComments.get(position).getContent());
             holder.time.setText(mComments.get(position).getDateCreate());
