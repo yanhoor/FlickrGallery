@@ -95,7 +95,7 @@ public class PhotoGalleryFragment extends VisibleFragment {
 
         //下拉刷新颜色
         final SwipeRefreshLayout mSRL=(SwipeRefreshLayout)v.findViewById(R.id.swipeLayout);
-        mSRL.setColorSchemeColors(R.color.colorGreenLight,R.color.colorOrangeLight,
+        mSRL.setColorSchemeResources(R.color.colorGreenLight,R.color.colorOrangeLight,
                 R.color.colorRedLight,R.color.colorPrimary);
         mSRL.setProgressBackgroundColorSchemeResource(R.color.colorWhite);
 

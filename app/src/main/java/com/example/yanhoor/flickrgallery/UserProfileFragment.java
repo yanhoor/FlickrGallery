@@ -1,6 +1,7 @@
 package com.example.yanhoor.flickrgallery;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,6 +20,8 @@ import com.example.yanhoor.flickrgallery.model.User;
 import com.example.yanhoor.flickrgallery.util.GetUserProfileUtil;
 
 import org.kymjs.kjframe.KJBitmap;
+import org.kymjs.kjframe.bitmap.ImageRequest;
+import org.kymjs.kjframe.http.HttpCallBack;
 
 import java.util.ArrayList;
 
@@ -182,34 +185,21 @@ public class UserProfileFragment extends Fragment {
             if (convertView==null){
                 convertView=getActivity().getLayoutInflater().inflate(R.layout.image_view,parent,false);
             }
-            ImageView imageView=(ImageView)convertView.findViewById(R.id.gallery_item_imageView);
+            final ImageView imageView=(ImageView)convertView.findViewById(R.id.gallery_item_imageView);
             imageView.setImageResource(R.drawable.brain_up_close);
 
-            new KJBitmap.Builder()
-                    .view(imageView)
-                    .imageUrl(mUser.getGalleryItems().get(position).getUrl())
-                    .size(imageView.getWidth(),imageView.getHeight())
-                    .display();
+            int maxWidth=imageView.getWidth();
+            int maxHeight=imageView.getHeight();
+            new ImageRequest(mUser.getGalleryItems().get(position).getUrl(), maxWidth, maxHeight, new HttpCallBack() {
+                @Override
+                public void onSuccess(Bitmap t) {
+                    super.onSuccess(t);
+                    imageView.setImageBitmap(t);
+                }
+            });
 
             return convertView;
         }
     }
-
-    /*
-    private class FetchUserInfoTask extends AsyncTask<Void,Void,User>{
-        @Override
-        protected User doInBackground(Void... params) {
-            Log.d(TAG,"mUserId is "+mUserId);
-            return new GetUserProfileUtil().getUserProfile(mUserId);
-        }
-
-        @Override
-        protected void onPostExecute(User user) {
-            mUser=user;
-            Log.d(TAG,"user name is "+mUser.getUserName());
-            updateUI();
-        }
-    }
-    */
 
 }

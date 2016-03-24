@@ -1,6 +1,7 @@
 package com.example.yanhoor.flickrgallery;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,6 +28,7 @@ import com.example.yanhoor.flickrgallery.util.StaticMethodUtil;
 
 import org.kymjs.kjframe.KJBitmap;
 import org.kymjs.kjframe.KJHttp;
+import org.kymjs.kjframe.bitmap.ImageRequest;
 import org.kymjs.kjframe.http.HttpCallBack;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -259,7 +261,7 @@ public class PhotoDetailFragment extends Fragment {
     }
 
     //获取评论
-    public void getComments(final ArrayList<Comment>oldComments,String id){
+    public void getComments(final ArrayList<Comment>requestComments,String id){
         final ArrayList<Comment> comments=new ArrayList<>();
 
         String url=Uri.parse(ENDPOINT).buildUpon()
@@ -272,7 +274,11 @@ public class PhotoDetailFragment extends Fragment {
             @Override
             public void onFinish() {
                 super.onFinish();
-                oldComments.addAll(comments);
+                ArrayList<Comment>newComments=new ArrayList<>();
+                for (int i=comments.size()-1;i>=0;i--){
+                    newComments.add(comments.get(i));
+                }
+                requestComments.addAll(newComments);
                 Log.d(TAG,"mComments size in getComments is "+mComments.size());
                 updateUI();
             }
@@ -336,11 +342,25 @@ public class PhotoDetailFragment extends Fragment {
         @Override
         public void onBindViewHolder(final RVViewHolder holder, final int position) {
             holder.authorIcon.setImageResource(R.drawable.brain_up_close);
+
+            int maxWidth=holder.authorIcon.getWidth();
+            int maxHeight=holder.authorIcon.getHeight();
+            new ImageRequest(mComments.get(position).getIconUrl(), maxWidth, maxHeight, new HttpCallBack() {
+                @Override
+                public void onSuccess(Bitmap t) {
+                    super.onSuccess(t);
+                    holder.authorIcon.setImageBitmap(t);
+                }
+            });
+            /*
+            HttpConfig config=new HttpConfig();
+            config.CACHEPATH="/storage/sdcard/KJLibrary/cache";
             new KJBitmap.Builder()
                     .view(holder.authorIcon)
                     .imageUrl(mComments.get(position).getIconUrl())
                     .size(holder.authorIcon.getWidth(),holder.authorIcon.getHeight())
                     .display();
+                    */
             holder.author.setText(mComments.get(position).getAuthorName());
             holder.content.setText(mComments.get(position).getContent());
             holder.time.setText(mComments.get(position).getDateCreate());
