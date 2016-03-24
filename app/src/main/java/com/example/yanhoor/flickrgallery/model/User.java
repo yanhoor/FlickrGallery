@@ -17,6 +17,7 @@ public class User {
     private String mIconFarm;
     private String mLocation;
     private String mFollowingsNumber;
+    private String mDescription;
 
     private ArrayList<User>mFollowingUsers=new ArrayList<>();
     private ArrayList<GalleryItem>mGalleryItems=new ArrayList<>();
@@ -91,6 +92,14 @@ public class User {
 
     public void setFollowingsNumber(String followingsNumber) {
         mFollowingsNumber = followingsNumber;
+    }
+
+    public String getDescription() {
+        return mDescription;
+    }
+
+    public void setDescription(String description) {
+        mDescription = description;
     }
 
     public String getUserIconUrl(){

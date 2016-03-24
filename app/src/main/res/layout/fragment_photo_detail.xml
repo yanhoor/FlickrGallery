@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--为了Scrollview和RecyclerView不冲突，设置android:fillViewport="true"-->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:fillViewport="true">
 
         <LinearLayout
             android:orientation="vertical"
@@ -84,7 +87,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:layout_marginBottom="60dp">
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp">
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -144,7 +148,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:layout_marginEnd="10dp"
                         android:text="0"/>
 
                     <TextView
@@ -158,6 +161,15 @@
                 </RelativeLayout>
 
             </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/comment_list_view_RV"
+                android:layout_width="match_parent"
+                android:layout_height="420dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="24dp"/>
 
         </LinearLayout>
 

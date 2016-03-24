@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +18,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.yanhoor.flickrgallery.model.Comment;
 import com.example.yanhoor.flickrgallery.model.GalleryItem;
+import com.example.yanhoor.flickrgallery.util.DividerItemDecoration;
 import com.example.yanhoor.flickrgallery.util.PhotoInfoUtil;
 import com.example.yanhoor.flickrgallery.util.StaticMethodUtil;
 
@@ -29,6 +34,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.IOException;
 import java.io.StringReader;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
@@ -61,7 +67,10 @@ public class PhotoDetailFragment extends Fragment {
     TextView commentNumber;
     TextView favoritesNumber;
     TextView viewsNumber;
+    RecyclerView mRV;
+
     PhotoInfoUtil mPhotoInfoUtil;
+    ArrayList<Comment>mComments;
 
     public static PhotoDetailFragment newPhotoDetailFragmentInstance(String mId){
         Bundle args=new Bundle();
@@ -76,6 +85,9 @@ public class PhotoDetailFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        String mId=(String) getArguments().getSerializable(EXTRA_GALLERYITEM_mId);
+        mComments=new ArrayList<>();
+        getComments(mComments,mId);
 
         //判断是否登录
         mFullToken= PreferenceManager.getDefaultSharedPreferences(getActivity())
@@ -85,7 +97,6 @@ public class PhotoDetailFragment extends Fragment {
             getActivity().finish();
         }
 
-        String mId=(String) getArguments().getSerializable(EXTRA_GALLERYITEM_mId);
         mGalleryItem= new GalleryItem();
         mGalleryItem.setId(mId);
 
@@ -117,15 +128,9 @@ public class PhotoDetailFragment extends Fragment {
         commentNumber=(TextView)v.findViewById(R.id.comment_number);
         favoritesNumber=(TextView)v.findViewById(R.id.favorites_number);
         viewsNumber=(TextView)v.findViewById(R.id.views_number);
+        mRV=(RecyclerView)v.findViewById(R.id.comment_list_view_RV);
 
-        updateUI();
 
-        return v;
-    }
-
-    void updateUI(){
-        Log.d(TAG,"username is "+mGalleryItem.getUserName());
-        userName.setText(mGalleryItem.getUserName());
         userName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,6 +140,15 @@ public class PhotoDetailFragment extends Fragment {
                 Log.d(TAG,"Going to user profile");
             }
         });
+
+        updateUI();
+
+        return v;
+    }
+
+    void updateUI(){
+        Log.d(TAG,"username is "+mGalleryItem.getUserName());
+        userName.setText(mGalleryItem.getUserName());
 
         title.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);//下划线
         Log.d(TAG,"title is "+mGalleryItem.getTitle());
@@ -151,15 +165,22 @@ public class PhotoDetailFragment extends Fragment {
         //使用kjbitmap
         new KJBitmap.Builder().view(mImageView).imageUrl(mGalleryItem.getDetailPhotoUrl()).display();
 
-        commentNumber.setText(mComment);
+        Log.d(TAG,"mComments size is "+mComments.size());
+        commentNumber.setText(String.valueOf(mComments.size()));
 
         favoritesNumber.setText(mFavorites);
 
         viewsNumber.setText(mViews);
 
+        mRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRV.setItemAnimator(new DefaultItemAnimator());
+        //利用util包里面的DividerItemDecoration添加分割线
+        mRV.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
+        mRV.setAdapter(new RVAdapter());
+
     }
 
-    //获取照片评论等
+    //获取照片评论数等
     public void getPhotoStates() {
         Date mCurrentDate = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
@@ -222,6 +243,123 @@ public class PhotoDetailFragment extends Fragment {
                 }
             }
         });
+    }
+
+    public void getComments(final ArrayList<Comment>oldComments,String id){
+        final ArrayList<Comment> comments=new ArrayList<>();
+
+        String url=Uri.parse(ENDPOINT).buildUpon()
+                .appendQueryParameter("method", "flickr.photos.comments.getList")
+                .appendQueryParameter("api_key", API_KEY)
+                .appendQueryParameter("photo_id",id)
+                .build().toString();
+
+        new KJHttp().get(url, new HttpCallBack() {
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                oldComments.addAll(comments);
+                Log.d(TAG,"mComments size in getComments is "+mComments.size());
+                updateUI();
+            }
+
+            @Override
+            public void onSuccess(String t) {
+                super.onSuccess(t);
+                Log.d(TAG,"Getting comments from "+t);
+                try {
+                    XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
+                    XmlPullParser parser=factory.newPullParser();
+                    parser.setInput(new StringReader(t));
+
+                    int eventType=parser.getEventType();
+                    while (eventType!=XmlPullParser.END_DOCUMENT){
+                        if (eventType==XmlPullParser.START_TAG&&"comment".equals(parser.getName())){
+                            Comment comment=new Comment();
+                            String id=parser.getAttributeValue(null,"id");
+                            String author=parser.getAttributeValue(null,"author");
+                            String authorName=parser.getAttributeValue(null,"authorname");
+                            String iconServer=parser.getAttributeValue(null,"iconserver");
+                            String iconFarm=parser.getAttributeValue(null,"farm");
+                            String dateCreate=parser.getAttributeValue(null,"datecreate");
+                            String content=parser.nextText();
+
+                            //unix timetamp转化为现在的ms要乘1000
+                            Date mDate=new Date(Long.parseLong(dateCreate)*1000);
+                            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("MM-dd HH:mm", Locale.US);
+                            String dateString=simpleDateFormat.format(mDate);
+                            comment.setId(id);
+                            comment.setAuthorId(author);
+                            comment.setAuthorName(authorName);
+                            comment.setIconServer(iconServer);
+                            comment.setIconFarm(iconFarm);
+                            comment.setDateCreate(dateString);
+                            comment.setContent(content);
+                            Log.d(TAG,"Comment content is "+content);
+                            comments.add(comment);
+                        }
+                        eventType=parser.next();
+                    }
+                }catch (XmlPullParserException xppe){
+                    xppe.printStackTrace();
+                }catch (IOException ioe){
+                    ioe.printStackTrace();
+                }
+            }
+        });
+
+    }
+
+    public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder>{
+        @Override
+        public RVViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            RVViewHolder holder=new RVViewHolder(LayoutInflater.from(getActivity())
+                    .inflate(R.layout.comment_item,parent,false));
+
+            return holder;
+        }
+
+        @Override
+        public void onBindViewHolder(final RVViewHolder holder, final int position) {
+            new KJBitmap.Builder().view(holder.authorIcon)
+                    .imageUrl(mComments.get(position).getIconUrl()).display();
+            holder.author.setText(mComments.get(position).getAuthorName());
+            holder.content.setText(mComments.get(position).getContent());
+            holder.time.setText(mComments.get(position).getDateCreate());
+
+            holder.author.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i=new Intent(getActivity(),UserProfileActivity.class);
+                    i.putExtra(UserProfileFragment.EXTRA_USER_ID,mComments.get(holder.getAdapterPosition()).getAuthorId());
+                    startActivity(i);
+                    Log.d(TAG,"Going to user profile");
+                }
+            });
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return mComments.size();
+        }
+
+        class RVViewHolder extends RecyclerView.ViewHolder{
+            ImageView authorIcon;
+            TextView author;
+            TextView content;
+            TextView time;
+
+            public RVViewHolder(View view){
+                super(view);
+                authorIcon=(ImageView)view.findViewById(R.id.comment_author_icon);
+                author=(TextView)view.findViewById(R.id.comment_author);
+                content=(TextView)view.findViewById(R.id.comment_content);
+                time=(TextView)view.findViewById(R.id.Comment_time);
+
+            }
+        }
+
     }
 
 }

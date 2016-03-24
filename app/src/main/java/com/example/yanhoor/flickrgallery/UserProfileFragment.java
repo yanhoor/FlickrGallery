@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,11 +29,13 @@ public class UserProfileFragment extends Fragment {
 
     private User mUser;
     private String mUserId;
-    GridView userPhotoGridView;
+    ExpandableHeightGridView userPhotoGridView;
     TextView userName;
+    TextView userDescription;
     TextView followingNumber;
     TextView locationTextView;
     TextView location;
+    ImageView buddyIconImageView;
     GetUserProfileUtil mGetUserProfileUtil;
 
     public static final String EXTRA_USER_ID="com.example.yanhoor.flickrgallery.UserProfileFragment.user_Id";
@@ -74,12 +75,15 @@ public class UserProfileFragment extends Fragment {
         View v=inflater.inflate(R.layout.fragment_user_profile,container,false);
 
         //final SwipeRefreshLayout mSRL=(SwipeRefreshLayout)v.findViewById(R.id.SwipeRefreshLayout_user_profile);
-        ImageView buddyIconImageView=(ImageView)v.findViewById(R.id.buddy_icon_profile);
+        buddyIconImageView=(ImageView)v.findViewById(R.id.buddy_icon_profile);
         userName=(TextView)v.findViewById(R.id.user_name_profile);
+        userDescription=(TextView)v.findViewById(R.id.user_description_profile);
         followingNumber=(TextView)v.findViewById(R.id.following_number_profile);
         locationTextView=(TextView)v.findViewById(R.id.location_profile);
-        userPhotoGridView=(GridView)v.findViewById(R.id.photo_gridView_profile);
         location=(TextView)v.findViewById(R.id.location_text_profile);
+        //使用自定义ExpandableHeightGridView防止与scrollview冲突
+        userPhotoGridView=(ExpandableHeightGridView)v.findViewById(R.id.photo_gridView_profile);
+        userPhotoGridView.setExpanded(true);
 
         /*
         mSRL.setColorSchemeColors(R.color.colorGreenLight,R.color.colorOrangeLight,
@@ -108,8 +112,6 @@ public class UserProfileFragment extends Fragment {
         */
 
         updateUI();
-        //加载icon
-        new KJBitmap.Builder().view(buddyIconImageView).imageUrl(mUser.getUserIconUrl()).display();
 
         if (mUser.getGalleryItems().size()!=0){
             userPhotoGridView.setAdapter(new GalleryItemAdapter(mUser.getGalleryItems()));
@@ -138,8 +140,14 @@ public class UserProfileFragment extends Fragment {
     */
 
     void updateUI(){
+        //加载icon
+        new KJBitmap.Builder().view(buddyIconImageView).imageUrl(mUser.getUserIconUrl()).display();
         if (mUser.getUserName()!=null){
             userName.setText(mUser.getUserName());
+        }
+
+        if (mUser.getDescription()!=null){
+            userDescription.setText(mUser.getDescription());
         }
 
         if (mUser.getFollowingsNumber()!=null){

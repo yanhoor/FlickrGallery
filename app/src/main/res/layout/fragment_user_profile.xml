@@ -1,70 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/buddy_icon_profile"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"/>
-
-    <TextView
-        android:id="@+id/user_name_profile"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="12dp"
-        android:textSize="20sp"
-        android:textStyle="bold"/>
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp">
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/buddy_icon_profile"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"/>
 
         <TextView
-            android:id="@+id/following_text_profile"
+            android:id="@+id/user_name_profile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="12dp"
+            android:textSize="20sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/user_description_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:layout_marginStart="10dp"
-            android:text="@string/following"/>
-
-        <TextView
-            android:id="@+id/following_number_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/following_text_profile"
-            android:layout_marginStart="10dp"
-            android:text="0"/>
-
-        <TextView
-            android:id="@+id/location_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="10dp"/>
-
-        <TextView
-            android:id="@+id/location_text_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toStartOf="@+id/location_profile"
             android:layout_marginEnd="10dp"
-            android:text="@string/location"
-            android:visibility="gone"/>
+            android:textStyle="italic"/>
 
-    </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
 
-    <GridView
-        android:id="@+id/photo_gridView_profile"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:columnWidth="160dp"
-        android:numColumns="auto_fit"
-        android:stretchMode="columnWidth"/>
+            <RelativeLayout
+                android:id="@+id/following_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp">
 
-</LinearLayout>
+                <TextView
+                    android:id="@+id/following_text_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/following"/>
+
+                <TextView
+                    android:id="@+id/following_number_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/following_text_profile"
+                    android:layout_marginStart="10dp"
+                    android:text="0"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/location_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/following_layout"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp">
+
+                <TextView
+                    android:id="@+id/location_text_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/location"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/location_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/location_text_profile"
+                    android:layout_marginStart="10dp"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+<!--使用自定义ExpandableHeightGridView防止与scrollview冲突-->
+        <com.example.yanhoor.flickrgallery.ExpandableHeightGridView
+            android:id="@+id/photo_gridView_profile"
+            android:layout_width="match_parent"
+            android:layout_height="420dp"
+            android:layout_marginTop="12dp"
+            android:columnWidth="160dp"
+            android:numColumns="auto_fit"
+            android:stretchMode="columnWidth"/>
+
+    </LinearLayout>
+
+</ScrollView>

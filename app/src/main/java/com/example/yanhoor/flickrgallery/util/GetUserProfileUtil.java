@@ -96,6 +96,11 @@ public class GetUserProfileUtil {
                             String location = parser.nextText();
                             mUser.setLocation(location.trim());
                         }
+
+                        if (eventType==XmlPullParser.START_TAG&&"description".equals(parser.getName())){
+                            String description=parser.nextText();
+                            mUser.setDescription(description);
+                        }
                         eventType = parser.next();
                     }
                     Log.d(TAG,"userName is "+mUser.getUserName());
