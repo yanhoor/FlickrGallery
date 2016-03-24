@@ -12,31 +12,24 @@ public class GalleryItem {
     private static final String JSON_TITLE="title";
     private static final String JSON_ID="id";
     private static final String JSON_URL="url";
-    private static final String JSON_OWNER="owner";
     private static final String JSON_UUID="uuid";
     private static final String JSON_SECRET="secret";
     private static final String JSON_SERVER="server";
     private static final String JSON_FARM="farm";
-    private static final String JSON_USER_NAME="username";
-    private static final String JSON_REAL_NAME="realname";
     private static final String JSON_DESCRIPTION="description";
-    private static final String JSON_LOCATION="location";
     private static final String JSON_POSTED_DATE="posted_date";
 
     private String mTitle;//说明文字
     private String mId;
     private String mUrl;
-    private String mUserId;
     private UUID mUUID;
     private String mSecret;
     private String mServer;
     private String mFarm;
 
     //需要调用PhotoInfoUtil才能获取
-    private String mUserName;
-    private String mRealName;
+    private User mOwner;
     private String mDescription=null;
-    private String mLocation=null;
     private String mPostedTime;
 
     public GalleryItem(){
@@ -50,18 +43,11 @@ public class GalleryItem {
         }
         mId=jsonObject.getString(JSON_ID);
         mUrl=jsonObject.getString(JSON_URL);
-        mUserId =jsonObject.getString(JSON_OWNER);
         mSecret=jsonObject.getString(JSON_SECRET);
         mServer=jsonObject.getString(JSON_SERVER);
         mFarm=jsonObject.getString(JSON_FARM);
-        if (jsonObject.has(JSON_USER_NAME))
-            mUserName=jsonObject.getString(JSON_USER_NAME);
-        if (jsonObject.has(JSON_REAL_NAME))
-            mRealName=jsonObject.getString(JSON_REAL_NAME);
         if (jsonObject.has(JSON_DESCRIPTION))
             mDescription=jsonObject.getString(JSON_DESCRIPTION);
-        if (jsonObject.has(JSON_LOCATION))
-            mLocation=jsonObject.getString(JSON_LOCATION);
         mPostedTime =jsonObject.getString(JSON_POSTED_DATE);
     }
 
@@ -71,14 +57,10 @@ public class GalleryItem {
         jsonObject.put(JSON_TITLE,mTitle);
         jsonObject.put(JSON_ID,mId);
         jsonObject.put(JSON_URL,mUrl);
-        jsonObject.put(JSON_OWNER, mUserId);
         jsonObject.put(JSON_SECRET,mSecret);
         jsonObject.put(JSON_SERVER,mServer);
         jsonObject.put(JSON_FARM, mFarm);
-        jsonObject.put(JSON_USER_NAME,mUserName);
-        jsonObject.put(JSON_REAL_NAME,mRealName);
         jsonObject.put(JSON_DESCRIPTION,mDescription);
-        jsonObject.put(JSON_LOCATION,mLocation);
         jsonObject.put(JSON_POSTED_DATE, mPostedTime);
         return jsonObject;
     }
@@ -112,11 +94,7 @@ public class GalleryItem {
     }
 
     public String getUserId() {
-        return mUserId;
-    }
-
-    public void setUserId(String userId) {
-        mUserId = userId;
+        return mOwner.getId();
     }
 
     public UUID getUUID() {
@@ -151,6 +129,14 @@ public class GalleryItem {
         mServer = server;
     }
 
+    public User getOwner() {
+        return mOwner;
+    }
+
+    public void setOwner(User owner) {
+        mOwner = owner;
+    }
+
     public String getDescription() {
         return mDescription;
     }
@@ -159,28 +145,8 @@ public class GalleryItem {
         mDescription = description;
     }
 
-    public String getRealName() {
-        return mRealName;
-    }
-
-    public void setRealName(String realName) {
-        mRealName = realName;
-    }
-
-    public String getUserName() {
-        return mUserName;
-    }
-
-    public void setUserName(String userName) {
-        mUserName = userName;
-    }
-
     public String getLocation() {
-        return mLocation;
-    }
-
-    public void setLocation(String location) {
-        mLocation = location;
+        return mOwner.getLocation();
     }
 
     public String getPostedTime() {
@@ -192,7 +158,7 @@ public class GalleryItem {
     }
 
     public String getPhotoPageUrl(){
-        return "http://www.flickr.com/photos/"+ mUserId +"/"+mId;
+        return "http://www.flickr.com/photos/"+ mOwner.getId() +"/"+mId;
     }
 
     public String getDetailPhotoUrl(){

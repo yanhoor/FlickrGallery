@@ -17,7 +17,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
             app:civ_border_width="2dp"
-            app:civ_border_color="@color/colorRedLight"/>
+            app:civ_border_color="@color/colorPrimary"/>
 
         <TextView
             android:id="@+id/user_name_profile"
@@ -27,15 +27,6 @@
             android:layout_marginTop="12dp"
             android:textSize="20sp"
             android:textStyle="bold"/>
-
-        <TextView
-            android:id="@+id/user_description_profile"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:textStyle="italic"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -52,7 +43,8 @@
                     android:id="@+id/following_text_profile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/following"/>
+                    android:text="@string/following"
+                    android:textStyle="bold|italic"/>
 
                 <TextView
                     android:id="@+id/following_number_profile"
@@ -77,6 +69,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/location"
+                    android:textStyle="bold|italic"
                     android:visibility="gone"/>
 
                 <TextView
@@ -90,12 +83,46 @@
 
         </RelativeLayout>
 
-<!--使用自定义ExpandableHeightGridView防止与scrollview冲突-->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/colorBlack"/>
+
+        <RelativeLayout
+            android:id="@+id/description_layout_profile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/description_title_profile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/description_title_profile"
+                android:textStyle="bold|italic"/>
+
+            <TextView
+                android:id="@+id/user_description_profile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/description_title_profile"
+                android:layout_marginTop="12dp"
+                android:textStyle="italic"/>
+
+        </RelativeLayout>
+
+<!--使用自定义ExpandableHeightGridView防止与scrollview冲突,
+设置android:focusable防止打开时不是scrollview顶部-->
         <com.example.yanhoor.flickrgallery.ExpandableHeightGridView
             android:id="@+id/photo_gridView_profile"
             android:layout_width="match_parent"
             android:layout_height="420dp"
             android:layout_marginTop="12dp"
+            android:focusable="false"
             android:columnWidth="160dp"
             android:numColumns="auto_fit"
             android:stretchMode="columnWidth"/>

@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp">
 
 
     <RelativeLayout
@@ -11,11 +12,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/comment_author_icon"
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/brain_up_close"/>
+            android:src="@drawable/brain_up_close"
+            app:civ_border_width="1dp"
+            app:civ_border_color="@color/colorBlack"/>
 
         <TextView
             android:id="@+id/comment_author"

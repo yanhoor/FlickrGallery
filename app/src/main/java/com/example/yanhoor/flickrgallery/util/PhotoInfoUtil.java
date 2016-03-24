@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.example.yanhoor.flickrgallery.model.GalleryItem;
+import com.example.yanhoor.flickrgallery.model.User;
 
 import org.kymjs.kjframe.KJHttp;
 import org.kymjs.kjframe.http.HttpCallBack;
@@ -38,6 +39,7 @@ public class PhotoInfoUtil {
     }
 
     public GalleryItem getPhotoInfo(final GalleryItem galleryItem){
+        final User owner=new User();
         String photo_id=galleryItem.getId();
         String url= Uri.parse(ENDPOINT).buildUpon()
                 .appendQueryParameter("method","flickr.photos.getInfo")
@@ -79,13 +81,15 @@ public class PhotoInfoUtil {
                             String userName=parser.getAttributeValue(null,"username");
                             String realName=parser.getAttributeValue(null,"realname");
                             String location=parser.getAttributeValue(null,"location");
-                            Log.d(TAG,"username is "+userName);
-                            Log.d(TAG,"realname is "+realName);
+                            String iconServer=parser.getAttributeValue(null,"iconserver");
+                            String iconFarm=parser.getAttributeValue(null,"iconfarm");
 
-                            galleryItem.setUserId(userId);
-                            galleryItem.setUserName(userName);
-                            galleryItem.setRealName(realName);
-                            galleryItem.setLocation(location);
+                            owner.setId(userId);
+                            owner.setLocation(location);
+                            owner.setUserName(userName);
+                            owner.setRealName(realName);
+                            owner.setIconFarm(iconFarm);
+                            owner.setIconServer(iconServer);
                         }
 
                         if (eventType==XmlPullParser.START_TAG&&"title".equals(parser.getName())){
@@ -118,6 +122,7 @@ public class PhotoInfoUtil {
                 }
             }
         });
+        galleryItem.setOwner(owner);
         return galleryItem;
     }
 

@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.yanhoor.flickrgallery.model.GalleryItem;
@@ -31,6 +32,7 @@ public class UserProfileFragment extends Fragment {
     private String mUserId;
     ExpandableHeightGridView userPhotoGridView;
     TextView userName;
+    RelativeLayout descriptionLayout;
     TextView userDescription;
     TextView followingNumber;
     TextView locationTextView;
@@ -77,6 +79,7 @@ public class UserProfileFragment extends Fragment {
         //final SwipeRefreshLayout mSRL=(SwipeRefreshLayout)v.findViewById(R.id.SwipeRefreshLayout_user_profile);
         buddyIconImageView=(ImageView)v.findViewById(R.id.buddy_icon_profile);
         userName=(TextView)v.findViewById(R.id.user_name_profile);
+        descriptionLayout=(RelativeLayout)v.findViewById(R.id.description_layout_profile);
         userDescription=(TextView)v.findViewById(R.id.user_description_profile);
         followingNumber=(TextView)v.findViewById(R.id.following_number_profile);
         locationTextView=(TextView)v.findViewById(R.id.location_profile);
@@ -147,6 +150,7 @@ public class UserProfileFragment extends Fragment {
         }
 
         if (mUser.getDescription()!=null){
+            descriptionLayout.setVisibility(View.VISIBLE);
             userDescription.setText(mUser.getDescription());
         }
 

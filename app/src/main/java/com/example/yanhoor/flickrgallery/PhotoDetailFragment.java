@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.yanhoor.flickrgallery.model.Comment;
 import com.example.yanhoor.flickrgallery.model.GalleryItem;
+import com.example.yanhoor.flickrgallery.model.User;
 import com.example.yanhoor.flickrgallery.util.DividerItemDecoration;
 import com.example.yanhoor.flickrgallery.util.PhotoInfoUtil;
 import com.example.yanhoor.flickrgallery.util.StaticMethodUtil;
@@ -58,6 +59,7 @@ public class PhotoDetailFragment extends Fragment {
     private String mViews="0";
     private String mFavorites="0";
 
+    ImageView ownerIcon;
     TextView userName;
     TextView title;
     TextView description;
@@ -119,6 +121,8 @@ public class PhotoDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v=inflater.inflate(R.layout.fragment_photo_detail,container,false);
+
+        ownerIcon=(ImageView)v.findViewById(R.id.owner_icon);
         userName=(TextView)v.findViewById(R.id.user_name);
         title=(TextView)v.findViewById(R.id.photo_title);
         description=(TextView)v.findViewById(R.id.Photo_description);
@@ -129,7 +133,6 @@ public class PhotoDetailFragment extends Fragment {
         favoritesNumber=(TextView)v.findViewById(R.id.favorites_number);
         viewsNumber=(TextView)v.findViewById(R.id.views_number);
         mRV=(RecyclerView)v.findViewById(R.id.comment_list_view_RV);
-
 
         userName.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -147,23 +150,33 @@ public class PhotoDetailFragment extends Fragment {
     }
 
     void updateUI(){
-        Log.d(TAG,"username is "+mGalleryItem.getUserName());
-        userName.setText(mGalleryItem.getUserName());
+        User mOwner=mGalleryItem.getOwner();
+
+        new KJBitmap.Builder()
+                .view(ownerIcon)
+                .size(ownerIcon.getWidth(),ownerIcon.getHeight())
+                .imageUrl(mOwner.getUserIconUrl())
+                .display();
+
+        userName.setText(mOwner.getUserName());
 
         title.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);//下划线
         Log.d(TAG,"title is "+mGalleryItem.getTitle());
-            title.setText(mGalleryItem.getTitle());
+        title.setText(mGalleryItem.getTitle());
 
         Log.d(TAG,"description is "+mGalleryItem.getDescription());
-            description.setText(mGalleryItem.getDescription());
+        description.setText(mGalleryItem.getDescription());
 
-            location.setText(mGalleryItem.getLocation());
+        location.setText(mGalleryItem.getLocation());
 
         postedTime.setText(mGalleryItem.getPostedTime());
 
         Log.d(TAG,"Getting detail photo from "+mGalleryItem.getDetailPhotoUrl());
         //使用kjbitmap
-        new KJBitmap.Builder().view(mImageView).imageUrl(mGalleryItem.getDetailPhotoUrl()).display();
+        new KJBitmap.Builder()
+                .view(mImageView)
+                .imageUrl(mGalleryItem.getDetailPhotoUrl())
+                .display();
 
         Log.d(TAG,"mComments size is "+mComments.size());
         commentNumber.setText(String.valueOf(mComments.size()));

@@ -7,4 +7,5 @@
     <color name="colorGreenLight">#25e710</color>
     <color name="colorOrangeLight">#d96d1b</color>
     <color name="colorWhite">#ffff</color>
+    <color name="colorBlack">#000000</color>
 </resources>
