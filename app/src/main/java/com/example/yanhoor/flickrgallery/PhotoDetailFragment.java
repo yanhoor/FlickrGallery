@@ -22,7 +22,6 @@ import android.widget.Toast;
 import com.example.yanhoor.flickrgallery.model.Comment;
 import com.example.yanhoor.flickrgallery.model.GalleryItem;
 import com.example.yanhoor.flickrgallery.model.User;
-import com.example.yanhoor.flickrgallery.util.DividerItemDecoration;
 import com.example.yanhoor.flickrgallery.util.PhotoInfoUtil;
 import com.example.yanhoor.flickrgallery.util.StaticMethodUtil;
 
@@ -189,8 +188,6 @@ public class PhotoDetailFragment extends Fragment {
 
         mRV.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRV.setItemAnimator(new DefaultItemAnimator());
-        //利用util包里面的DividerItemDecoration添加分割线
-        mRV.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL_LIST));
         mRV.setAdapter(new RVAdapter());
 
     }
