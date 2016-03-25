@@ -95,7 +95,7 @@ public class PhotoGalleryFragment extends VisibleFragment {
 
         //下拉刷新颜色
         final SwipeRefreshLayout mSRL=(SwipeRefreshLayout)v.findViewById(R.id.swipeLayout);
-        mSRL.setColorSchemeResources(R.color.colorGreenLight,R.color.colorOrangeLight,
+        mSRL.setColorSchemeResources(R.color.colorPurple,R.color.colorOrangeLight,
                 R.color.colorRedLight,R.color.colorPrimary);
         mSRL.setProgressBackgroundColorSchemeResource(R.color.colorWhite);
 
@@ -115,7 +115,7 @@ public class PhotoGalleryFragment extends VisibleFragment {
                         }
                         mSRL.setRefreshing(false);
                     }
-                },3000);
+                },5000);
             }
         });
 

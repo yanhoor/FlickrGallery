@@ -19,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.toolbox.ImageRequest;
 import com.example.yanhoor.flickrgallery.model.Comment;
 import com.example.yanhoor.flickrgallery.model.GalleryItem;
 import com.example.yanhoor.flickrgallery.model.User;
@@ -27,7 +29,6 @@ import com.example.yanhoor.flickrgallery.util.StaticMethodUtil;
 
 import org.kymjs.kjframe.KJBitmap;
 import org.kymjs.kjframe.KJHttp;
-import org.kymjs.kjframe.bitmap.ImageRequest;
 import org.kymjs.kjframe.http.HttpCallBack;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -87,8 +88,12 @@ public class PhotoDetailFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.d(TAG,"on Create");
         super.onCreate(savedInstanceState);
         String mId=(String) getArguments().getSerializable(EXTRA_GALLERYITEM_mId);
+        Log.d(TAG,"mId is "+mId);
+
+        //获取评论
         mComments=new ArrayList<>();
         getComments(mComments,mId);
 
@@ -153,6 +158,7 @@ public class PhotoDetailFragment extends Fragment {
     void updateUI(){
         User mOwner=mGalleryItem.getOwner();
 
+        Log.d(TAG,"icon url is "+mOwner.getUserIconUrl());
         new KJBitmap.Builder()
                 .view(ownerIcon)
                 .size(ownerIcon.getWidth(),ownerIcon.getHeight())
@@ -342,6 +348,17 @@ public class PhotoDetailFragment extends Fragment {
 
             int maxWidth=holder.authorIcon.getWidth();
             int maxHeight=holder.authorIcon.getHeight();
+            //volley包内
+            new ImageRequest(mComments.get(position).getIconUrl(),
+                    new Response.Listener<Bitmap>() {
+                @Override
+                public void onResponse(Bitmap response) {
+                    holder.authorIcon.setImageBitmap(response);
+                }
+            },
+                    maxWidth,maxHeight,null,null);
+            /*
+            //kjhttp包内
             new ImageRequest(mComments.get(position).getIconUrl(), maxWidth, maxHeight, new HttpCallBack() {
                 @Override
                 public void onSuccess(Bitmap t) {
