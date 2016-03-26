@@ -1,9 +1,13 @@
 package com.example.yanhoor.flickrgallery.util;
 
+import android.content.Context;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.example.yanhoor.flickrgallery.LogInFragment;
 import com.example.yanhoor.flickrgallery.model.GalleryItem;
+import com.example.yanhoor.flickrgallery.model.Group;
 import com.example.yanhoor.flickrgallery.model.User;
 
 import org.kymjs.kjframe.KJHttp;
@@ -15,6 +19,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by yanhoor on 2016/3/20.
@@ -28,6 +33,8 @@ public class GetUserProfileUtil {
 
     private User mUser;
     private ArrayList<GalleryItem>mGalleryItems;
+    private ArrayList<Group>mGroups;
+
     listener mMainThreadListener;
 
     public interface listener {
@@ -213,6 +220,79 @@ public class GetUserProfileUtil {
                 mUser.setGalleryItems(mGalleryItems);
             }
         });
+    }
+
+    public void getGroups(Context context){
+        mGroups=new ArrayList<>();
+
+        String mFullToken= PreferenceManager.getDefaultSharedPreferences(context)
+                .getString(LogInFragment.PREF_FULL_TOKEN,null);
+
+        //为flickr.stats.getPhotoStats方法获取api_sig
+        String[] mSignFullTokenStringArray = {"method" + "flickr.people.getGroups","user_id"+mUser.getId(),
+                "api_key" + LogInFragment.API_KEY, "auth_token" + mFullToken,
+                LogInFragment.PUBLIC_CODE};
+        Arrays.sort(mSignFullTokenStringArray);
+        StringBuilder mSB = new StringBuilder();
+        for (String s : mSignFullTokenStringArray) {
+            mSB.append(s);
+        }
+        String apiSig = StaticMethodUtil.countMD5OfString(mSB.toString());
+
+        String url= Uri.parse(ENDPOINT).buildUpon()
+                .appendQueryParameter("method","flickr.people.getGroups")
+                .appendQueryParameter("api_key",API_KEY)
+                .appendQueryParameter("user_id",mUser.getId())
+                .appendQueryParameter("auth_token", mFullToken)
+                .appendQueryParameter("api_sig", apiSig)
+                .build().toString();
+
+        new KJHttp().get(url, new HttpCallBack() {
+            @Override
+            public void onFinish() {
+                super.onFinish();
+            }
+
+            @Override
+            public void onSuccess(String t) {
+                mGroups=new ArrayList<>();
+                super.onSuccess(t);
+                Log.d(TAG,"Getting group info from "+t);
+                try {
+                    XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
+                    XmlPullParser parser=factory.newPullParser();
+                    parser.setInput(new StringReader(t));
+
+                    int eventType=parser.getEventType();
+                    while (eventType!=XmlPullParser.END_DOCUMENT){
+                        if (eventType==XmlPullParser.START_TAG&&"group".equals(parser.getName())){
+                            Group group=new Group();
+                            String id=parser.getAttributeValue(null,"nsid");
+                            String name=parser.getAttributeValue(null,"name");
+                            String iconFarm=parser.getAttributeValue(null,"iconfarm");
+                            String iconServer=parser.getAttributeValue(null,"iconserver");
+                            String members=parser.getAttributeValue(null,"members");
+                            String poolCount=parser.getAttributeValue(null,"pool_count");
+
+                            group.setId(id);
+                            group.setGroupName(name);
+                            group.setIconFarm(iconFarm);
+                            group.setIconServer(iconServer);
+                            group.setMemberNumber(members);
+                            group.setPool_count(poolCount);
+                            mGroups.add(group);
+                        }
+                        eventType=parser.next();
+                    }
+                }catch (XmlPullParserException xppe){
+                    xppe.printStackTrace();
+                }catch (IOException ioe){
+                    ioe.printStackTrace();
+                }
+                mUser.setGroups(mGroups);
+            }
+        });
+
     }
 
 }

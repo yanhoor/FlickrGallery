@@ -21,6 +21,7 @@ public class User {
 
     private ArrayList<User>mFollowingUsers=new ArrayList<>();
     private ArrayList<GalleryItem>mGalleryItems=new ArrayList<>();
+    private ArrayList<Group>mGroups=new ArrayList<>();//从flickr.people.getGroups获得
 
     public ArrayList<GalleryItem> getGalleryItems() {
         return mGalleryItems;
@@ -100,6 +101,14 @@ public class User {
 
     public void setDescription(String description) {
         mDescription = description;
+    }
+
+    public ArrayList<Group> getGroups() {
+        return mGroups;
+    }
+
+    public void setGroups(ArrayList<Group> groups) {
+        mGroups.addAll(groups);
     }
 
     public String getUserIconUrl(){

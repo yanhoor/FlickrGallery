@@ -12,6 +12,8 @@
     <string name="log_in_text">Please enter your verification code(Including the connector):</string>
     <string name="get_token_button">Get access</string>
     <string name="confirm_button">Confirm</string>
+    <string name="toast_verify_token_success">Login successfully</string>
+    <string name="toast_verify_token_failed">Login failed, please check your verification code</string>
     <string name="comment">Comments: </string>
     <string name="favorites">Favorites: </string>
     <string name="views">Views: </string>
