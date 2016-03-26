@@ -3,12 +3,13 @@ package com.example.yanhoor.flickrgallery.model;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
  * Created by yanhoor on 2016/3/3.
  */
-public class GalleryItem {
+public class GalleryItem implements Serializable{
     private static final String JSON_TITLE="title";
     private static final String JSON_ID="id";
     private static final String JSON_URL="url";

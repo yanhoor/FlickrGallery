@@ -2,10 +2,12 @@ package com.example.yanhoor.flickrgallery.model;
 
 import android.util.Log;
 
+import java.io.Serializable;
+
 /**
  * Created by yanhoor on 2016/3/23.
  */
-public class Comment {
+public class Comment implements Serializable{
     private static final String TAG="Comment";
 
     private String mId;

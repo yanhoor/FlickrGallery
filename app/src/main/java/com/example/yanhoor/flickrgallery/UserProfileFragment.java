@@ -87,7 +87,6 @@ public class UserProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v=inflater.inflate(R.layout.fragment_user_profile,container,false);
 
-        //final SwipeRefreshLayout mSRL=(SwipeRefreshLayout)v.findViewById(R.id.SwipeRefreshLayout_user_profile);
         buddyIconImageView=(ImageView)v.findViewById(R.id.buddy_icon_profile);
         userName=(TextView)v.findViewById(R.id.user_name_profile);
         descriptionLayout=(RelativeLayout)v.findViewById(R.id.description_layout_profile);
@@ -130,32 +129,6 @@ public class UserProfileFragment extends Fragment {
         userPhotoGridView=(ExpandableHeightGridView)v.findViewById(R.id.photo_gridView_profile);
         userPhotoGridView.setExpanded(true);
 
-        /*
-        mSRL.setColorSchemeColors(R.color.colorGreenLight,R.color.colorOrangeLight,
-                R.color.colorRedLight,R.color.colorPrimary);
-        mSRL.setProgressBackgroundColorSchemeResource(R.color.colorWhite);
-
-        mSRL.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                mSRL.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        ConnectivityManager connectivityManager=(ConnectivityManager)getActivity()
-                                .getSystemService(Context.CONNECTIVITY_SERVICE);
-                        NetworkInfo networkInfo=connectivityManager.getActiveNetworkInfo();
-                        if (networkInfo!=null&&networkInfo.isAvailable()){
-                            mGetUserProfileUtil.getUserProfile(mUserId);
-                        }else{
-                            Toast.makeText(getActivity(),R.string.networt_unavailable,Toast.LENGTH_SHORT).show();
-                        }
-                        mSRL.setRefreshing(false);
-                    }
-                },3000);
-            }
-        });
-        */
-
         updateUI();
 
         if (mUser.getGalleryItems().size()!=0){
@@ -177,12 +150,6 @@ public class UserProfileFragment extends Fragment {
 
         return v;
     }
-
-    /*
-    public void updateUserInfo(){
-        new FetchUserInfoTask().execute();
-    }
-    */
 
     void updateUI(){
         //加载icon
