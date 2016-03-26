@@ -156,9 +156,13 @@ public class GetUserProfileUtil {
                             User following=new User();
                             String followingId=parser.getAttributeValue(null,"nsid");
                             String followingUserName=parser.getAttributeValue(null,"username");
+                            String iconServer=parser.getAttributeValue(null,"iconserver");
+                            String iconFarm=parser.getAttributeValue(null,"iconfarm");
 
                             following.setId(followingId);
                             following.setUserName(followingUserName);
+                            following.setIconServer(iconServer);
+                            following.setIconFarm(iconFarm);
                             mFollowings.add(following);
                         }
                         eventType=parser.next();

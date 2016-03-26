@@ -337,7 +337,7 @@ public class PhotoDetailFragment extends Fragment {
         @Override
         public RVViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             RVViewHolder holder=new RVViewHolder(LayoutInflater.from(getActivity())
-                    .inflate(R.layout.comment_item,parent,false));
+                    .inflate(R.layout.item_comment,parent,false));
 
             return holder;
         }

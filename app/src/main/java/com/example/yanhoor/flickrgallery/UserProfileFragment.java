@@ -183,7 +183,7 @@ public class UserProfileFragment extends Fragment {
         public View getView(int position, View convertView, ViewGroup parent) {
             Log.d(TAG,"arrayAdapter, getView");
             if (convertView==null){
-                convertView=getActivity().getLayoutInflater().inflate(R.layout.image_view,parent,false);
+                convertView=getActivity().getLayoutInflater().inflate(R.layout.item_image_view,parent,false);
             }
             final ImageView imageView=(ImageView)convertView.findViewById(R.id.gallery_item_imageView);
             imageView.setImageResource(R.drawable.brain_up_close);
