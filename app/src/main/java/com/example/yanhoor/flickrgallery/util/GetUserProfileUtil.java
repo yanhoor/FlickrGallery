@@ -255,6 +255,7 @@ public class GetUserProfileUtil {
             @Override
             public void onFinish() {
                 super.onFinish();
+                mMainThreadListener.onUpdateFinish(mUser);
             }
 
             @Override

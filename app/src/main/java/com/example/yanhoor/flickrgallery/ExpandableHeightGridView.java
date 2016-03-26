@@ -8,6 +8,7 @@ import android.widget.GridView;
 /**
  * Created by yanhoor on 2016/3/24.
  */
+//网址：http://stackoverflow.com/questions/8481844/gridview-height-gets-cut
 public class ExpandableHeightGridView extends GridView
 {
 

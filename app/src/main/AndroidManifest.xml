@@ -47,6 +47,8 @@
 
         <activity android:name=".UserProfileActivity"/>
 
+        <activity android:name=".ListActivity"/>
+
         <service android:name="com.example.yanhoor.flickrgallery.PollService"/>
 
         <receiver android:name="com.example.yanhoor.flickrgallery.StartupReceiver">

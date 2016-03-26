@@ -75,6 +75,7 @@ public class PhotoDetailFragment extends Fragment {
 
     PhotoInfoUtil mPhotoInfoUtil;
     ArrayList<Comment>mComments;
+    User mOwner;
 
     public static PhotoDetailFragment newPhotoDetailFragmentInstance(String mId){
         Bundle args=new Bundle();
@@ -90,12 +91,12 @@ public class PhotoDetailFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d(TAG,"on Create");
         super.onCreate(savedInstanceState);
-        String mId=(String) getArguments().getSerializable(EXTRA_GALLERYITEM_mId);
-        Log.d(TAG,"mId is "+mId);
+        String mGalleryId=(String) getArguments().getSerializable(EXTRA_GALLERYITEM_mId);
+        Log.d(TAG,"mGalleryId is "+mGalleryId);
 
         //获取评论
         mComments=new ArrayList<>();
-        getComments(mComments,mId);
+        getComments(mComments,mGalleryId);
 
         //判断是否登录
         mFullToken= PreferenceManager.getDefaultSharedPreferences(getActivity())
@@ -106,7 +107,7 @@ public class PhotoDetailFragment extends Fragment {
         }
 
         mGalleryItem= new GalleryItem();
-        mGalleryItem.setId(mId);
+        mGalleryItem.setId(mGalleryId);
 
         //用于获取照片信息后调用更新UI
         mPhotoInfoUtil=new PhotoInfoUtil();
@@ -156,7 +157,7 @@ public class PhotoDetailFragment extends Fragment {
     }
 
     void updateUI(){
-        User mOwner=mGalleryItem.getOwner();
+        mOwner=mGalleryItem.getOwner();
 
         Log.d(TAG,"icon url is "+mOwner.getUserIconUrl());
         new KJBitmap.Builder()
@@ -333,7 +334,7 @@ public class PhotoDetailFragment extends Fragment {
 
     }
 
-    public class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder>{
+    private class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder>{
         @Override
         public RVViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             RVViewHolder holder=new RVViewHolder(LayoutInflater.from(getActivity())
@@ -344,7 +345,6 @@ public class PhotoDetailFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final RVViewHolder holder, final int position) {
-            holder.authorIcon.setImageResource(R.drawable.brain_up_close);
 
             int maxWidth=holder.authorIcon.getWidth();
             int maxHeight=holder.authorIcon.getHeight();

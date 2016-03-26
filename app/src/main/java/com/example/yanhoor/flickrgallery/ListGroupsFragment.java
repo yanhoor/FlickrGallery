@@ -1,0 +1,115 @@
+package com.example.yanhoor.flickrgallery;
+
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.android.volley.Response;
+import com.android.volley.toolbox.ImageRequest;
+import com.example.yanhoor.flickrgallery.model.Group;
+
+import java.util.ArrayList;
+
+/**
+ * Created by yanhoor on 2016/3/26.
+ */
+public class ListGroupsFragment extends Fragment {
+    private static final String TAG="ListGroupsFragment ";
+
+    public static final String EXTRA_DATA_GROUPS ="data";
+
+    private RecyclerView mRV;
+
+    private ArrayList<Group>mGroups;
+
+    public static ListGroupsFragment newInstance(ArrayList<Group> mData){
+        Bundle args=new Bundle();
+        args.putSerializable(EXTRA_DATA_GROUPS,mData);
+        ListGroupsFragment fragment=new ListGroupsFragment();
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.d(TAG,"onCreate");
+        super.onCreate(savedInstanceState);
+        mGroups=new ArrayList<>();
+        mGroups.addAll((ArrayList<Group>) getArguments().getSerializable(EXTRA_DATA_GROUPS));
+
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View v=inflater.inflate(R.layout.fragment_following_list,container,false);
+
+        mRV=(RecyclerView) v.findViewById(R.id.following_RecyclerView);
+        updateUI();
+
+        return v;
+    }
+
+    public void updateUI(){
+        mRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRV.setItemAnimator(new DefaultItemAnimator());
+        mRV.setAdapter(new ListRVAdapter());
+    }
+
+    private class ListRVAdapter extends RecyclerView.Adapter<ListRVAdapter.RVViewHolder>{
+        @Override
+        public RVViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            RVViewHolder holder=new RVViewHolder(LayoutInflater.from(getActivity())
+                    .inflate(R.layout.item_following_group_list,parent,false));
+
+            return holder;
+        }
+
+        @Override
+        public void onBindViewHolder(final RVViewHolder holder, int position) {
+            int maxWidth=holder.mIcon.getWidth();
+            int maxHeight=holder.mIcon.getHeight();
+            //volley包内
+            new ImageRequest(mGroups.get(position).getGroupIconUrl(),
+                    new Response.Listener<Bitmap>() {
+                        @Override
+                        public void onResponse(Bitmap response) {
+                            holder.mIcon.setImageBitmap(response);
+                        }
+                    },
+                    maxWidth,maxHeight,null,null);
+
+            holder.mName.setText(mGroups.get(position).getGroupName());
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return mGroups.size();
+        }
+
+        class RVViewHolder extends RecyclerView.ViewHolder{
+            ImageView mIcon;
+            TextView mName;
+
+            public RVViewHolder(View view){
+                super(view);
+                mIcon=(ImageView)view.findViewById(R.id.following_icon);
+                mName=(TextView)view.findViewById(R.id.following_user_name);
+            }
+        }
+
+    }
+
+}

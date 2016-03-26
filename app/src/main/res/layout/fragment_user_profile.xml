@@ -26,7 +26,8 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="12dp"
             android:textSize="20sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textColor="@color/colorPrimaryDark"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -44,7 +45,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/following"
-                    android:textStyle="bold|italic"/>
+                    android:textStyle="bold|italic"
+                    android:textColor="@color/colorPrimaryDark"/>
 
                 <TextView
                     android:id="@+id/following_number_profile"
@@ -57,10 +59,36 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/location_layout"
+                android:id="@+id/groupLayout_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/following_layout"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp">
+
+                <TextView
+                    android:id="@+id/group_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/group_profile"
+                    android:textStyle="bold|italic"
+                    android:textColor="@color/colorPrimaryDark"/>
+
+                <TextView
+                    android:id="@+id/group_number_profile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/group_title"
+                    android:layout_marginStart="10dp"
+                    android:text="0"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/location_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/groupLayout_profile"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="10dp">
 
@@ -70,6 +98,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/location"
                     android:textStyle="bold|italic"
+                    android:textColor="@color/colorPrimaryDark"
                     android:visibility="gone"/>
 
                 <TextView
@@ -103,7 +132,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/description_title_profile"
-                android:textStyle="bold|italic"/>
+                android:textStyle="bold|italic"
+                android:textColor="@color/colorPrimaryDark"/>
 
             <TextView
                 android:id="@+id/user_description_profile"

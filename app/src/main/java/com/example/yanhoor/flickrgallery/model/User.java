@@ -2,12 +2,13 @@ package com.example.yanhoor.flickrgallery.model;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by yanhoor on 2016/3/20.
  */
-public class User {
+public class User implements Serializable{
     private static final String TAG="User";
 
     private String mUserName;
@@ -123,7 +124,7 @@ public class User {
         }else {
             iconUrl= "https://www.flickr.com/images/buddyicon.gif";
         }
-        Log.d(TAG,"IconUrl is "+iconUrl);
+        Log.d(TAG,"User IconUrl is "+iconUrl);
         return iconUrl;
     }
 }

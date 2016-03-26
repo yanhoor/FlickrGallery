@@ -1,9 +1,15 @@
 package com.example.yanhoor.flickrgallery.model;
 
+import android.util.Log;
+
+import java.io.Serializable;
+
 /**
  * Created by yanhoor on 2016/3/25.
  */
-public class Group {
+public class Group implements Serializable {
+    private static final String TAG="Group";
+
     //使用flickr.people.getGroups获得
     private String mId;
     private String mGroupName;
@@ -59,4 +65,21 @@ public class Group {
     public void setPool_count(String pool_count) {
         mPool_count = pool_count;
     }
+
+    public String getGroupIconUrl(){
+        String iconUrl;
+        //http://farm{icon-farm}.staticflickr.com/{icon-server}/buddyicons/{nsid}.jpg
+        if (mIconServer!=null){
+            if (Integer.parseInt(mIconServer)>0){
+                iconUrl= "http://farm"+mIconFarm+".staticflickr.com/"+mIconServer+"/buddyicons/"+mId+".jpg";
+            }else {
+                iconUrl= "https://www.flickr.com/images/buddyicon.gif";
+            }
+        }else {
+            iconUrl= "https://www.flickr.com/images/buddyicon.gif";
+        }
+        Log.d(TAG,"Group IconUrl is "+iconUrl);
+        return iconUrl;
+    }
+
 }

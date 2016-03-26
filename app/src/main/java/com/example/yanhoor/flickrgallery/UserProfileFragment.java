@@ -16,6 +16,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.yanhoor.flickrgallery.model.GalleryItem;
+import com.example.yanhoor.flickrgallery.model.Group;
 import com.example.yanhoor.flickrgallery.model.User;
 import com.example.yanhoor.flickrgallery.util.GetUserProfileUtil;
 
@@ -30,14 +31,20 @@ import java.util.ArrayList;
  */
 public class UserProfileFragment extends Fragment {
     private static  final String TAG="UserProfileFragment";
+    public static String EXTRA_LIST_TYPE_IS_FOLLOWINGS ="type";
 
     private User mUser;
     private String mUserId;
+    private ArrayList<User>mFollowings;
+    private ArrayList<Group>mGroups;
     ExpandableHeightGridView userPhotoGridView;
     TextView userName;
     RelativeLayout descriptionLayout;
     TextView userDescription;
     TextView followingNumber;
+    RelativeLayout followingLayout;
+    TextView groupNumber;
+    RelativeLayout groupLayout;
     TextView locationTextView;
     TextView location;
     ImageView buddyIconImageView;
@@ -63,6 +70,7 @@ public class UserProfileFragment extends Fragment {
         mUser.setId(mUserId);
         mGetUserProfileUtil=new GetUserProfileUtil();
         mGetUserProfileUtil.getUserProfile(mUserId);
+        mGetUserProfileUtil.getGroups(getActivity());
         //updateUserInfo();
         mGetUserProfileUtil.setListener(new GetUserProfileUtil.listener() {
             @Override
@@ -84,7 +92,38 @@ public class UserProfileFragment extends Fragment {
         userName=(TextView)v.findViewById(R.id.user_name_profile);
         descriptionLayout=(RelativeLayout)v.findViewById(R.id.description_layout_profile);
         userDescription=(TextView)v.findViewById(R.id.user_description_profile);
+        followingLayout=(RelativeLayout)v.findViewById(R.id.following_layout);
+        followingLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mFollowings=new ArrayList<>();
+                mFollowings.addAll(mUser.getFollowingUsers());
+                if (mFollowings.size()>0){
+                    Intent i=new Intent(getActivity(),ListActivity.class);
+                    i.putExtra(EXTRA_LIST_TYPE_IS_FOLLOWINGS,true);
+                    i.putExtra(ListFollowingsFragment.EXTRA_DATA_FOLLOWINGS,mFollowings);
+                    startActivity(i);
+                }
+            }
+        });
+
         followingNumber=(TextView)v.findViewById(R.id.following_number_profile);
+        groupNumber=(TextView)v.findViewById(R.id.group_number_profile);
+        groupLayout=(RelativeLayout)v.findViewById(R.id.groupLayout_profile);
+        groupLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mGroups=new ArrayList<>();
+                mGroups.addAll(mUser.getGroups());
+                if (mGroups.size()>0){
+                    Intent i=new Intent(getActivity(),ListActivity.class);
+                    i.putExtra(EXTRA_LIST_TYPE_IS_FOLLOWINGS,false);
+                    i.putExtra(ListGroupsFragment.EXTRA_DATA_GROUPS,mGroups);
+                    startActivity(i);
+                }
+            }
+        });
+
         locationTextView=(TextView)v.findViewById(R.id.location_profile);
         location=(TextView)v.findViewById(R.id.location_text_profile);
         //使用自定义ExpandableHeightGridView防止与scrollview冲突
@@ -159,6 +198,10 @@ public class UserProfileFragment extends Fragment {
 
         if (mUser.getFollowingsNumber()!=null){
             followingNumber.setText(mUser.getFollowingsNumber());
+        }
+
+        if (mUser.getGroups().size()>0){
+            groupNumber.setText(String.valueOf(mUser.getGroups().size()));
         }
 
         //Log.d(TAG,"location length is "+mUser.getLocation().length());
