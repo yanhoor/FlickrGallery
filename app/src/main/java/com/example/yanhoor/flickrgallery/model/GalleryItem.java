@@ -49,7 +49,8 @@ public class GalleryItem implements Serializable{
         mFarm=jsonObject.getString(JSON_FARM);
         if (jsonObject.has(JSON_DESCRIPTION))
             mDescription=jsonObject.getString(JSON_DESCRIPTION);
-        mPostedTime =jsonObject.getString(JSON_POSTED_DATE);
+        if (jsonObject.has(JSON_POSTED_DATE))
+            mPostedTime =jsonObject.getString(JSON_POSTED_DATE);
     }
 
     public JSONObject toJSON() throws JSONException{

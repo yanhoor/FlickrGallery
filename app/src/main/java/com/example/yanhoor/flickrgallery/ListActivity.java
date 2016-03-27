@@ -14,21 +14,24 @@ import java.util.ArrayList;
 public class ListActivity extends SingleFragmentActivity {
     private static final String TAG="ListActivity";
 
+    public static String dataType="1";
+
     @Override
     protected Fragment createFragment() {
-        boolean type=(boolean)getIntent().getSerializableExtra(UserProfileFragment.EXTRA_LIST_TYPE_IS_FOLLOWINGS);
-        Log.d(TAG,"type is "+type);
+        Log.d(TAG,"dataType is "+dataType);
 
-        if (!type){
+        if (dataType.equals("groups")){
             Log.d(TAG,"Start ListGroupsFragment");
             ArrayList<Group> mGroups=(ArrayList<Group>) getIntent()
                     .getSerializableExtra(ListGroupsFragment.EXTRA_DATA_GROUPS);
             return ListGroupsFragment.newInstance(mGroups);
-        }else {
+        }else if (dataType.equals("followings")){
             Log.d(TAG,"Start ListFollowingsFragment");
             ArrayList<User>mFollowings=(ArrayList<User>)getIntent()
                     .getSerializableExtra(ListFollowingsFragment.EXTRA_DATA_FOLLOWINGS);
             return ListFollowingsFragment.newInstance(mFollowings);
+        }else {
+            return null;
         }
     }
 }

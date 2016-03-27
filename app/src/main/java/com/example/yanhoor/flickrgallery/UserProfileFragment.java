@@ -31,7 +31,6 @@ import java.util.ArrayList;
  */
 public class UserProfileFragment extends Fragment {
     private static  final String TAG="UserProfileFragment";
-    public static String EXTRA_LIST_TYPE_IS_FOLLOWINGS ="type";
 
     private User mUser;
     private String mUserId;
@@ -100,7 +99,7 @@ public class UserProfileFragment extends Fragment {
                 mFollowings.addAll(mUser.getFollowingUsers());
                 if (mFollowings.size()>0){
                     Intent i=new Intent(getActivity(),ListActivity.class);
-                    i.putExtra(EXTRA_LIST_TYPE_IS_FOLLOWINGS,true);
+                    ListActivity.dataType="followings";
                     i.putExtra(ListFollowingsFragment.EXTRA_DATA_FOLLOWINGS,mFollowings);
                     startActivity(i);
                 }
@@ -117,7 +116,7 @@ public class UserProfileFragment extends Fragment {
                 mGroups.addAll(mUser.getGroups());
                 if (mGroups.size()>0){
                     Intent i=new Intent(getActivity(),ListActivity.class);
-                    i.putExtra(EXTRA_LIST_TYPE_IS_FOLLOWINGS,false);
+                    ListActivity.dataType="groups";
                     i.putExtra(ListGroupsFragment.EXTRA_DATA_GROUPS,mGroups);
                     startActivity(i);
                 }
