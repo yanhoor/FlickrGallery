@@ -3,6 +3,7 @@ package com.example.yanhoor.flickrgallery.model;
 import android.util.Log;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by yanhoor on 2016/3/25.
@@ -17,6 +18,14 @@ public class Group implements Serializable {
     private String mIconServer;
     private String mMemberNumber;
     private String mPool_count;//照片数
+
+    private String mDescription;
+
+    //使用flickr.groups.discuss.topics.getList获取
+    private ArrayList<Topic>mTopics=new ArrayList<>();
+    private ArrayList<User>mMembers=new ArrayList<>();
+
+    private ArrayList<GalleryItem>mGalleryItems=new ArrayList<>();
 
     public String getIconFarm() {
         return mIconFarm;
@@ -64,6 +73,38 @@ public class Group implements Serializable {
 
     public void setPool_count(String pool_count) {
         mPool_count = pool_count;
+    }
+
+    public ArrayList<User> getMembers() {
+        return mMembers;
+    }
+
+    public void setMembers(ArrayList<User> members) {
+        mMembers.addAll(members);
+    }
+
+    public ArrayList<Topic> getTopics() {
+        return mTopics;
+    }
+
+    public void setTopics(ArrayList<Topic> topics) {
+        mTopics.addAll(topics);
+    }
+
+    public String getDescription() {
+        return mDescription;
+    }
+
+    public void setDescription(String description) {
+        mDescription = description;
+    }
+
+    public ArrayList<GalleryItem> getGalleryItems() {
+        return mGalleryItems;
+    }
+
+    public void setGalleryItems(ArrayList<GalleryItem> galleryItems) {
+        mGalleryItems.addAll(galleryItems);
     }
 
     public String getGroupIconUrl(){

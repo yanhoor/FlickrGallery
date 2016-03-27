@@ -20,6 +20,10 @@ android {
     }
 }
 
+repositories {
+    maven { url 'https://dl.bintray.com/jonathanfinerty/maven' }
+}
+
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
@@ -27,4 +31,5 @@ dependencies {
     compile 'com.android.support:design:23.1.1'
     compile 'org.kymjs.kjframe:kjframe:2.6'
     compile 'de.hdodenhof:circleimageview:2.0.0'
+    compile 'com.jonathanfinerty.expandabletextview:expandabletextview:0.0.2'
 }

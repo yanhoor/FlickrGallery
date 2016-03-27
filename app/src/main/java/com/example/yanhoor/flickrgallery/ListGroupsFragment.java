@@ -1,5 +1,6 @@
 package com.example.yanhoor.flickrgallery;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -77,7 +78,7 @@ public class ListGroupsFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(final RVViewHolder holder, int position) {
+        public void onBindViewHolder(final RVViewHolder holder, final int position) {
             int maxWidth=holder.mIcon.getWidth();
             int maxHeight=holder.mIcon.getHeight();
             //volley包内
@@ -91,6 +92,14 @@ public class ListGroupsFragment extends Fragment {
                     maxWidth,maxHeight,null,null);
 
             holder.mName.setText(mGroups.get(position).getGroupName());
+            holder.mName.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i=new Intent(getActivity(),GroupProfileActivity.class);
+                    i.putExtra(GroupProfileFragment.EXTRA_GROUP_ID,mGroups.get(position).getId());
+                    startActivity(i);
+                }
+            });
 
         }
 

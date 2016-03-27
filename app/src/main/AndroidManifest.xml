@@ -32,7 +32,7 @@
                        android:resource="@xml/searchable"/>
         </activity>
 
-        <activity android:name="com.example.yanhoor.flickrgallery.SingleFragmentActivity"></activity>
+        <activity android:name="com.example.yanhoor.flickrgallery.SingleFragmentActivity"/>
 
         <activity android:name="com.example.yanhoor.flickrgallery.PhotoPageActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"/>
@@ -48,6 +48,8 @@
         <activity android:name=".UserProfileActivity"/>
 
         <activity android:name=".ListActivity"/>
+
+        <activity android:name=".GroupProfileActivity"/>
 
         <service android:name="com.example.yanhoor.flickrgallery.PollService"/>
 

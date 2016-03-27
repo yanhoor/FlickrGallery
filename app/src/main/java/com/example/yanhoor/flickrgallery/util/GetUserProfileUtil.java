@@ -49,8 +49,9 @@ public class GetUserProfileUtil {
         Log.d(TAG,"getUserProfile");
         mUser=new User();
         mUser.setId(userId);
-        //在一个完成之后再启动另一个
         getUserInfo();
+        getFollowings();
+        getUserPhoto();
         Log.d(TAG,"user name is "+mUser.getUserName());
         return mUser;
     }
@@ -67,7 +68,7 @@ public class GetUserProfileUtil {
             @Override
             public void onFinish() {
                 super.onFinish();
-                getFollowings();
+                mMainThreadListener.onUpdateFinish(mUser);
                 Log.d(TAG,"location is0"+mUser.getLocation()+"0");
             }
 
@@ -133,7 +134,7 @@ public class GetUserProfileUtil {
             @Override
             public void onFinish() {
                 super.onFinish();
-                getUserPhoto();
+                mMainThreadListener.onUpdateFinish(mUser);
             }
 
             @Override
@@ -249,6 +250,64 @@ public class GetUserProfileUtil {
                 .appendQueryParameter("user_id",mUser.getId())
                 .appendQueryParameter("auth_token", mFullToken)
                 .appendQueryParameter("api_sig", apiSig)
+                .build().toString();
+
+        new KJHttp().get(url, new HttpCallBack() {
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                mMainThreadListener.onUpdateFinish(mUser);
+            }
+
+            @Override
+            public void onSuccess(String t) {
+                mGroups=new ArrayList<>();
+                super.onSuccess(t);
+                Log.d(TAG,"Getting group info from "+t);
+                try {
+                    XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
+                    XmlPullParser parser=factory.newPullParser();
+                    parser.setInput(new StringReader(t));
+
+                    int eventType=parser.getEventType();
+                    while (eventType!=XmlPullParser.END_DOCUMENT){
+                        if (eventType==XmlPullParser.START_TAG&&"group".equals(parser.getName())){
+                            Group group=new Group();
+                            String id=parser.getAttributeValue(null,"nsid");
+                            String name=parser.getAttributeValue(null,"name");
+                            String iconFarm=parser.getAttributeValue(null,"iconfarm");
+                            String iconServer=parser.getAttributeValue(null,"iconserver");
+                            String members=parser.getAttributeValue(null,"members");
+                            String poolCount=parser.getAttributeValue(null,"pool_count");
+
+                            group.setId(id);
+                            group.setGroupName(name);
+                            group.setIconFarm(iconFarm);
+                            group.setIconServer(iconServer);
+                            group.setMemberNumber(members);
+                            group.setPool_count(poolCount);
+                            mGroups.add(group);
+                        }
+                        eventType=parser.next();
+                    }
+                }catch (XmlPullParserException xppe){
+                    xppe.printStackTrace();
+                }catch (IOException ioe){
+                    ioe.printStackTrace();
+                }
+                mUser.setGroups(mGroups);
+            }
+        });
+
+    }
+
+    public void getPublicGroups(){
+        mGroups=new ArrayList<>();
+
+        String url= Uri.parse(ENDPOINT).buildUpon()
+                .appendQueryParameter("method","flickr.people.getPublicGroups")
+                .appendQueryParameter("api_key",API_KEY)
+                .appendQueryParameter("user_id",mUser.getId())
                 .build().toString();
 
         new KJHttp().get(url, new HttpCallBack() {

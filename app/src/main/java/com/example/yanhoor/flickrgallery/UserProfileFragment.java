@@ -71,6 +71,7 @@ public class UserProfileFragment extends Fragment {
         mGetUserProfileUtil=new GetUserProfileUtil();
         mGetUserProfileUtil.getUserProfile(mUserId);
         mGetUserProfileUtil.getGroups(getActivity());
+        //mGetUserProfileUtil.getPublicGroups();
         //updateUserInfo();
         mGetUserProfileUtil.setListener(new GetUserProfileUtil.listener() {
             @Override
