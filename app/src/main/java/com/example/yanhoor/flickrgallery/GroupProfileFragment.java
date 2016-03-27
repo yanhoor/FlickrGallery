@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.yanhoor.flickrgallery.model.GalleryItem;
@@ -37,6 +38,8 @@ public class GroupProfileFragment extends Fragment {
     private ImageView mGroupIcon;
     private TextView mGroupName;
     private TextView mMemberNumber;
+    private RelativeLayout memberLayout;
+    RelativeLayout topicLayout;
     private TextView mTopicNumber;
     private TextView mGroupDescription;
     private ExpandableHeightGridView mGroupPhotoGridview;
@@ -75,11 +78,14 @@ public class GroupProfileFragment extends Fragment {
         View v= inflater.inflate(R.layout.fragment_group_profile,container,false);
         mGroupIcon=(ImageView)v.findViewById(R.id.group_icon_profile);
         mGroupName=(TextView)v.findViewById(R.id.group_name_profile);
+        memberLayout=(RelativeLayout)v.findViewById(R.id.member_layout_profile);
         mMemberNumber=(TextView)v.findViewById(R.id.member_number_profile);
+        topicLayout=(RelativeLayout)v.findViewById(R.id.topic_layout);
         mTopicNumber=(TextView)v.findViewById(R.id.topic_number_profile);
         mGroupDescription=(TextView)v.findViewById(R.id.description_content_groupProfile);
         mGroupPhotoGridview=(ExpandableHeightGridView) v.findViewById(R.id.photo_gridView_groupProfile);
         mGroupPhotoGridview.setExpanded(true);
+
         mGroupPhotoGridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -88,6 +94,31 @@ public class GroupProfileFragment extends Fragment {
                 startActivity(i);
             }
         });
+
+        memberLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mGroup.getMembers().size()>0){
+                    Intent i=new Intent(getActivity(),ListActivity.class);
+                    ListActivity.dataType="followings";
+                    i.putExtra(ListFollowingsFragment.EXTRA_DATA_FOLLOWINGS,mGroup.getMembers());
+                    startActivity(i);
+                }
+            }
+        });
+
+        topicLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mGroup.getTopics().size()>0){
+                    Intent i=new Intent(getActivity(),ListActivity.class);
+                    i.putExtra(ListTopicsFragment.EXTRA_TOPICS_DATA,mGroup.getTopics());
+                    ListActivity.dataType="topics";
+                    startActivity(i);
+                }
+            }
+        });
+
         updateUI();
 
         return v;

@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.example.yanhoor.flickrgallery.model.Group;
+import com.example.yanhoor.flickrgallery.model.Topic;
 import com.example.yanhoor.flickrgallery.model.User;
 
 import java.util.ArrayList;
@@ -30,6 +31,10 @@ public class ListActivity extends SingleFragmentActivity {
             ArrayList<User>mFollowings=(ArrayList<User>)getIntent()
                     .getSerializableExtra(ListFollowingsFragment.EXTRA_DATA_FOLLOWINGS);
             return ListFollowingsFragment.newInstance(mFollowings);
+        }else if (dataType.equals("topics")){
+            ArrayList<Topic>mTopics=(ArrayList<Topic>)getIntent()
+                    .getSerializableExtra(ListTopicsFragment.EXTRA_TOPICS_DATA);
+            return ListTopicsFragment.newInstance(mTopics);
         }else {
             return null;
         }
