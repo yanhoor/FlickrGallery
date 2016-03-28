@@ -1,7 +1,5 @@
 package com.example.yanhoor.flickrgallery.model;
 
-import android.util.Log;
-
 import java.io.Serializable;
 
 /**
@@ -11,28 +9,9 @@ public class Comment implements Serializable{
     private static final String TAG="Comment";
 
     private String mId;
-    private String mAuthorId;
-    private String mAuthorName;
+    private User mAuthor;
     private String mDateCreate;
     private String mContent;
-    private String mIconFarm;
-    private String mIconServer;
-
-    public String getAuthorId() {
-        return mAuthorId;
-    }
-
-    public void setAuthorId(String authorId) {
-        mAuthorId = authorId;
-    }
-
-    public String getAuthorName() {
-        return mAuthorName;
-    }
-
-    public void setAuthorName(String authorName) {
-        mAuthorName = authorName;
-    }
 
     public String getDateCreate() {
         return mDateCreate;
@@ -58,36 +37,11 @@ public class Comment implements Serializable{
         mContent = content;
     }
 
-    public String getIconFarm() {
-        return mIconFarm;
+    public User getAuthor() {
+        return mAuthor;
     }
 
-    public void setIconFarm(String iconFarm) {
-        mIconFarm = iconFarm;
+    public void setAuthor(User author) {
+        mAuthor = author;
     }
-
-    public String getIconServer() {
-        return mIconServer;
-    }
-
-    public void setIconServer(String iconServer) {
-        mIconServer = iconServer;
-    }
-
-    public String getIconUrl(){
-        String iconUrl;
-        //http://farm{icon-farm}.staticflickr.com/{icon-server}/buddyicons/{nsid}.jpg
-        if (mIconServer!=null){
-            if (Integer.parseInt(mIconServer)>0){
-                iconUrl= "http://farm"+mIconFarm+".staticflickr.com/"+mIconServer+"/buddyicons/"+mId+".jpg";
-            }else {
-                iconUrl= "https://www.flickr.com/images/buddyicon.gif";
-            }
-        }else {
-            iconUrl= "https://www.flickr.com/images/buddyicon.gif";
-        }
-        Log.d(TAG,"IconUrl is "+iconUrl);
-        return iconUrl;
-    }
-
 }

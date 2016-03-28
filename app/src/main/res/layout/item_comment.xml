@@ -14,8 +14,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/comment_author_icon"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:src="@drawable/brain_up_close"
             app:civ_border_width="1dp"
             app:civ_border_color="@color/colorBlack"/>

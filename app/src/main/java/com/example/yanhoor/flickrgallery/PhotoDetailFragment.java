@@ -1,7 +1,6 @@
 package com.example.yanhoor.flickrgallery;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,13 +18,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Response;
-import com.android.volley.toolbox.ImageRequest;
 import com.example.yanhoor.flickrgallery.model.Comment;
 import com.example.yanhoor.flickrgallery.model.GalleryItem;
 import com.example.yanhoor.flickrgallery.model.User;
 import com.example.yanhoor.flickrgallery.util.PhotoInfoUtil;
 import com.example.yanhoor.flickrgallery.util.StaticMethodUtil;
+import com.squareup.picasso.Picasso;
 
 import org.kymjs.kjframe.KJBitmap;
 import org.kymjs.kjframe.KJHttp;
@@ -41,6 +39,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by yanhoor on 2016/3/15.
@@ -299,12 +299,13 @@ public class PhotoDetailFragment extends Fragment {
                     int eventType=parser.getEventType();
                     while (eventType!=XmlPullParser.END_DOCUMENT){
                         if (eventType==XmlPullParser.START_TAG&&"comment".equals(parser.getName())){
+                            User author=new User();
                             Comment comment=new Comment();
                             String id=parser.getAttributeValue(null,"id");
-                            String author=parser.getAttributeValue(null,"author");
+                            String authorId=parser.getAttributeValue(null,"author");
                             String authorName=parser.getAttributeValue(null,"authorname");
                             String iconServer=parser.getAttributeValue(null,"iconserver");
-                            String iconFarm=parser.getAttributeValue(null,"farm");
+                            String iconFarm=parser.getAttributeValue(null,"iconfarm");
                             String dateCreate=parser.getAttributeValue(null,"datecreate");
                             String content=parser.nextText();
 
@@ -313,10 +314,11 @@ public class PhotoDetailFragment extends Fragment {
                             SimpleDateFormat simpleDateFormat=new SimpleDateFormat("MM-dd HH:mm", Locale.US);
                             String dateString=simpleDateFormat.format(mDate);
                             comment.setId(id);
-                            comment.setAuthorId(author);
-                            comment.setAuthorName(authorName);
-                            comment.setIconServer(iconServer);
-                            comment.setIconFarm(iconFarm);
+                            author.setId(authorId);
+                            author.setUserName(authorName);
+                            author.setIconServer(iconServer);
+                            author.setIconFarm(iconFarm);
+                            comment.setAuthor(author);
                             comment.setDateCreate(dateString);
                             comment.setContent(content);
                             Log.d(TAG,"Comment content is "+content);
@@ -346,36 +348,15 @@ public class PhotoDetailFragment extends Fragment {
         @Override
         public void onBindViewHolder(final RVViewHolder holder, final int position) {
 
-            int maxWidth=holder.authorIcon.getWidth();
-            int maxHeight=holder.authorIcon.getHeight();
-            //volley包内
-            new ImageRequest(mComments.get(position).getIconUrl(),
-                    new Response.Listener<Bitmap>() {
-                @Override
-                public void onResponse(Bitmap response) {
-                    holder.authorIcon.setImageBitmap(response);
-                }
-            },
-                    maxWidth,maxHeight,null,null);
-            /*
-            //kjhttp包内
-            new ImageRequest(mComments.get(position).getIconUrl(), maxWidth, maxHeight, new HttpCallBack() {
-                @Override
-                public void onSuccess(Bitmap t) {
-                    super.onSuccess(t);
-                    holder.authorIcon.setImageBitmap(t);
-                }
-            });
-            /*
-            HttpConfig config=new HttpConfig();
-            config.CACHEPATH="/storage/sdcard/KJLibrary/cache";
-            new KJBitmap.Builder()
-                    .view(holder.authorIcon)
-                    .imageUrl(mComments.get(position).getIconUrl())
-                    .size(holder.authorIcon.getWidth(),holder.authorIcon.getHeight())
-                    .display();
-                    */
-            holder.author.setText(mComments.get(position).getAuthorName());
+            Log.d(TAG,"comment author icon url is "+mComments.get(position).getAuthor().getUserIconUrl());
+            Picasso.with(getActivity())
+                    .load(mComments.get(position).getAuthor().getUserIconUrl())
+                    .resize(30,30)
+                    .centerCrop()
+                    .placeholder(R.drawable.brain_up_close)
+                    .into(holder.authorIcon);
+
+            holder.author.setText(mComments.get(position).getAuthor().getUserName());
             holder.content.setText(mComments.get(position).getContent());
             holder.time.setText(mComments.get(position).getDateCreate());
 
@@ -383,7 +364,7 @@ public class PhotoDetailFragment extends Fragment {
                 @Override
                 public void onClick(View v) {
                     Intent i=new Intent(getActivity(),UserProfileActivity.class);
-                    i.putExtra(UserProfileFragment.EXTRA_USER_ID,mComments.get(holder.getAdapterPosition()).getAuthorId());
+                    i.putExtra(UserProfileFragment.EXTRA_USER_ID,mComments.get(holder.getAdapterPosition()).getAuthor().getId());
                     startActivity(i);
                     Log.d(TAG,"Going to user profile");
                 }
@@ -391,20 +372,20 @@ public class PhotoDetailFragment extends Fragment {
 
         }
 
-        @Override
+            @Override
         public int getItemCount() {
             return mComments.size();
         }
 
         class RVViewHolder extends RecyclerView.ViewHolder{
-            ImageView authorIcon;
+            CircleImageView authorIcon;
             TextView author;
             TextView content;
             TextView time;
 
             public RVViewHolder(View view){
                 super(view);
-                authorIcon=(ImageView)view.findViewById(R.id.comment_author_icon);
+                authorIcon=(CircleImageView) view.findViewById(R.id.comment_author_icon);
                 author=(TextView)view.findViewById(R.id.comment_author);
                 content=(TextView)view.findViewById(R.id.comment_content);
                 time=(TextView)view.findViewById(R.id.Comment_time);

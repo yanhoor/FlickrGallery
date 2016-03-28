@@ -1,7 +1,6 @@
 package com.example.yanhoor.flickrgallery;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,9 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.android.volley.Response;
-import com.android.volley.toolbox.ImageRequest;
 import com.example.yanhoor.flickrgallery.model.User;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -79,17 +77,12 @@ public class ListFollowingsFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final RVViewHolder holder, final int position) {
-            int maxWidth=holder.mIcon.getWidth();
-            int maxHeight=holder.mIcon.getHeight();
-            //volley包内
-            new ImageRequest(mFollowings.get(position).getUserIconUrl(),
-                    new Response.Listener<Bitmap>() {
-                        @Override
-                        public void onResponse(Bitmap response) {
-                            holder.mIcon.setImageBitmap(response);
-                        }
-                    },
-                    maxWidth,maxHeight,null,null);
+            Picasso.with(getActivity())
+                    .load(mFollowings.get(position).getUserIconUrl())
+                    .placeholder(R.drawable.brain_up_close)
+                    .resize(20,20)
+                    .centerCrop()
+                    .into(holder.mIcon);
 
             holder.mName.setText(mFollowings.get(position).getUserName());
             holder.mName.setOnClickListener(new View.OnClickListener() {

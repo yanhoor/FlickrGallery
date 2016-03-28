@@ -1,7 +1,6 @@
 package com.example.yanhoor.flickrgallery;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,10 +18,9 @@ import com.example.yanhoor.flickrgallery.model.GalleryItem;
 import com.example.yanhoor.flickrgallery.model.Group;
 import com.example.yanhoor.flickrgallery.model.User;
 import com.example.yanhoor.flickrgallery.util.GetUserProfileUtil;
+import com.squareup.picasso.Picasso;
 
 import org.kymjs.kjframe.KJBitmap;
-import org.kymjs.kjframe.bitmap.ImageRequest;
-import org.kymjs.kjframe.http.HttpCallBack;
 
 import java.util.ArrayList;
 
@@ -198,15 +196,11 @@ public class UserProfileFragment extends Fragment {
             final ImageView imageView=(ImageView)convertView.findViewById(R.id.gallery_item_imageView);
             imageView.setImageResource(R.drawable.brain_up_close);
 
-            int maxWidth=imageView.getWidth();
-            int maxHeight=imageView.getHeight();
-            new ImageRequest(mUser.getGalleryItems().get(position).getUrl(), maxWidth, maxHeight, new HttpCallBack() {
-                @Override
-                public void onSuccess(Bitmap t) {
-                    super.onSuccess(t);
-                    imageView.setImageBitmap(t);
-                }
-            });
+            Picasso.with(getActivity())
+                    .load(mUser.getGalleryItems().get(position).getUrl())
+                    .resize(240,240)
+                    .centerCrop()
+                    .into(imageView);
 
             return convertView;
         }
