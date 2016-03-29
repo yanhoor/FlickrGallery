@@ -188,6 +188,30 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/add_comment_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp">
+
+                <EditText
+                    android:id="@+id/comment_editText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:maxLines="2"
+                    android:hint="@string/comment_hint"/>
+
+                <Button
+                    android:id="@+id/send_comment_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:text="@string/send_button"
+                    android:background="@color/colorWhite"/>
+
+            </LinearLayout>
+
             <!--设置android:focusable防止打开时不是scrollview顶部-->
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/comment_list_view_RV"

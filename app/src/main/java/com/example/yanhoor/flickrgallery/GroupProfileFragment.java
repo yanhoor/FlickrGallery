@@ -133,8 +133,8 @@ public class GroupProfileFragment extends Fragment {
             mMemberNumber.setText(mGroup.getMemberNumber());
         }
 
-        if (mGroup.getTopics().size()>0){
-            mTopicNumber.setText(String.valueOf(mGroup.getTopics().size()));
+        if (mGroup.getTopicsSum()!=null){
+            mTopicNumber.setText(mGroup.getTopicsSum());
         }
         if (mGroup.getDescription()!=null){
             mGroupDescription.setText(mGroup.getDescription());

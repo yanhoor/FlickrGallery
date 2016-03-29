@@ -18,6 +18,7 @@ public class Group implements Serializable {
     private String mIconServer;
     private String mMemberNumber;
     private String mPool_count;//照片数
+    private String mTopicsSum;
 
     private String mDescription;
 
@@ -73,6 +74,14 @@ public class Group implements Serializable {
 
     public void setPool_count(String pool_count) {
         mPool_count = pool_count;
+    }
+
+    public String getTopicsSum() {
+        return mTopicsSum;
+    }
+
+    public void setTopicsSum(String topicsSum) {
+        mTopicsSum = topicsSum;
     }
 
     public ArrayList<User> getMembers() {

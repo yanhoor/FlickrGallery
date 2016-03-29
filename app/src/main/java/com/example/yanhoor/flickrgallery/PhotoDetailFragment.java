@@ -14,6 +14,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,7 +47,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * Created by yanhoor on 2016/3/15.
  */
-public class PhotoDetailFragment extends Fragment {
+public class PhotoDetailFragment extends Fragment  implements View.OnClickListener{
     private static final String TAG="PhotoDetailFragment";
     private static final String ENDPOINT="https://api.flickr.com/services/rest/";
     private static final String API_KEY="0964378968b9ce3044e29838e2fc0cd8";
@@ -71,6 +73,8 @@ public class PhotoDetailFragment extends Fragment {
     TextView commentNumber;
     TextView favoritesNumber;
     TextView viewsNumber;
+    EditText editComment;
+    Button sendComment;
     RecyclerView mRV;
 
     PhotoInfoUtil mPhotoInfoUtil;
@@ -139,18 +143,12 @@ public class PhotoDetailFragment extends Fragment {
         commentNumber=(TextView)v.findViewById(R.id.comment_number);
         favoritesNumber=(TextView)v.findViewById(R.id.favorites_number);
         viewsNumber=(TextView)v.findViewById(R.id.views_number);
+        editComment=(EditText)v.findViewById(R.id.comment_editText);
+        sendComment=(Button)v.findViewById(R.id.send_comment_button);
         mRV=(RecyclerView)v.findViewById(R.id.comment_list_view_RV);
 
-        userName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i=new Intent(getActivity(),UserProfileActivity.class);
-                i.putExtra(UserProfileFragment.EXTRA_USER_ID,mGalleryItem.getUserId());
-                startActivity(i);
-                Log.d(TAG,"Going to user profile");
-            }
-        });
-
+        userName.setOnClickListener(this);
+        sendComment.setOnClickListener(this);
         updateUI();
 
         return v;
@@ -197,6 +195,29 @@ public class PhotoDetailFragment extends Fragment {
         mRV.setItemAnimator(new DefaultItemAnimator());
         mRV.setAdapter(new RVAdapter());
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.send_comment_button:
+                String commentContent=editComment.getText().toString();
+                if (commentContent.length()>0){
+                    postComment(commentContent);
+                }else {
+                    Toast.makeText(getActivity(),R.string.content_empty,Toast.LENGTH_SHORT).show();
+                }
+                break;
+
+            case R.id.user_name:
+                Intent i=new Intent(getActivity(),UserProfileActivity.class);
+                i.putExtra(UserProfileFragment.EXTRA_USER_ID,mGalleryItem.getUserId());
+                startActivity(i);
+                Log.d(TAG,"Going to user profile");
+                break;
+            default:
+                break;
+        }
     }
 
     //获取照片评论数等
@@ -323,6 +344,67 @@ public class PhotoDetailFragment extends Fragment {
                             comment.setContent(content);
                             Log.d(TAG,"Comment content is "+content);
                             comments.add(comment);
+                        }
+                        eventType=parser.next();
+                    }
+                }catch (XmlPullParserException xppe){
+                    xppe.printStackTrace();
+                }catch (IOException ioe){
+                    ioe.printStackTrace();
+                }
+            }
+        });
+
+    }
+
+    public void postComment(String commentText){
+
+        String[] mSignFullTokenStringArray = {"method" + "flickr.photos.comments.addComment",
+                "api_key" + LogInFragment.API_KEY, "auth_token" + mFullToken,
+                LogInFragment.PUBLIC_CODE, "photo_id" + mGalleryItem.getId(),
+                "comment_text"+commentText};
+
+        Arrays.sort(mSignFullTokenStringArray);
+        StringBuilder mSB = new StringBuilder();
+        for (String s : mSignFullTokenStringArray) {
+            mSB.append(s);
+        }
+        String apiSig = StaticMethodUtil.countMD5OfString(mSB.toString());
+        String url = Uri.parse(ENDPOINT).buildUpon()
+                .appendQueryParameter("method", "flickr.photos.comments.addComment")
+                .appendQueryParameter("api_key", API_KEY)
+                .appendQueryParameter("photo_id", mGalleryItem.getId())
+                .appendQueryParameter("auth_token", mFullToken)
+                .appendQueryParameter("comment_text",commentText)
+                .appendQueryParameter("api_sig", apiSig)
+                .build().toString();
+
+        new KJHttp().post(url, null, new HttpCallBack() {
+            String commentId;
+
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                if (commentId!=null){
+                    editComment.setText("");
+                    Toast.makeText(getActivity(),R.string.comment_successfully,Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onSuccess(String t) {
+                super.onSuccess(t);
+                Log.d(TAG,"Getting comment id from "+t);
+
+                try {
+                    XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
+                    XmlPullParser parser=factory.newPullParser();
+                    parser.setInput(new StringReader(t));
+
+                    int eventType=parser.getEventType();
+                    while (eventType!=XmlPullParser.END_DOCUMENT){
+                        if (eventType==XmlPullParser.START_TAG&&"comment".equals(parser.getName())){
+                            commentId=parser.getAttributeValue(null,"id");
                         }
                         eventType=parser.next();
                     }

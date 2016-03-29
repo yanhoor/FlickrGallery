@@ -25,4 +25,8 @@
     <string name="group_profile">Groups: </string>
     <string name="member_title_profile">Members: </string>
     <string name="topic_title_profile">Topics: </string>
+    <string name="comment_successfully">Posted comment successfully</string>
+    <string name="comment_hint">Add a comment</string>
+    <string name="send_button">Send</string>
+    <string name="content_empty">Please add a comment first</string>
 </resources>

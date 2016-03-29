@@ -140,6 +140,11 @@ public class GetGroupProfileUtil {
 
                     int eventType=parser.getEventType();
                     while (eventType!=XmlPullParser.END_DOCUMENT){
+                        if (eventType==XmlPullParser.START_TAG&&"topics".equals(parser.getName())){
+                            String total=parser.getAttributeValue(null,"total");
+                            mGroup.setTopicsSum(total);
+                        }
+
                         if (eventType==XmlPullParser.START_TAG&&"topic".equals(parser.getName())){
                             Topic topic=new Topic();
 
