@@ -107,7 +107,9 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
         //判断是否登录
         mFullToken= PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .getString(LogInFragment.PREF_FULL_TOKEN,null);
-        if (mFullToken==null){
+        String administratorId=PreferenceManager.getDefaultSharedPreferences(getActivity())
+                .getString(LogInFragment.PREF_USER_ID,null);
+        if (administratorId==null){
             Toast.makeText(getActivity(),R.string.fullToken_unavailable,Toast.LENGTH_LONG).show();
             getActivity().finish();
         }

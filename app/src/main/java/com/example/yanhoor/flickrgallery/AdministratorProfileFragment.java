@@ -2,6 +2,7 @@ package com.example.yanhoor.flickrgallery;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.yanhoor.flickrgallery.model.GalleryItem;
 import com.example.yanhoor.flickrgallery.model.Group;
@@ -25,14 +27,14 @@ import org.kymjs.kjframe.KJBitmap;
 import java.util.ArrayList;
 
 /**
- * Created by yanhoor on 2016/3/20.
+ * Created by yanhoor on 2016/3/29.
  */
-public class UserProfileFragment extends Fragment  implements View.OnClickListener{
-    private static  final String TAG="UserProfileFragment";
+public class AdministratorProfileFragment extends Fragment implements View.OnClickListener{
+    private static final String TAG="AdministratorProfile";
 
     private User mUser;
-    private String mUserId;
-    private ArrayList<User>mFollowings;
+    private String mId;
+    private ArrayList<User> mFollowings;
     private ArrayList<Group>mGroups;
     ExpandableHeightGridView userPhotoGridView;
     TextView userName;
@@ -42,39 +44,33 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
     RelativeLayout followingLayout;
     TextView groupNumber;
     RelativeLayout groupLayout;
+    RelativeLayout locationLayout;
     TextView locationTextView;
     TextView location;
     ImageView buddyIconImageView;
     GetUserProfileUtil mGetUserProfileUtil;
 
-    public static final String EXTRA_USER_ID="com.example.yanhoor.flickrgallery.UserProfileFragment.user_Id";
-
-    public static Fragment newUserProfileFragmentInstance(String userId){
-        Bundle args=new Bundle();
-        args.putSerializable(EXTRA_USER_ID,userId);
-
-        UserProfileFragment fragment=new UserProfileFragment();
-        fragment.setArguments(args);
-
-        return fragment;
-    }
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mUserId=(String)getArguments().getSerializable(EXTRA_USER_ID);
+        mId= PreferenceManager.getDefaultSharedPreferences(getActivity())
+                .getString(LogInFragment.PREF_USER_ID,null);
+        Log.d(TAG,"mId is "+mId);
+        if (mId==null){
+            Toast.makeText(getActivity(),R.string.fullToken_unavailable,Toast.LENGTH_SHORT).show();
+            onDestroy();
+            Intent i=new Intent(getActivity(),LogInActivity.class);
+            startActivity(i);
+        }
         mUser=new User();
-        mUser.setId(mUserId);
+        mUser.setId(mId);
         mGetUserProfileUtil=new GetUserProfileUtil();
-        mGetUserProfileUtil.getUserProfile(mUserId);
+        mGetUserProfileUtil.getUserProfile(mId);
         mGetUserProfileUtil.getGroups(getActivity());
-        //mGetUserProfileUtil.getPublicGroups();
-        //updateUserInfo();
         mGetUserProfileUtil.setListener(new GetUserProfileUtil.listener() {
             @Override
             public void onUpdateFinish(User user) {
-                mUser=user;
-                Log.d(TAG,"userName is "+mUser.getUserName());
+                mUser =user;
                 updateUI();
             }
         });
@@ -83,24 +79,25 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v=inflater.inflate(R.layout.fragment_user_profile,container,false);
+        View v=inflater.inflate(R.layout.fragment_administrator_profile,container,false);
 
-        buddyIconImageView=(ImageView)v.findViewById(R.id.buddy_icon_profile);
-        userName=(TextView)v.findViewById(R.id.user_name_profile);
-        descriptionLayout=(RelativeLayout)v.findViewById(R.id.description_layout_profile);
-        userDescription=(TextView)v.findViewById(R.id.user_description_profile);
-        followingLayout=(RelativeLayout)v.findViewById(R.id.following_layout);
+        buddyIconImageView=(ImageView)v.findViewById(R.id.buddy_icon_administratorProfile);
+        userName=(TextView)v.findViewById(R.id.user_name_administratorProfile);
+        descriptionLayout=(RelativeLayout)v.findViewById(R.id.description_layout_administratorProfile);
+        userDescription=(TextView)v.findViewById(R.id.user_description_administratorProfile);
+        followingLayout=(RelativeLayout)v.findViewById(R.id.following_layout_administratorProfile);
         followingLayout.setOnClickListener(this);
 
-        followingNumber=(TextView)v.findViewById(R.id.following_number_profile);
-        groupNumber=(TextView)v.findViewById(R.id.group_number_profile);
-        groupLayout=(RelativeLayout)v.findViewById(R.id.groupLayout_profile);
+        followingNumber=(TextView)v.findViewById(R.id.following_number_administratorProfile);
+        groupNumber=(TextView)v.findViewById(R.id.group_number_administratorProfile);
+        groupLayout=(RelativeLayout)v.findViewById(R.id.groupLayout_administratorProfile);
         groupLayout.setOnClickListener(this);
 
-        locationTextView=(TextView)v.findViewById(R.id.location_profile);
-        location=(TextView)v.findViewById(R.id.location_text_profile);
+        locationLayout=(RelativeLayout)v.findViewById(R.id.location_layout_administratorProfile);
+        locationTextView=(TextView)v.findViewById(R.id.location_administratorProfile);
+        location=(TextView)v.findViewById(R.id.location_text_administratorProfile);
         //使用自定义ExpandableHeightGridView防止与scrollview冲突
-        userPhotoGridView=(ExpandableHeightGridView)v.findViewById(R.id.photo_gridView_profile);
+        userPhotoGridView=(ExpandableHeightGridView)v.findViewById(R.id.photo_gridView_administratorProfile);
         userPhotoGridView.setExpanded(true);
 
         updateUI();
@@ -115,8 +112,6 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
 
                 GalleryItem item=mUser.getGalleryItems().get(position);
                 Intent i=new Intent(getActivity(),PhotoDetailActivity.class);
-                //用于代替PhotoDetailActivity实现滑动查看图片详情
-                //Intent i=new Intent(getActivity(),PhotoPageActivity.class);
                 i.putExtra(PhotoDetailFragment.EXTRA_GALLERYITEM_mId,item.getId());
                 startActivity(i);
             }
@@ -128,7 +123,7 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.following_layout:
+            case R.id.following_layout_administratorProfile:
                 mFollowings=new ArrayList<>();
                 mFollowings.addAll(mUser.getFollowingUsers());
                 if (mFollowings.size()>0){
@@ -138,7 +133,8 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
                     startActivity(i);
                 }
                 break;
-            case R.id.groupLayout_profile:
+
+            case R.id.groupLayout_administratorProfile:
                 mGroups=new ArrayList<>();
                 mGroups.addAll(mUser.getGroups());
                 if (mGroups.size()>0){
@@ -148,6 +144,7 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
                     startActivity(i);
                 }
                 break;
+
             default:
                 break;
         }
@@ -175,7 +172,7 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
 
         //Log.d(TAG,"location length is "+mUser.getLocation().length());
         if (mUser.getLocation()!=null&&mUser.getLocation().length()!=0){
-            location.setVisibility(View.VISIBLE);
+            locationLayout.setVisibility(View.VISIBLE);
             locationTextView.setText(mUser.getLocation());
         }
 

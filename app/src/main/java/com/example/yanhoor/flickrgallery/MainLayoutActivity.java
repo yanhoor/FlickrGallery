@@ -47,7 +47,9 @@ public class MainLayoutActivity extends FragmentActivity {
         public Fragment getItem(int position) {
             switch (position){
                 case 0:
+                    return new PhotoGalleryFragment();
                 case 1:
+                    return new AdministratorProfileFragment();
                 default:
                     return new PhotoGalleryFragment();
             }
@@ -65,7 +67,7 @@ public class MainLayoutActivity extends FragmentActivity {
                     return "New photo";
                 case 1:
                 default:
-                    return "Login";
+                    return "Profile";
             }
         }
 
