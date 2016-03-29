@@ -18,6 +18,7 @@ import com.example.yanhoor.flickrgallery.model.GalleryItem;
 import com.example.yanhoor.flickrgallery.model.Group;
 import com.example.yanhoor.flickrgallery.model.User;
 import com.example.yanhoor.flickrgallery.util.GetUserProfileUtil;
+import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.squareup.picasso.Picasso;
 
 import org.kymjs.kjframe.KJBitmap;
@@ -37,7 +38,7 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
     ExpandableHeightGridView userPhotoGridView;
     TextView userName;
     RelativeLayout descriptionLayout;
-    TextView userDescription;
+    ExpandableTextView userDescription;
     TextView followingNumber;
     RelativeLayout followingLayout;
     TextView groupNumber;
@@ -88,7 +89,7 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
         buddyIconImageView=(ImageView)v.findViewById(R.id.buddy_icon_profile);
         userName=(TextView)v.findViewById(R.id.user_name_profile);
         descriptionLayout=(RelativeLayout)v.findViewById(R.id.description_layout_profile);
-        userDescription=(TextView)v.findViewById(R.id.user_description_profile);
+        userDescription=(ExpandableTextView) v.findViewById(R.id.user_description_profile);
         followingLayout=(RelativeLayout)v.findViewById(R.id.following_layout);
         followingLayout.setOnClickListener(this);
 

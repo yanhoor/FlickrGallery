@@ -26,6 +26,7 @@ import com.example.yanhoor.flickrgallery.model.GalleryItem;
 import com.example.yanhoor.flickrgallery.model.User;
 import com.example.yanhoor.flickrgallery.util.PhotoInfoUtil;
 import com.example.yanhoor.flickrgallery.util.StaticMethodUtil;
+import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.squareup.picasso.Picasso;
 
 import org.kymjs.kjframe.KJBitmap;
@@ -68,7 +69,7 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
     ImageView ownerIcon;
     TextView userName;
     TextView title;
-    TextView description;
+    ExpandableTextView description;
     TextView location;
     TextView postedTime;
     ImageView mImageView;
@@ -141,7 +142,7 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
         ownerIcon=(ImageView)v.findViewById(R.id.owner_icon);
         userName=(TextView)v.findViewById(R.id.user_name);
         title=(TextView)v.findViewById(R.id.photo_title);
-        description=(TextView)v.findViewById(R.id.Photo_description);
+        description=(ExpandableTextView) v.findViewById(R.id.Photo_description);
         location=(TextView)v.findViewById(R.id.location_text);
         postedTime=(TextView)v.findViewById(R.id.posted_time_text);
         mImageView=(ImageView) v.findViewById(R.id.photo_imageView);

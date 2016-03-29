@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.example.yanhoor.flickrgallery.model.GalleryItem;
 import com.example.yanhoor.flickrgallery.model.Group;
 import com.example.yanhoor.flickrgallery.util.GetGroupProfileUtil;
+import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.squareup.picasso.Picasso;
 
 import org.kymjs.kjframe.KJBitmap;
@@ -39,7 +40,7 @@ public class GroupProfileFragment extends Fragment {
     private RelativeLayout memberLayout;
     RelativeLayout topicLayout;
     private TextView mTopicNumber;
-    private TextView mGroupDescription;
+    private ExpandableTextView mGroupDescription;
     private ExpandableHeightGridView mGroupPhotoGridview;
 
     public static GroupProfileFragment newInstance(String mGroupId){
@@ -80,7 +81,7 @@ public class GroupProfileFragment extends Fragment {
         mMemberNumber=(TextView)v.findViewById(R.id.member_number_profile);
         topicLayout=(RelativeLayout)v.findViewById(R.id.topic_layout);
         mTopicNumber=(TextView)v.findViewById(R.id.topic_number_profile);
-        mGroupDescription=(TextView)v.findViewById(R.id.description_content_groupProfile);
+        mGroupDescription=(ExpandableTextView) v.findViewById(R.id.description_content_groupProfile);
         mGroupPhotoGridview=(ExpandableHeightGridView) v.findViewById(R.id.photo_gridView_groupProfile);
         mGroupPhotoGridview.setExpanded(true);
 
