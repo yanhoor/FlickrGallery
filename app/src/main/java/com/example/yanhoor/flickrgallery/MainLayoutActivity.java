@@ -19,6 +19,7 @@ public class MainLayoutActivity extends FragmentActivity {
     private static final String TAG="MainLayoutActivity";
 
     public static String fullToken;
+    public static String administratorId;
 
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
@@ -31,6 +32,9 @@ public class MainLayoutActivity extends FragmentActivity {
 
         fullToken=PreferenceManager.getDefaultSharedPreferences(this)
                 .getString(LogInFragment.PREF_FULL_TOKEN,null);
+
+        administratorId=PreferenceManager.getDefaultSharedPreferences(this)
+                .getString(LogInFragment.PREF_USER_ID,null);
 
         mTabLayout=(TabLayout) findViewById(R.id.tablayout);
         mViewPager=(ViewPager)findViewById(R.id.viewPager);

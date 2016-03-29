@@ -19,6 +19,7 @@ public class Group implements Serializable {
     private String mMemberNumber;
     private String mPool_count;//照片数
     private String mTopicsSum;
+    private String isMember="null";//判断是否是群组成员
 
     private String mDescription;
 
@@ -114,6 +115,15 @@ public class Group implements Serializable {
 
     public void setGalleryItems(ArrayList<GalleryItem> galleryItems) {
         mGalleryItems.addAll(galleryItems);
+    }
+
+    public String getIsMember() {
+        Log.d(TAG,"is member "+isMember);
+        return isMember;
+    }
+
+    public void setIsMember(String isMember) {
+        this.isMember = isMember;
     }
 
     public String getGroupIconUrl(){

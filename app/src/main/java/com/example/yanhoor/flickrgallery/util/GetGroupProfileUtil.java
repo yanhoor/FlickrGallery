@@ -3,6 +3,8 @@ package com.example.yanhoor.flickrgallery.util;
 import android.net.Uri;
 import android.util.Log;
 
+import com.example.yanhoor.flickrgallery.LogInFragment;
+import com.example.yanhoor.flickrgallery.MainLayoutActivity;
 import com.example.yanhoor.flickrgallery.model.GalleryItem;
 import com.example.yanhoor.flickrgallery.model.Group;
 import com.example.yanhoor.flickrgallery.model.Topic;
@@ -18,6 +20,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
@@ -52,10 +55,23 @@ public class GetGroupProfileUtil {
     }
 
     public void getGroupInfo(){
+
+        String[] mSignFullTokenStringArray = {"method" + "flickr.groups.getInfo",
+                "api_key" + LogInFragment.API_KEY, "auth_token" + MainLayoutActivity.fullToken,
+                LogInFragment.PUBLIC_CODE, "group_id" + mGroup.getId()};
+        Arrays.sort(mSignFullTokenStringArray);
+        StringBuilder mSB = new StringBuilder();
+        for (String s : mSignFullTokenStringArray) {
+            mSB.append(s);
+        }
+        String apiSig = StaticMethodUtil.countMD5OfString(mSB.toString());
+
         String url = Uri.parse(ENDPOINT).buildUpon()
                 .appendQueryParameter("method", "flickr.groups.getInfo")
                 .appendQueryParameter("api_key", API_KEY)
                 .appendQueryParameter("group_id", mGroup.getId())
+                .appendQueryParameter("auth_token", MainLayoutActivity.fullToken)
+                .appendQueryParameter("api_sig",apiSig)
                 .build().toString();
 
         Log.d(TAG,"Getting group info from "+url);
@@ -82,7 +98,10 @@ public class GetGroupProfileUtil {
                         if (eventType==XmlPullParser.START_TAG&&"group".equals(parser.getName())){
                             String iconServer=parser.getAttributeValue(null,"iconserver");
                             String iconFarm=parser.getAttributeValue(null,"iconfarm");
+                            String isMember=parser.getAttributeValue(null,"is_member");
 
+                            Log.d(TAG,"is member "+isMember);
+                            mGroup.setIsMember(isMember);
                             mGroup.setIconServer(iconServer);
                             mGroup.setIconFarm(iconFarm);
                         }
