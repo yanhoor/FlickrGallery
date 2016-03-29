@@ -41,7 +41,8 @@
 
         <activity android:name="com.example.yanhoor.flickrgallery.GetAccessActivity"/>
 
-        <activity android:name="com.example.yanhoor.flickrgallery.PhotoDetailActivity"/>
+        <activity android:name="com.example.yanhoor.flickrgallery.PhotoDetailActivity"
+            android:windowSoftInputMode="stateHidden"/>
 
         <activity android:name="com.example.yanhoor.flickrgallery.PhotoDetailPagerActivity"/>
 
