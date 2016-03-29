@@ -6,6 +6,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.example.yanhoor.flickrgallery.LogInFragment;
+import com.example.yanhoor.flickrgallery.MainLayoutActivity;
 import com.example.yanhoor.flickrgallery.model.GalleryItem;
 import com.example.yanhoor.flickrgallery.model.Group;
 import com.example.yanhoor.flickrgallery.model.User;
@@ -58,11 +59,26 @@ public class GetUserProfileUtil {
 
     public void getUserInfo() {
 
+        Log.d(TAG,"fulltoken is "+MainLayoutActivity.fullToken);
+        String[] mSignFullTokenStringArray = {"method" + "flickr.people.getInfo",
+                "api_key" + LogInFragment.API_KEY, "auth_token" + MainLayoutActivity.fullToken,
+                LogInFragment.PUBLIC_CODE, "user_id" + mUser.getId()};
+        Arrays.sort(mSignFullTokenStringArray);
+        StringBuilder mSB = new StringBuilder();
+        for (String s : mSignFullTokenStringArray) {
+            mSB.append(s);
+        }
+        String apiSig = StaticMethodUtil.countMD5OfString(mSB.toString());
+
         String url = Uri.parse(ENDPOINT).buildUpon()
                 .appendQueryParameter("method", "flickr.people.getInfo")
                 .appendQueryParameter("api_key", API_KEY)
                 .appendQueryParameter("user_id", mUser.getId())
+                .appendQueryParameter("auth_token", MainLayoutActivity.fullToken)
+                .appendQueryParameter("api_sig",apiSig)
                 .build().toString();
+
+        Log.d(TAG,"url is "+url);
 
         new KJHttp().get(url, new HttpCallBack() {
             @Override
@@ -85,9 +101,11 @@ public class GetUserProfileUtil {
                         if (eventType == XmlPullParser.START_TAG && "person".equals(parser.getName())) {
                             String iconSever = parser.getAttributeValue(null, "iconserver");
                             String iconFarm = parser.getAttributeValue(null, "iconfarm");
+                            String contact=parser.getAttributeValue(null,"contact");
 
                             mUser.setIconServer(iconSever);
                             mUser.setIconFarm(iconFarm);
+                            mUser.setContact(contact);
                         }
                         if (eventType == XmlPullParser.START_TAG && "username".equals(parser.getName())) {
                             String userName = parser.nextText();

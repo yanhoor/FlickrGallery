@@ -33,83 +33,98 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="10dp">
 
             <RelativeLayout
-                android:id="@+id/following_layout"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp">
+                android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/following_text_profile"
+                <RelativeLayout
+                    android:id="@+id/following_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:id="@+id/following_text_profile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/following"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/colorPrimaryDark"/>
+
+                    <TextView
+                        android:id="@+id/following_number_profile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/following_text_profile"
+                        android:layout_marginStart="10dp"
+                        android:text="0"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/groupLayout_profile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/following"
-                    android:textStyle="bold|italic"
-                    android:textColor="@color/colorPrimaryDark"/>
+                    android:layout_below="@+id/following_layout"
+                    android:layout_marginTop="10dp">
 
-                <TextView
-                    android:id="@+id/following_number_profile"
+                    <TextView
+                        android:id="@+id/group_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/group_profile"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/colorPrimaryDark"/>
+
+                    <TextView
+                        android:id="@+id/group_number_profile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/group_title"
+                        android:layout_marginStart="10dp"
+                        android:text="0"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/location_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/following_text_profile"
-                    android:layout_marginStart="10dp"
-                    android:text="0"/>
+                    android:layout_below="@+id/groupLayout_profile"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginStart="10dp">
+
+                    <TextView
+                        android:id="@+id/location_text_profile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/location"
+                        android:textStyle="bold|italic"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:id="@+id/location_profile"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/location_text_profile"
+                        android:layout_marginStart="10dp"/>
+
+                </RelativeLayout>
 
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/groupLayout_profile"
+            <Button
+                android:visibility="gone"
+                android:id="@+id/following_button_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/following_layout"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="10dp">
-
-                <TextView
-                    android:id="@+id/group_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/group_profile"
-                    android:textStyle="bold|italic"
-                    android:textColor="@color/colorPrimaryDark"/>
-
-                <TextView
-                    android:id="@+id/group_number_profile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/group_title"
-                    android:layout_marginStart="10dp"
-                    android:text="0"/>
-
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/location_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/groupLayout_profile"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="10dp">
-
-                <TextView
-                    android:id="@+id/location_text_profile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/location"
-                    android:textStyle="bold|italic"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:visibility="gone"/>
-
-                <TextView
-                    android:id="@+id/location_profile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/location_text_profile"
-                    android:layout_marginStart="10dp"/>
-
-            </RelativeLayout>
+                android:layout_gravity="center_vertical"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="10dp"
+                android:background="@color/colorWhite"/>
 
         </RelativeLayout>
 

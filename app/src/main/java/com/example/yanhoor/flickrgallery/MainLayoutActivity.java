@@ -17,6 +17,9 @@ import android.util.Log;
  */
 public class MainLayoutActivity extends FragmentActivity {
     private static final String TAG="MainLayoutActivity";
+
+    public static String fullToken;
+
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
 
@@ -25,6 +28,9 @@ public class MainLayoutActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         Log.d(TAG,"on create");
         setContentView(R.layout.activity_main_layout);
+
+        fullToken=PreferenceManager.getDefaultSharedPreferences(this)
+                .getString(LogInFragment.PREF_FULL_TOKEN,null);
 
         mTabLayout=(TabLayout) findViewById(R.id.tablayout);
         mViewPager=(ViewPager)findViewById(R.id.viewPager);

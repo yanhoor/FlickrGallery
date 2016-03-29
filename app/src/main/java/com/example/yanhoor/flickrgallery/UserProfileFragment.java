@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,6 +38,7 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
     private ArrayList<Group>mGroups;
     ExpandableHeightGridView userPhotoGridView;
     TextView userName;
+    Button followingButton;
     RelativeLayout descriptionLayout;
     ExpandableTextView userDescription;
     TextView followingNumber;
@@ -47,6 +49,8 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
     TextView location;
     ImageView buddyIconImageView;
     GetUserProfileUtil mGetUserProfileUtil;
+
+    String contact;
 
     public static final String EXTRA_USER_ID="com.example.yanhoor.flickrgallery.UserProfileFragment.user_Id";
 
@@ -88,6 +92,8 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
 
         buddyIconImageView=(ImageView)v.findViewById(R.id.buddy_icon_profile);
         userName=(TextView)v.findViewById(R.id.user_name_profile);
+        followingButton=(Button)v.findViewById(R.id.following_button_profile);
+        followingButton.setOnClickListener(this);
         descriptionLayout=(RelativeLayout)v.findViewById(R.id.description_layout_profile);
         userDescription=(ExpandableTextView) v.findViewById(R.id.user_description_profile);
         followingLayout=(RelativeLayout)v.findViewById(R.id.following_layout);
@@ -139,6 +145,7 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
                     startActivity(i);
                 }
                 break;
+
             case R.id.groupLayout_profile:
                 mGroups=new ArrayList<>();
                 mGroups.addAll(mUser.getGroups());
@@ -149,12 +156,22 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
                     startActivity(i);
                 }
                 break;
+
+            case R.id.following_button_profile:
+
             default:
                 break;
         }
     }
 
     void updateUI(){
+        contact=mUser.getContact();
+        if (contact==null||contact.equals("0")){
+            followingButton.setText(R.string.following_user_profile);
+        }else {
+            followingButton.setText(R.string.unFollowing_user_profile);
+        }
+
         //加载icon
         new KJBitmap.Builder().view(buddyIconImageView).imageUrl(mUser.getUserIconUrl()).display();
         if (mUser.getUserName()!=null){

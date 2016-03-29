@@ -29,4 +29,6 @@
     <string name="comment_hint">Add a comment</string>
     <string name="send_button">Send</string>
     <string name="content_empty">Please add a comment first</string>
+    <string name="following_user_profile">Follow</string>
+    <string name="unFollowing_user_profile">Unfollow</string>
 </resources>

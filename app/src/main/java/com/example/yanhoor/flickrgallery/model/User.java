@@ -19,6 +19,7 @@ public class User implements Serializable{
     private String mLocation;
     private String mFollowingsNumber;
     private String mDescription;
+    private String mContact;
 
     private ArrayList<User>mFollowingUsers=new ArrayList<>();
     private ArrayList<GalleryItem>mGalleryItems=new ArrayList<>();
@@ -110,6 +111,14 @@ public class User implements Serializable{
 
     public void setGroups(ArrayList<Group> groups) {
         mGroups.addAll(groups);
+    }
+
+    public String getContact() {
+        return mContact;
+    }
+
+    public void setContact(String contact) {
+        mContact = contact;
     }
 
     public String getUserIconUrl(){
