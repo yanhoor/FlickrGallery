@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,6 +64,7 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
     private String mViews="0";
     private String mFavorites="0";
 
+    RelativeLayout ownerLayout;
     ImageView ownerIcon;
     TextView userName;
     TextView title;
@@ -133,6 +135,7 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v=inflater.inflate(R.layout.fragment_photo_detail,container,false);
 
+        ownerLayout=(RelativeLayout)v.findViewById(R.id.owner_layout);
         ownerIcon=(ImageView)v.findViewById(R.id.owner_icon);
         userName=(TextView)v.findViewById(R.id.user_name);
         title=(TextView)v.findViewById(R.id.photo_title);
@@ -147,7 +150,7 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
         sendComment=(Button)v.findViewById(R.id.send_comment_button);
         mRV=(RecyclerView)v.findViewById(R.id.comment_list_view_RV);
 
-        userName.setOnClickListener(this);
+        ownerLayout.setOnClickListener(this);
         sendComment.setOnClickListener(this);
         updateUI();
 
@@ -209,7 +212,7 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
                 }
                 break;
 
-            case R.id.user_name:
+            case R.id.owner_layout:
                 Intent i=new Intent(getActivity(),UserProfileActivity.class);
                 i.putExtra(UserProfileFragment.EXTRA_USER_ID,mGalleryItem.getUserId());
                 startActivity(i);
@@ -443,6 +446,15 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
             holder.time.setText(mComments.get(position).getDateCreate());
 
             holder.author.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i=new Intent(getActivity(),UserProfileActivity.class);
+                    i.putExtra(UserProfileFragment.EXTRA_USER_ID,mComments.get(holder.getAdapterPosition()).getAuthor().getId());
+                    startActivity(i);
+                    Log.d(TAG,"Going to user profile");
+                }
+            });
+            holder.authorIcon.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Intent i=new Intent(getActivity(),UserProfileActivity.class);
