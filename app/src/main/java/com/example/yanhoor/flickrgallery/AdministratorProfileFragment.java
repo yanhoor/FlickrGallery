@@ -46,7 +46,6 @@ public class AdministratorProfileFragment extends Fragment implements View.OnCli
     RelativeLayout groupLayout;
     RelativeLayout locationLayout;
     TextView locationTextView;
-    TextView location;
     ImageView buddyIconImageView;
     GetUserProfileUtil mGetUserProfileUtil;
 
@@ -96,7 +95,6 @@ public class AdministratorProfileFragment extends Fragment implements View.OnCli
 
         locationLayout=(RelativeLayout)v.findViewById(R.id.location_layout_administratorProfile);
         locationTextView=(TextView)v.findViewById(R.id.location_administratorProfile);
-        location=(TextView)v.findViewById(R.id.location_text_administratorProfile);
         //使用自定义ExpandableHeightGridView防止与scrollview冲突
         userPhotoGridView=(ExpandableHeightGridView)v.findViewById(R.id.photo_gridView_administratorProfile);
         userPhotoGridView.setExpanded(true);

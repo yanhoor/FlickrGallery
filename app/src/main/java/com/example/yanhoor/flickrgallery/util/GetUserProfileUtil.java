@@ -201,7 +201,7 @@ public class GetUserProfileUtil {
         mGalleryItems=new ArrayList<>();
 
         String photoUrl= Uri.parse(ENDPOINT).buildUpon()
-                .appendQueryParameter("method","flickr.people.getPhotosOf")
+                .appendQueryParameter("method","flickr.people.getPhotos")
                 .appendQueryParameter("api_key",API_KEY)
                 .appendQueryParameter("user_id",mUser.getId())
                 .appendQueryParameter("extras","url_s")
