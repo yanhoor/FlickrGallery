@@ -35,4 +35,7 @@
     <string name="leave_group">Leave</string>
     <string name="join_group_successfully">Join group successfully</string>
     <string name="leave_group_successfully">Leave group successfully</string>
+    <string name="leave_group_message_dialog">Do you confirm to leave the group ?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

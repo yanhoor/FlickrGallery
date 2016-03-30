@@ -106,6 +106,7 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
     public void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d(TAG,"on Create");
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         mGalleryId=(String) getArguments().getSerializable(EXTRA_GALLERYITEM_mId);
         Log.d(TAG,"mGalleryId is "+mGalleryId);
 

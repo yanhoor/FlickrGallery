@@ -1,10 +1,12 @@
 package com.example.yanhoor.flickrgallery;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,6 +80,7 @@ public class GroupProfileFragment extends Fragment  implements View.OnClickListe
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         mGroupId=(String) getArguments().getSerializable(EXTRA_GROUP_ID);
         mGroup=new Group();
         mGroup.setId(mGroupId);
@@ -169,7 +172,7 @@ public class GroupProfileFragment extends Fragment  implements View.OnClickListe
             case R.id.member_layout_profile:
                 if (mGroup.getMembers().size()>0){
                     Intent i=new Intent(getActivity(),ListActivity.class);
-                    ListActivity.dataType="followings";
+                    ListActivity.dataType="followings";//将members作为followings类型数据展示
                     i.putExtra(ListFollowingsFragment.EXTRA_DATA_FOLLOWINGS,mGroup.getMembers());
                     startActivity(i);
                 }
@@ -187,7 +190,21 @@ public class GroupProfileFragment extends Fragment  implements View.OnClickListe
             case R.id.join_group_button_groupProfile:
                 if (mGroup.getIsMember()!=null){
                     if (mGroup.getIsMember().equals("1")){
-                        leaveGroup();
+                        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+                        builder.setMessage(R.string.leave_group_message_dialog)
+                                .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        leaveGroup();
+                                    }
+                                })
+                                .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                })
+                                .show();
                     }else {
                         joinGroup();
                     }
@@ -314,7 +331,7 @@ public class GroupProfileFragment extends Fragment  implements View.OnClickListe
 
     private class GridViewAdapter extends ArrayAdapter<GalleryItem>{
         public GridViewAdapter(ArrayList<GalleryItem>items){
-            super(getActivity(),0,items);
+            super(getActivity().getApplicationContext(),0,items);
         }
 
         @Override

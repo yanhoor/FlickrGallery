@@ -53,6 +53,7 @@ public class AdministratorProfileFragment extends Fragment implements View.OnCli
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
         mId= PreferenceManager.getDefaultSharedPreferences(getActivity())
                 .getString(LogInFragment.PREF_USER_ID,null);
         Log.d(TAG,"mId is "+mId);
@@ -185,7 +186,7 @@ public class AdministratorProfileFragment extends Fragment implements View.OnCli
 
     private class GalleryItemAdapter extends ArrayAdapter<GalleryItem> {
         public GalleryItemAdapter(ArrayList<GalleryItem> items){
-            super(getActivity(),0,items);
+            super(getActivity().getApplicationContext(),0,items);
         }
 
         @Override

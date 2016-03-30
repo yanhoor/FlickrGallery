@@ -25,6 +25,7 @@ public class Group implements Serializable {
 
     //使用flickr.groups.discuss.topics.getList获取
     private ArrayList<Topic>mTopics=new ArrayList<>();
+    //使用flickr.groups.members.getList获取
     private ArrayList<User>mMembers=new ArrayList<>();
 
     private ArrayList<GalleryItem>mGalleryItems=new ArrayList<>();

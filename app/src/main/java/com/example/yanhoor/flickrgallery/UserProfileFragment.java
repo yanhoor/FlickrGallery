@@ -87,6 +87,19 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
         });
     }
 
+    @Override
+    public void onStart() {
+        Log.d(TAG,"onStart");
+        updateData();
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        Log.d(TAG,"onResume");
+        super.onResume();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

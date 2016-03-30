@@ -52,6 +52,7 @@ public class GetGroupProfileUtil {
         getGroupInfo();
         getGroupTopic();
         getGroupPhotos();
+        getGroupMembers();
     }
 
     public void getGroupInfo(){
@@ -256,6 +257,69 @@ public class GetGroupProfileUtil {
             }
         });
 
+    }
+
+    public void getGroupMembers(){
+        String[] mSignFullTokenStringArray = {"method" + "flickr.groups.members.getList",
+                "api_key" + LogInFragment.API_KEY, "auth_token" + MainLayoutActivity.fullToken,
+                LogInFragment.PUBLIC_CODE, "group_id" + mGroup.getId()};
+        Arrays.sort(mSignFullTokenStringArray);
+        StringBuilder mSB = new StringBuilder();
+        for (String s : mSignFullTokenStringArray) {
+            mSB.append(s);
+        }
+        String apiSig = StaticMethodUtil.countMD5OfString(mSB.toString());
+
+        String url = Uri.parse(ENDPOINT).buildUpon()
+                .appendQueryParameter("method", "flickr.groups.members.getList")
+                .appendQueryParameter("api_key", API_KEY)
+                .appendQueryParameter("group_id", mGroup.getId())
+                .appendQueryParameter("auth_token", MainLayoutActivity.fullToken)
+                .appendQueryParameter("api_sig",apiSig)
+                .build().toString();
+
+        new KJHttp().get(url, new HttpCallBack() {
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                mMainThreadListener.onUpdateFinish(mGroup);
+            }
+
+            @Override
+            public void onSuccess(String t) {
+                ArrayList<User>members=new ArrayList<>();
+                super.onSuccess(t);
+                Log.d(TAG,"Getting group members from "+t);
+                try {
+                    XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
+                    XmlPullParser parser=factory.newPullParser();
+                    parser.setInput(new StringReader(t));
+
+                    int eventType=parser.getEventType();
+                    while (eventType!=XmlPullParser.END_DOCUMENT){
+                        if (eventType==XmlPullParser.START_TAG&&"member".equals(parser.getName())){
+                            User member=new User();
+                            String id=parser.getAttributeValue(null,"nsid");
+                            String userName=parser.getAttributeValue(null,"username");
+                            String iconServer=parser.getAttributeValue(null,"iconserver");
+                            String iconFarm=parser.getAttributeValue(null,"iconfarm");
+
+                            member.setId(id);
+                            member.setUserName(userName);
+                            member.setIconServer(iconServer);
+                            member.setIconFarm(iconFarm);
+                            members.add(member);
+                        }
+                        eventType=parser.next();
+                    }
+                }catch (XmlPullParserException xppe) {
+                    xppe.printStackTrace();
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+                mGroup.setMembers(members);
+            }
+        });
     }
 
 }
