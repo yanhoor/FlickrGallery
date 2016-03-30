@@ -186,7 +186,7 @@ public class GetGroupProfileUtil {
                             String message=parser.getAttributeValue(null,"message");
                             //unix timetamp转化为现在的ms要乘1000
                             Date mDate=new Date(Long.parseLong(dateCreate)*1000);
-                            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("MM-dd HH:mm", Locale.US);
+                            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
                             String dateString=simpleDateFormat.format(mDate);
 
                             author.setId(authorId);

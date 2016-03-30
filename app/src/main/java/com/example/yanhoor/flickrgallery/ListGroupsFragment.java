@@ -55,14 +55,14 @@ public class ListGroupsFragment extends Fragment {
         View v=inflater.inflate(R.layout.fragment_following_list,container,false);
 
         mRV=(RecyclerView) v.findViewById(R.id.following_RecyclerView);
+        mRV.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mRV.setItemAnimator(new DefaultItemAnimator());
         updateUI();
 
         return v;
     }
 
     public void updateUI(){
-        mRV.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mRV.setItemAnimator(new DefaultItemAnimator());
         mRV.setAdapter(new ListRVAdapter());
     }
 

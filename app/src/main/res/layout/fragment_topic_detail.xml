@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            xmlns:expandableTextView="http://schemas.android.com/tools"
+            android:fillViewport="true">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp">
+
+            <RelativeLayout
+                android:id="@+id/topic_author_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/topic_author_icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/brain_up_close"
+                    app:civ_border_width="1dp"
+                    app:civ_border_color="@color/colorBlack"/>
+
+                <TextView
+                    android:id="@+id/topic_author"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:textStyle="bold"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:maxLines="1"
+                    android:layout_toEndOf="@+id/topic_author_icon"/>
+
+                <TextView
+                    android:id="@+id/topic_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:textSize="12sp"
+                    android:layout_below="@+id/topic_author"
+                    android:layout_toEndOf="@+id/topic_author_icon"/>
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/division_line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/topic_author_layout"
+                android:layout_marginTop="8dp"
+                android:background="@color/colorGray"/>
+
+            <TextView
+                android:id="@+id/topic_subject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/division_line"
+                android:layout_marginTop="4dp"
+                android:textStyle="bold|italic"
+                android:visibility="gone"/>
+
+            <com.ms.square.android.expandabletextview.ExpandableTextView
+                android:id="@+id/topic_message"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_below="@+id/topic_subject"
+                expandableTextView:maxCollapsedLines="4"
+                expandableTextView:animDuration="200">
+                <TextView
+                    android:id="@id/expandable_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:textSize="16sp"
+                    android:textColor="#666666" />
+
+                <ImageButton
+                    android:id="@id/expand_collapse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:layout_gravity="end|bottom"
+                    android:background="@android:color/transparent"/>
+            </com.ms.square.android.expandabletextview.ExpandableTextView>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/topic_message">
+
+                <RelativeLayout
+                    android:id="@+id/topic_reply_layout"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="12dp">
+
+                    <TextView
+                        android:id="@+id/topic_reply_sum_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold|italic"
+                        android:text="@string/topic_reply_sum_title"
+                        android:layout_marginEnd="10dp"/>
+
+                    <TextView
+                        android:id="@+id/topic_reply_num"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/topic_reply_sum_title"
+                        android:layout_marginStart="10dp"
+                        android:text="0"/>
+
+                </RelativeLayout>
+
+                <Button
+                    android:id="@+id/post_reply"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:background="@color/colorWhite"
+                    android:text="@string/add_topic_reply"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/topic_reply_list"
+            android:layout_width="match_parent"
+            android:layout_height="420dp"
+            android:focusable="false"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="24dp"/>
+
+    </LinearLayout>
+
+</ScrollView>

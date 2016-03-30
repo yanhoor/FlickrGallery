@@ -1,6 +1,7 @@
 package com.example.yanhoor.flickrgallery.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * Created by yanhoor on 2016/3/27.
@@ -15,6 +16,9 @@ public class Topic implements Serializable {
     private String mCountReplies;
     private String mDateCreate;
     private String mMessage;
+    private String mGroupId;
+
+    private ArrayList<TopicReply>mTopicReplies=new ArrayList<>();
 
     public User getAuthor() {
         return mAuthor;
@@ -72,4 +76,19 @@ public class Topic implements Serializable {
         mSubject = subject;
     }
 
+    public String getGroupId() {
+        return mGroupId;
+    }
+
+    public void setGroupId(String groupId) {
+        mGroupId = groupId;
+    }
+
+    public ArrayList<TopicReply> getTopicReplies() {
+        return mTopicReplies;
+    }
+
+    public void setTopicReplies(ArrayList<TopicReply> topicReplies) {
+        mTopicReplies.addAll(topicReplies);
+    }
 }

@@ -6,14 +6,13 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp">
 
-
     <RelativeLayout
-        android:id="@+id/comment_author_layout"
+        android:id="@+id/topic_author_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/comment_author_icon"
+            android:id="@+id/topic_author_icon"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:src="@drawable/brain_up_close"
@@ -21,37 +20,37 @@
             app:civ_border_color="@color/colorBlack"/>
 
         <TextView
-            android:id="@+id/comment_author"
+            android:id="@+id/topic_author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:textStyle="bold"
             android:textColor="@color/colorPrimaryDark"
             android:maxLines="1"
-            android:layout_toEndOf="@+id/comment_author_icon"/>
+            android:layout_toEndOf="@+id/topic_author_icon"/>
 
         <TextView
-            android:id="@+id/Comment_time"
+            android:id="@+id/topic_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:textSize="12sp"
-            android:layout_below="@+id/comment_author"
-            android:layout_toEndOf="@+id/comment_author_icon"/>
+            android:layout_below="@+id/topic_author"
+            android:layout_toEndOf="@+id/topic_author_icon"/>
     </RelativeLayout>
 
 
     <TextView
-        android:id="@+id/comment_content"
+        android:id="@+id/topic_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/comment_author_layout"
+        android:layout_below="@+id/topic_author_layout"
         android:layout_marginTop="4dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/comment_content"
+        android:layout_below="@+id/topic_message"
         android:layout_marginTop="8dp"
         android:background="@color/colorGray"/>
 

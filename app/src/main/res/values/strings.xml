@@ -29,7 +29,7 @@
     <string name="comment_successfully">Posted comment successfully</string>
     <string name="comment_hint">Add a comment</string>
     <string name="send_button">Send</string>
-    <string name="content_empty">Please add a comment first</string>
+    <string name="content_empty">Please write something first</string>
     <string name="following_user_profile">Follow</string>
     <string name="unFollowing_user_profile">Unfollow</string>
     <string name="join_group">Join in</string>
@@ -39,4 +39,7 @@
     <string name="leave_group_message_dialog">Do you confirm to leave the group ?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="topic_reply_sum_title">Total reply: </string>
+    <string name="add_topic_reply">Reply</string>
+    <string name="reply_successfully">Reply successfully</string>
 </resources>

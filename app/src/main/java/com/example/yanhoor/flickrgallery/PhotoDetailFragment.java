@@ -490,10 +490,10 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
 
             public RVViewHolder(View view){
                 super(view);
-                authorIcon=(CircleImageView) view.findViewById(R.id.comment_author_icon);
-                author=(TextView)view.findViewById(R.id.comment_author);
-                content=(TextView)view.findViewById(R.id.comment_content);
-                time=(TextView)view.findViewById(R.id.Comment_time);
+                authorIcon=(CircleImageView) view.findViewById(R.id.topic_author_icon);
+                author=(TextView)view.findViewById(R.id.topic_author);
+                content=(TextView)view.findViewById(R.id.topic_message);
+                time=(TextView)view.findViewById(R.id.topic_time);
 
             }
         }

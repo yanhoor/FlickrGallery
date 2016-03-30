@@ -52,6 +52,10 @@
 
         <activity android:name=".GroupProfileActivity"/>
 
+        <activity android:name=".TopicDetailActivity"/>
+
+        <activity android:name=".TopicReplyActivity"/>
+
         <service android:name="com.example.yanhoor.flickrgallery.PollService"/>
 
         <receiver android:name="com.example.yanhoor.flickrgallery.StartupReceiver">
