@@ -22,6 +22,7 @@
     <string name="location">Location: </string>
     <string name="posted_time">Posted at: </string>
     <string name="description_title_profile">Description: </string>
+    <string name="rule_title">Rule: </string>
     <string name="group_profile">Groups: </string>
     <string name="member_title_profile">Members: </string>
     <string name="topic_title_profile">Topics: </string>

@@ -22,6 +22,7 @@ public class Group implements Serializable {
     private String isMember="null";//判断是否是群组成员
 
     private String mDescription;
+    private String mRule;
 
     //使用flickr.groups.discuss.topics.getList获取
     private ArrayList<Topic>mTopics=new ArrayList<>();
@@ -125,6 +126,14 @@ public class Group implements Serializable {
 
     public void setIsMember(String isMember) {
         this.isMember = isMember;
+    }
+
+    public String getRule() {
+        return mRule;
+    }
+
+    public void setRule(String rule) {
+        mRule = rule;
     }
 
     public String getGroupIconUrl(){

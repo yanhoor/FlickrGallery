@@ -59,6 +59,9 @@ public class GroupProfileFragment extends Fragment  implements View.OnClickListe
     private RelativeLayout memberLayout;
     RelativeLayout topicLayout;
     private TextView mTopicNumber;
+    RelativeLayout ruleLayout;
+    ExpandableTextView ruleContent;
+    private RelativeLayout descriptionLayout;
     private ExpandableTextView mGroupDescription;
     private ExpandableHeightGridView mGroupPhotoGridview;
 
@@ -108,6 +111,9 @@ public class GroupProfileFragment extends Fragment  implements View.OnClickListe
         mMemberNumber=(TextView)v.findViewById(R.id.member_number_profile);
         topicLayout=(RelativeLayout)v.findViewById(R.id.topic_layout);
         mTopicNumber=(TextView)v.findViewById(R.id.topic_number_profile);
+        ruleLayout=(RelativeLayout)v.findViewById(R.id.rule_layout_groupProfile);
+        ruleContent=(ExpandableTextView)v.findViewById(R.id.rule_content_groupProfile);
+        descriptionLayout=(RelativeLayout)v.findViewById(R.id.description_layout_groupProfile);
         mGroupDescription=(ExpandableTextView) v.findViewById(R.id.description_content_groupProfile);
         mGroupPhotoGridview=(ExpandableHeightGridView) v.findViewById(R.id.photo_gridView_groupProfile);
         mGroupPhotoGridview.setExpanded(true);
@@ -155,7 +161,14 @@ public class GroupProfileFragment extends Fragment  implements View.OnClickListe
             mTopicNumber.setText(mGroup.getTopicsSum());
         }
         if (mGroup.getDescription()!=null){
+            descriptionLayout.setVisibility(View.VISIBLE);
             mGroupDescription.setText(mGroup.getDescription());
+        }
+
+        Log.d(TAG,"rule is "+mGroup.getRule());
+        if (mGroup.getRule()!=null){
+            ruleLayout.setVisibility(View.VISIBLE);
+            ruleContent.setText(mGroup.getRule());
         }
 
         if (mGroup.getGalleryItems().size()>0){

@@ -30,6 +30,12 @@
             android:textStyle="bold"
             android:textColor="@color/colorPrimaryDark"/>
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:background="@color/colorBlack"/>
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -102,16 +108,55 @@
 
         </RelativeLayout>
 
-        <TextView
+        <RelativeLayout
+            android:id="@+id/rule_layout_groupProfile"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginTop="5dp"
-            android:background="@color/colorBlack"/>
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginTop="12dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp">
+
+            <TextView
+                android:id="@+id/rule_title_groupProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rule_title"
+                android:textStyle="bold|italic"
+                android:textColor="@color/colorPrimaryDark"/>
+
+            <com.ms.square.android.expandabletextview.ExpandableTextView
+                android:id="@+id/rule_content_groupProfile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_below="@+id/rule_title_groupProfile"
+                expandableTextView:maxCollapsedLines="4"
+                expandableTextView:animDuration="200">
+                <TextView
+                    android:id="@id/expandable_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:textSize="16sp"
+                    android:textColor="#666666" />
+                <ImageButton
+                    android:id="@id/expand_collapse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:layout_gravity="right|bottom"
+                    android:background="@android:color/transparent"/>
+            </com.ms.square.android.expandabletextview.ExpandableTextView>
+
+        </RelativeLayout>
 
         <RelativeLayout
             android:id="@+id/description_layout_groupProfile"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_marginTop="12dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp">

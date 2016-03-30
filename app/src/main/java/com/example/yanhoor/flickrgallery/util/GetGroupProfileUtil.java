@@ -117,6 +117,11 @@ public class GetGroupProfileUtil {
                             mGroup.setDescription(description);
                         }
 
+                        if (eventType==XmlPullParser.START_TAG&&"rules".equals(parser.getName())){
+                            String rule=parser.nextText();
+                            mGroup.setRule(rule);
+                        }
+
                         if (eventType==XmlPullParser.START_TAG&&"members".equals(parser.getName())){
                             String memberNum=parser.nextText();
                             mGroup.setMemberNumber(memberNum);
