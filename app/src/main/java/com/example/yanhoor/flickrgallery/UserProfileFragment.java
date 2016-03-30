@@ -64,6 +64,11 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
         return fragment;
     }
 
+    private void updateData(){
+        mGetUserProfileUtil.getUserProfile(mUserId);
+        mGetUserProfileUtil.getGroups(getActivity());
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,10 +76,7 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
         mUser=new User();
         mUser.setId(mUserId);
         mGetUserProfileUtil=new GetUserProfileUtil();
-        mGetUserProfileUtil.getUserProfile(mUserId);
-        mGetUserProfileUtil.getGroups(getActivity());
-        //mGetUserProfileUtil.getPublicGroups();
-        //updateUserInfo();
+        updateData();
         mGetUserProfileUtil.setListener(new GetUserProfileUtil.listener() {
             @Override
             public void onUpdateFinish(User user) {

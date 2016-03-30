@@ -83,6 +83,7 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
     PhotoInfoUtil mPhotoInfoUtil;
     ArrayList<Comment>mComments;
     User mOwner;
+    String mGalleryId;
 
     public static PhotoDetailFragment newPhotoDetailFragmentInstance(String mId){
         Bundle args=new Bundle();
@@ -94,16 +95,22 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
         return fragment;
     }
 
+    private void updateData(){
+        //获取照片信息，userName,description,location等
+        mGalleryItem=mPhotoInfoUtil.getPhotoInfo(mGalleryItem);
+        getPhotoStates();//获取照片comment,favorites,views等
+        getComments(mComments,mGalleryId);//获取评论
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         Log.d(TAG,"on Create");
         super.onCreate(savedInstanceState);
-        String mGalleryId=(String) getArguments().getSerializable(EXTRA_GALLERYITEM_mId);
+        mGalleryId=(String) getArguments().getSerializable(EXTRA_GALLERYITEM_mId);
         Log.d(TAG,"mGalleryId is "+mGalleryId);
 
         //获取评论
         mComments=new ArrayList<>();
-        getComments(mComments,mGalleryId);
 
         //判断是否登录
         mFullToken= PreferenceManager.getDefaultSharedPreferences(getActivity())
@@ -128,9 +135,7 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
             }
         });
 
-        //获取照片信息，userName,description,location等
-        mGalleryItem=mPhotoInfoUtil.getPhotoInfo(mGalleryItem);
-        getPhotoStates();//获取照片comment,favorites,views等
+        updateData();
     }
 
     @Nullable
@@ -293,6 +298,7 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
 
     //获取评论
     public void getComments(final ArrayList<Comment>requestComments,String id){
+        requestComments.clear();//先清除原来的，防止重复
         final ArrayList<Comment> comments=new ArrayList<>();
 
         String url=Uri.parse(ENDPOINT).buildUpon()
@@ -392,6 +398,7 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
             public void onFinish() {
                 super.onFinish();
                 if (commentId!=null){
+                    updateData();
                     editComment.setText("");
                     Toast.makeText(getActivity(),R.string.comment_successfully,Toast.LENGTH_SHORT).show();
                 }

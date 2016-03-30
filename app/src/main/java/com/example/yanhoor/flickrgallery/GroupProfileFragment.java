@@ -60,6 +60,8 @@ public class GroupProfileFragment extends Fragment  implements View.OnClickListe
     private ExpandableTextView mGroupDescription;
     private ExpandableHeightGridView mGroupPhotoGridview;
 
+    String mGroupId;
+
     public static GroupProfileFragment newInstance(String mGroupId){
         Bundle args=new Bundle();
         args.putSerializable(EXTRA_GROUP_ID,mGroupId);
@@ -69,10 +71,14 @@ public class GroupProfileFragment extends Fragment  implements View.OnClickListe
         return fragment;
     }
 
+    private void updateData(){
+        mGetGroupProfileUtil.getGroupProfile(mGroupId);
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final String mGroupId=(String) getArguments().getSerializable(EXTRA_GROUP_ID);
+        mGroupId=(String) getArguments().getSerializable(EXTRA_GROUP_ID);
         mGroup=new Group();
         mGroup.setId(mGroupId);
 
@@ -84,7 +90,7 @@ public class GroupProfileFragment extends Fragment  implements View.OnClickListe
                 updateUI();
             }
         });
-        mGetGroupProfileUtil.getGroupProfile(mGroupId);
+        updateData();
 
     }
 
@@ -228,6 +234,7 @@ public class GroupProfileFragment extends Fragment  implements View.OnClickListe
                         if (eventType==XmlPullParser.START_TAG&&"rsp".equals(parser.getName())){
                             String state=parser.getAttributeValue(null,"stat");
                             if (state.equals("ok")){
+                                updateData();
                                 Toast.makeText(getActivity(),R.string.leave_group_successfully,Toast.LENGTH_SHORT).show();
                             }
                         }
@@ -284,6 +291,7 @@ public class GroupProfileFragment extends Fragment  implements View.OnClickListe
                         if (eventType==XmlPullParser.START_TAG&&"rsp".equals(parser.getName())){
                             String state=parser.getAttributeValue(null,"stat");
                             if (state.equals("ok")){
+                                updateData();
                                 Toast.makeText(getActivity(),R.string.join_group_successfully,Toast.LENGTH_SHORT).show();
                             }
                         }
