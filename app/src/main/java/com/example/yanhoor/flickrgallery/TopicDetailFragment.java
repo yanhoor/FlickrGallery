@@ -41,7 +41,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 /**
  * Created by yanhoor on 2016/3/30.
  */
-public class TopicDetailFragment extends Fragment {
+public class TopicDetailFragment extends Fragment  implements View.OnClickListener{
     private static final String TAG="TopicDetailFragmen";
 
     private static final String ENDPOINT="https://api.flickr.com/services/rest/";
@@ -92,31 +92,37 @@ public class TopicDetailFragment extends Fragment {
         replyList=(RecyclerView)v.findViewById(R.id.topic_reply_list);
         replyButton=(Button)v.findViewById(R.id.post_reply);
 
-        replyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i=new Intent(getActivity(),TopicReplyActivity.class);
-                i.putExtra(TopicReplyFragment.EXTRA_GROUP_ID,mTopic.getGroupId());
-                i.putExtra(TopicReplyFragment.EXTRA_TOPIC_ID,mTopic.getId());
-                startActivity(i);
-            }
-        });
+        replyButton.setOnClickListener(this);
 
         new KJBitmap.Builder().imageUrl(mTopic.getAuthor().getUserIconUrl()).view(authorIcon).display();
         authorName.setText(mTopic.getAuthor().getUserName());
         topicTime.setText(mTopic.getDateCreate());
-        authorName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i=new Intent(getActivity(),UserProfileActivity.class);
-                i.putExtra(UserProfileFragment.EXTRA_USER_ID,mTopic.getAuthor().getId());
-                startActivity(i);
-            }
-        });
+
+        authorName.setOnClickListener(this);
+        authorIcon.setOnClickListener(this);
 
         updateUI();
 
         return v;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.post_reply:
+                Intent i=new Intent(getActivity(),TopicReplyActivity.class);
+                i.putExtra(TopicReplyFragment.EXTRA_GROUP_ID,mTopic.getGroupId());
+                i.putExtra(TopicReplyFragment.EXTRA_TOPIC_ID,mTopic.getId());
+                startActivity(i);
+                break;
+            case R.id.topic_author:
+            case R.id.topic_author_icon:
+                Intent intent=new Intent(getActivity(),UserProfileActivity.class);
+                intent.putExtra(UserProfileFragment.EXTRA_USER_ID,mTopic.getAuthor().getId());
+                startActivity(intent);
+                break;
+
+        }
     }
 
     private void updateData(){
