@@ -105,6 +105,15 @@ public class TopicDetailFragment extends Fragment {
         new KJBitmap.Builder().imageUrl(mTopic.getAuthor().getUserIconUrl()).view(authorIcon).display();
         authorName.setText(mTopic.getAuthor().getUserName());
         topicTime.setText(mTopic.getDateCreate());
+        authorName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(getActivity(),UserProfileActivity.class);
+                i.putExtra(UserProfileFragment.EXTRA_USER_ID,mTopic.getAuthor().getId());
+                startActivity(i);
+            }
+        });
+
         updateUI();
 
         return v;
@@ -250,7 +259,12 @@ public class TopicDetailFragment extends Fragment {
                 } catch (IOException ioe) {
                     ioe.printStackTrace();
                 }
-                mTopic.setTopicReplies(mReplies);
+                ArrayList<TopicReply>temps=new ArrayList<>();
+                //倒序
+                for (int i=mReplies.size()-1;i>=0;i--){
+                    temps.add(mReplies.get(i));
+                }
+                mTopic.setTopicReplies(temps);
             }
         });
     }

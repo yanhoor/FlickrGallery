@@ -65,15 +65,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/division_line"
-                android:layout_marginTop="4dp"
-                android:textStyle="bold|italic"
-                android:visibility="gone"/>
+                android:layout_marginTop="12dp"
+                android:textStyle="bold|italic"/>
 
             <com.ms.square.android.expandabletextview.ExpandableTextView
                 android:id="@+id/topic_message"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="12dp"
                 android:layout_below="@+id/topic_subject"
                 expandableTextView:maxCollapsedLines="4"
                 expandableTextView:animDuration="200">

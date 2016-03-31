@@ -171,7 +171,7 @@ public class GroupProfileFragment extends Fragment  implements View.OnClickListe
             ruleContent.setText(mGroup.getRule());
         }
 
-        if (mGroup.getGalleryItems().size()>0){
+        if (mGroup.getGalleryItems().size()>0&&getActivity()!=null){
             mGroupPhotoGridview.setAdapter(new GridViewAdapter(mGroup.getGalleryItems()));
         }else {
             mGroupPhotoGridview.setAdapter(null);

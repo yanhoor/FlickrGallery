@@ -213,7 +213,7 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.send_comment_button:
-                String commentContent=editComment.getText().toString();
+                String commentContent=editComment.getText().toString().trim();//防止只输入空格
                 if (commentContent.length()>0){
                     postComment(commentContent);
                 }else {

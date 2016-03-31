@@ -208,6 +208,7 @@ public class GetGroupProfileUtil {
                 } catch (IOException ioe) {
                     ioe.printStackTrace();
                 }
+                mGroup.getTopics().clear();
                 mGroup.setTopics(mTopics);
             }
         });
@@ -258,6 +259,7 @@ public class GetGroupProfileUtil {
                 } catch (IOException ioe) {
                     ioe.printStackTrace();
                 }
+                mGroup.getGalleryItems().clear();
                 mGroup.setGalleryItems(mGalleryItems);
             }
         });
@@ -322,6 +324,7 @@ public class GetGroupProfileUtil {
                 } catch (IOException ioe) {
                     ioe.printStackTrace();
                 }
+                mGroup.getMembers().clear();
                 mGroup.setMembers(members);
             }
         });

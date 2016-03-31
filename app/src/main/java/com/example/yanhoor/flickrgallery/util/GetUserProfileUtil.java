@@ -191,6 +191,7 @@ public class GetUserProfileUtil {
                 }catch (IOException ioe){
                     ioe.printStackTrace();
                 }
+                mUser.getFollowingUsers().clear();
                 mUser.setFollowingUsers(mFollowings);
             }
         });
@@ -198,6 +199,7 @@ public class GetUserProfileUtil {
     }
 
     public void getUserPhoto(){
+        mUser.getGalleryItems().clear();
         mGalleryItems=new ArrayList<>();
 
         String photoUrl= Uri.parse(ENDPOINT).buildUpon()
@@ -241,6 +243,7 @@ public class GetUserProfileUtil {
                     ioe.printStackTrace();
                 }
                 mUser.setGalleryItems(mGalleryItems);
+                Log.d(TAG,"Galleryitems size is "+mUser.getGalleryItems().size());
             }
         });
     }
@@ -313,6 +316,7 @@ public class GetUserProfileUtil {
                 }catch (IOException ioe){
                     ioe.printStackTrace();
                 }
+                mUser.getGroups().clear();
                 mUser.setGroups(mGroups);
             }
         });

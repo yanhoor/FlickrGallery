@@ -94,12 +94,6 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
         super.onStart();
     }
 
-    @Override
-    public void onResume() {
-        Log.d(TAG,"onResume");
-        super.onResume();
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -212,7 +206,7 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
             locationTextView.setText(mUser.getLocation());
         }
 
-        if (mUser.getGalleryItems().size()>0){
+        if (mUser.getGalleryItems().size()>0&&getActivity()!=null){
             userPhotoGridView.setAdapter(new GalleryItemAdapter(mUser.getGalleryItems()));
         }else {
             userPhotoGridView.setAdapter(null);
@@ -221,7 +215,7 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
 
     private class GalleryItemAdapter extends ArrayAdapter<GalleryItem> {
         public GalleryItemAdapter(ArrayList<GalleryItem> items){
-            super(getActivity(),0,items);
+            super(getActivity().getApplicationContext(),0,items);
         }
 
         @Override
