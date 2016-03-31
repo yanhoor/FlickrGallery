@@ -199,7 +199,6 @@ public class GetUserProfileUtil {
     }
 
     public void getUserPhoto(){
-        mUser.getGalleryItems().clear();
         mGalleryItems=new ArrayList<>();
 
         String photoUrl= Uri.parse(ENDPOINT).buildUpon()
@@ -218,6 +217,8 @@ public class GetUserProfileUtil {
 
             @Override
             public void onSuccess(String t) {
+                mGalleryItems.clear();
+
                 Log.d(TAG,"Getting user photo from "+t);
                 try {
                     XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
@@ -242,6 +243,7 @@ public class GetUserProfileUtil {
                 }catch (IOException ioe){
                     ioe.printStackTrace();
                 }
+                Log.d(TAG,"mGalleryItems size is "+mGalleryItems.size());
                 mUser.setGalleryItems(mGalleryItems);
                 Log.d(TAG,"Galleryitems size is "+mUser.getGalleryItems().size());
             }
