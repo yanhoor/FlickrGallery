@@ -12,6 +12,7 @@ import com.example.yanhoor.flickrgallery.model.User;
 
 import org.kymjs.kjframe.KJHttp;
 import org.kymjs.kjframe.http.HttpCallBack;
+import org.kymjs.kjframe.http.HttpConfig;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -77,7 +78,9 @@ public class GetGroupProfileUtil {
 
         Log.d(TAG,"Getting group info from "+url);
 
-        new KJHttp().get(url, new HttpCallBack() {
+        HttpConfig config=new HttpConfig();
+        config.cacheTime=0;
+        new KJHttp(config).get(url, new HttpCallBack() {
             @Override
             public void onFinish() {
                 super.onFinish();
@@ -145,7 +148,9 @@ public class GetGroupProfileUtil {
                 .appendQueryParameter("group_id", mGroup.getId())
                 .build().toString();
 
-        new KJHttp().get(url, new HttpCallBack() {
+        HttpConfig config=new HttpConfig();
+        config.cacheTime=0;
+        new KJHttp(config).get(url, new HttpCallBack() {
             @Override
             public void onFinish() {
                 super.onFinish();
@@ -224,7 +229,9 @@ public class GetGroupProfileUtil {
                 .appendQueryParameter("extras","url_s")
                 .build().toString();
 
-        new KJHttp().get(url, new HttpCallBack() {
+        HttpConfig config=new HttpConfig();
+        config.cacheTime=0;
+        new KJHttp(config).get(url, new HttpCallBack() {
             @Override
             public void onFinish() {
                 super.onFinish();
@@ -285,7 +292,9 @@ public class GetGroupProfileUtil {
                 .appendQueryParameter("api_sig",apiSig)
                 .build().toString();
 
-        new KJHttp().get(url, new HttpCallBack() {
+        HttpConfig config=new HttpConfig();
+        config.cacheTime=0;
+        new KJHttp(config).get(url, new HttpCallBack() {
             @Override
             public void onFinish() {
                 super.onFinish();

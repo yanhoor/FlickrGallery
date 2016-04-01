@@ -8,6 +8,7 @@ import com.example.yanhoor.flickrgallery.model.User;
 
 import org.kymjs.kjframe.KJHttp;
 import org.kymjs.kjframe.http.HttpCallBack;
+import org.kymjs.kjframe.http.HttpConfig;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -46,7 +47,10 @@ public class PhotoInfoUtil {
                 .appendQueryParameter("api_key",API_KEY)
                 .appendQueryParameter("photo_id",photo_id)
                 .build().toString();
-        KJHttp kjHttp=new KJHttp();
+
+        HttpConfig config=new HttpConfig();
+        config.cacheTime=0;
+        KJHttp kjHttp=new KJHttp(config);
         kjHttp.get(url, new HttpCallBack() {
             @Override
             public void onFinish() {

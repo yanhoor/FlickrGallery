@@ -25,8 +25,11 @@ import android.widget.ImageView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.example.yanhoor.flickrgallery.util.StaticMethodUtil;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -46,6 +49,8 @@ public class UploadPhotoFragment extends Fragment {
     private ArrayList<HashMap<String,Object>> imageItems=new ArrayList<>();
     private SimpleAdapter mSimpleAdapter;
     private String imagePath;
+    private String title;
+    private String description;
     private ArrayList<byte[]>bitmapByteArrays=new ArrayList<>();
 
     @Nullable
@@ -59,6 +64,10 @@ public class UploadPhotoFragment extends Fragment {
         cancelButton=(Button)v.findViewById(R.id.cancel_post_new_photo_button);
         postButton=(Button)v.findViewById(R.id.post_new_photo_button);
 
+        title=editTitle.getText().toString().trim();
+        description=editDescription.getText().toString().trim();
+
+        //添加点击图片
         Bitmap addRes= BitmapFactory.decodeResource(getResources(),R.drawable.add_photo);
         HashMap<String,Object> map=new HashMap<>();
         map.put("imageItem",addRes);
@@ -175,6 +184,25 @@ public class UploadPhotoFragment extends Fragment {
             imagePath=null;
 
         }
+    }
+
+    private void uploadPhoto(byte[] photoBinary){
+        String[] mSignFullTokenStringArray = {"api_key" + LogInFragment.API_KEY,
+                "auth_token" + MainLayoutActivity.fullToken,
+                LogInFragment.PUBLIC_CODE, "title"+title, "description"+description};
+        Arrays.sort(mSignFullTokenStringArray);
+        StringBuilder mSB = new StringBuilder();
+        for (String s : mSignFullTokenStringArray) {
+            mSB.append(s);
+        }
+        String apiSig = StaticMethodUtil.countMD5OfString(mSB.toString());
+
+        String url = Uri.parse("https://up.flickr.com/services/upload/").buildUpon()
+                .appendQueryParameter("api_key", LogInFragment.API_KEY)
+                .appendQueryParameter("photo",photoBinary.toString())
+                .appendQueryParameter("auth_token", MainLayoutActivity.fullToken)
+                .appendQueryParameter("api_sig",apiSig)
+                .build().toString();
     }
 
 }

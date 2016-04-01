@@ -32,6 +32,7 @@ import com.squareup.picasso.Picasso;
 import org.kymjs.kjframe.KJBitmap;
 import org.kymjs.kjframe.KJHttp;
 import org.kymjs.kjframe.http.HttpCallBack;
+import org.kymjs.kjframe.http.HttpConfig;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -308,7 +309,9 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
                 .appendQueryParameter("photo_id",id)
                 .build().toString();
 
-        new KJHttp().get(url, new HttpCallBack() {
+        HttpConfig config=new HttpConfig();
+        config.cacheTime=0;
+        new KJHttp(config).get(url, new HttpCallBack() {
             @Override
             public void onFinish() {
                 super.onFinish();

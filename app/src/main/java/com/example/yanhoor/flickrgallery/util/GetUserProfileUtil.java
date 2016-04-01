@@ -13,6 +13,7 @@ import com.example.yanhoor.flickrgallery.model.User;
 
 import org.kymjs.kjframe.KJHttp;
 import org.kymjs.kjframe.http.HttpCallBack;
+import org.kymjs.kjframe.http.HttpConfig;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -58,6 +59,8 @@ public class GetUserProfileUtil {
     }
 
     public void getUserInfo() {
+        HttpConfig config=new HttpConfig();
+        config.cacheTime=0;
 
         Log.d(TAG,"fulltoken is "+MainLayoutActivity.fullToken);
         String[] mSignFullTokenStringArray = {"method" + "flickr.people.getInfo",
@@ -80,7 +83,7 @@ public class GetUserProfileUtil {
 
         Log.d(TAG,"url is "+url);
 
-        new KJHttp().get(url, new HttpCallBack() {
+        new KJHttp(config).get(url, new HttpCallBack() {
             @Override
             public void onFinish() {
                 super.onFinish();
@@ -147,8 +150,10 @@ public class GetUserProfileUtil {
                 .appendQueryParameter("api_key",API_KEY)
                 .appendQueryParameter("user_id",mUser.getId())
                 .build().toString();
+        HttpConfig config=new HttpConfig();
+        config.cacheTime=0;
 
-        new KJHttp().get(url,new HttpCallBack() {
+        new KJHttp(config).get(url,new HttpCallBack() {
             @Override
             public void onFinish() {
                 super.onFinish();
@@ -208,7 +213,9 @@ public class GetUserProfileUtil {
                 .appendQueryParameter("extras","url_s")
                 .build().toString();
 
-        new KJHttp().get(photoUrl,new HttpCallBack() {
+        HttpConfig config=new HttpConfig();
+        config.cacheTime=0;
+        new KJHttp(config).get(photoUrl,new HttpCallBack() {
             @Override
             public void onFinish() {
                 super.onFinish();
@@ -275,7 +282,9 @@ public class GetUserProfileUtil {
                 .appendQueryParameter("api_sig", apiSig)
                 .build().toString();
 
-        new KJHttp().get(url, new HttpCallBack() {
+        HttpConfig config=new HttpConfig();
+        config.cacheTime=0;
+        new KJHttp(config).get(url, new HttpCallBack() {
             @Override
             public void onFinish() {
                 super.onFinish();
