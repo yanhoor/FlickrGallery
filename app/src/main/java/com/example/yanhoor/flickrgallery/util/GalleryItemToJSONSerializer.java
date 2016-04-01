@@ -42,7 +42,7 @@ public class GalleryItemToJSONSerializer {
             InputStream in=mContext.openFileInput(mFilename);
             reader=new BufferedReader(new InputStreamReader(in));
             StringBuilder jsonStrng=new StringBuilder();
-            String line=null;
+            String line;
             while((line=reader.readLine())!=null){
                 jsonStrng.append(line);
             }

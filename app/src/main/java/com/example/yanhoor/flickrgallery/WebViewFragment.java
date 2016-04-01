@@ -15,8 +15,8 @@ import android.widget.ProgressBar;
 /**
  * Created by yanhoor on 2016/3/10.
  */
-public class GetAccessFragment extends Fragment {
-    private static final String TAG="GetAccessFragment";
+public class WebViewFragment extends Fragment {
+    private static final String TAG="WebViewFragment";
     private WebView mWebView;
 
     @Override
@@ -28,7 +28,7 @@ public class GetAccessFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v=inflater.inflate(R.layout.fragment_verify_layout,container,false);
+        View v=inflater.inflate(R.layout.fragment_web_view,container,false);
 
         mWebView=(WebView) v.findViewById(R.id.webView);
         final ProgressBar mProgressBar=(ProgressBar) v.findViewById(R.id.progressBar);

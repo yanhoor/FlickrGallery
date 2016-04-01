@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="com.example.yanhoor.photogallery.PRIVATE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:allowBackup="true"
@@ -39,7 +40,7 @@
 
         <activity android:name="com.example.yanhoor.flickrgallery.LogInActivity"/>
 
-        <activity android:name="com.example.yanhoor.flickrgallery.GetAccessActivity"/>
+        <activity android:name=".WebViewActivity"/>
 
         <activity android:name="com.example.yanhoor.flickrgallery.PhotoDetailActivity"
             android:windowSoftInputMode="stateHidden"/>
@@ -55,6 +56,9 @@
         <activity android:name=".TopicDetailActivity"/>
 
         <activity android:name=".TopicReplyActivity"/>
+
+        <activity android:name=".UploadPhotoActivity"
+            android:windowSoftInputMode="stateAlwaysHidden"/>
 
         <service android:name="com.example.yanhoor.flickrgallery.PollService"/>
 

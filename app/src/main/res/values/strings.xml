@@ -42,4 +42,14 @@
     <string name="topic_reply_sum_title">Total reply: </string>
     <string name="add_topic_reply">Reply</string>
     <string name="reply_successfully">Reply successfully</string>
+    <string name="post_new_photo">Post new photo</string>
+    <string name="title_new_photo_hint">Title</string>
+    <string name="description_new_photo_hint">Description</string>
+    <string name="add_photo_hint">9 pictures at most</string>
+    <string name="cancel_text">Cancel</string>
+    <string name="post_text">Post</string>
+    <string name="photo_full_toast">You have added 9 pictures already</string>
+    <string name="add_photo_toast">Add more pictures</string>
+    <string name="menu_title_upload_photo">Upload photo</string>
+    <string name="delete_photo_confirm_dialog">Do you confirm to delete this photo ?</string>
 </resources>

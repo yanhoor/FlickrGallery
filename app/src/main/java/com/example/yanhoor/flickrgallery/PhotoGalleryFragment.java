@@ -246,6 +246,11 @@ public class PhotoGalleryFragment extends VisibleFragment {
                 startActivity(i);
                 return true;
 
+            case R.id.menu_item_upload_photo:
+                Intent uploadIntent=new Intent(getActivity(),UploadPhotoActivity.class);
+                startActivity(uploadIntent);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/post_new_photo"
+        android:textSize="24sp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="12dp"/>
+
+    <EditText
+        android:id="@+id/edit_new_photo_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lines="2"
+        android:maxLines="2"
+        android:layout_marginTop="12dp"
+        android:hint="@string/title_new_photo_hint"/>
+
+    <EditText
+        android:id="@+id/edit_new_photo_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lines="5"
+        android:maxLines="5"
+        android:layout_marginTop="12dp"
+        android:hint="@string/description_new_photo_hint"/>
+
+    <GridView
+        android:id="@+id/add_photo_gridView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="12dp"
+        android:numColumns="4"
+        android:horizontalSpacing="5dp"
+        android:verticalSpacing="5dp"
+        android:stretchMode="columnWidth"
+        android:columnWidth="90dp"
+        android:gravity="center"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="@string/add_photo_hint"
+        android:textSize="18sp"
+        android:gravity="center"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp">
+
+        <Button
+            android:id="@+id/cancel_post_new_photo_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:buttonBarButtonStyle"
+            android:layout_alignParentStart="true"
+            android:background="@color/colorWhite"
+            android:layout_marginStart="24dp"
+            android:text="@string/cancel_text"/>
+
+        <Button
+            android:id="@+id/post_new_photo_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:background="@color/colorWhite"
+            style="?android:buttonBarButtonStyle"
+            android:text="@string/post_text"
+            android:layout_marginEnd="24dp"
+            android:textColor="@color/colorGreenLight"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
