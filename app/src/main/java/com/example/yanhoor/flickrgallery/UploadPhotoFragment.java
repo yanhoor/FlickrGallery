@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -67,6 +68,13 @@ public class UploadPhotoFragment extends Fragment {
     private String description;
     private ArrayList<byte[]>bitmapByteArrays=new ArrayList<>();
     private ArrayList<String>photoPaths=new ArrayList<>();
+    private Handler UIHandler;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        UIHandler=new Handler();
+    }
 
     @Nullable
     @Override
@@ -349,14 +357,28 @@ public class UploadPhotoFragment extends Fragment {
                     if (eventType==XmlPullParser.START_TAG&&"rsp".equals(parser.getName())){
                         String state=parser.getAttributeValue(null,"stat");
                         if (state.equals("ok")){
-                            Toast.makeText(getActivity(),R.string.Upload_photo_successfully,Toast.LENGTH_SHORT).show();
+                            //返回主线程更新UI，
+                            // 防止java.lang.RuntimeException: Can't create handler inside thread that has not called Looper.prepare()
+                            UIHandler.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getActivity(),R.string.Upload_photo_successfully,Toast.LENGTH_SHORT).show();
+                                }
+                            });
                             getActivity().finish();
                         }
                     }
 
                     if (eventType==XmlPullParser.START_TAG&&"err".equals(parser.getName())){
-                        String errorMessage=parser.getAttributeValue(null,"msg");
-                        Toast.makeText(getActivity(),errorMessage,Toast.LENGTH_SHORT).show();
+                        final String errorMessage=parser.getAttributeValue(null,"msg");
+
+                        UIHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(getActivity(),errorMessage,Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
                     }
                     eventType=parser.next();
                 }
