@@ -68,10 +68,10 @@ public class TopicReplyFragment extends Fragment {
 
         editReply=(EditText)v.findViewById(R.id.edit_reply_topic);
         sendReply=(Button)v.findViewById(R.id.send_button_reply_topic);
-        replyContent=editReply.getText().toString().trim();
         sendReply.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                replyContent=editReply.getText().toString().trim();
                 if (replyContent!=null&&replyContent.length()>0){
                     postReply();
                 }else {
