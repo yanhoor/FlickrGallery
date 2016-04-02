@@ -121,6 +121,7 @@ public class TopicReplyFragment extends Fragment {
                             String state=parser.getAttributeValue(null,"stat");
                             if (state.equals("ok")){
                                 Toast.makeText(getActivity(),R.string.reply_successfully,Toast.LENGTH_SHORT).show();
+                                getActivity().finish();
                             }
                         }
 

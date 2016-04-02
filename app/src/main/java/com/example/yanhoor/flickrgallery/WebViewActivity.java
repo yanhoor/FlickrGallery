@@ -8,6 +8,8 @@ import android.support.v4.app.Fragment;
 public class WebViewActivity extends SingleFragmentActivity {
     @Override
     protected Fragment createFragment() {
-        return new WebViewFragment();
+        String url=getIntent().getStringExtra(WebViewFragment.EXTRA_URL);
+
+        return WebViewFragment.newInstance(url);
     }
 }

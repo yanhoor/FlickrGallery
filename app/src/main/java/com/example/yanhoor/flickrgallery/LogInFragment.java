@@ -64,6 +64,7 @@ public class LogInFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent i=new Intent(getActivity(),WebViewActivity.class);
+                i.putExtra(WebViewFragment.EXTRA_URL," https://www.flickr.com/auth-72157664677091449");
                 startActivity(i);
                 /*
                 Uri pageUri= Uri.parse("https://www.flickr.com/auth-72157664677091449");

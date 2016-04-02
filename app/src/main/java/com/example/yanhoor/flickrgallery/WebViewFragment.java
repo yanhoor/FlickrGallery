@@ -19,10 +19,23 @@ public class WebViewFragment extends Fragment {
     private static final String TAG="WebViewFragment";
     private WebView mWebView;
 
+    public static final String EXTRA_URL="url";
+    private String url;
+
+    public static WebViewFragment newInstance(String url){
+        Bundle args=new Bundle();
+        args.putString(EXTRA_URL,url);
+        WebViewFragment fragment=new WebViewFragment();
+        fragment.setArguments(args);
+
+        return fragment;
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        url=getArguments().getString(EXTRA_URL);
     }
 
     @Nullable
@@ -52,7 +65,7 @@ public class WebViewFragment extends Fragment {
                 }
             }
         });
-        mWebView.loadUrl(" https://www.flickr.com/auth-72157664677091449");
+        mWebView.loadUrl(url);
 
         FloatingActionButton mFAB=(FloatingActionButton)v.findViewById(R.id.float_button);
         mFAB.setOnClickListener(new View.OnClickListener() {

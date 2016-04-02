@@ -365,7 +365,6 @@ public class UploadPhotoFragment extends Fragment {
                                     Toast.makeText(getActivity(),R.string.Upload_photo_successfully,Toast.LENGTH_SHORT).show();
                                 }
                             });
-                            getActivity().finish();
                         }
                     }
 
