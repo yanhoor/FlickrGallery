@@ -395,6 +395,7 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
                 .appendQueryParameter("api_sig", apiSig)
                 .build().toString();
 
+        Log.d(TAG, "postComment: url is "+url);
         new KJHttp().post(url, null, new HttpCallBack() {
             String commentId;
 

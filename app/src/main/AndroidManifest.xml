@@ -58,7 +58,7 @@
         <activity android:name=".TopicReplyActivity"/>
 
         <activity android:name=".UploadPhotoActivity"
-            android:windowSoftInputMode="stateAlwaysHidden"/>
+            android:windowSoftInputMode="stateHidden"/>
 
         <service android:name="com.example.yanhoor.flickrgallery.PollService"/>
 

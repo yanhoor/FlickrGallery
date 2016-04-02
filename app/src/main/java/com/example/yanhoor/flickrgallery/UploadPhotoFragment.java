@@ -27,7 +27,19 @@ import android.widget.Toast;
 
 import com.example.yanhoor.flickrgallery.util.StaticMethodUtil;
 
+import org.kymjs.kjframe.http.HttpParams;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -39,6 +51,8 @@ public class UploadPhotoFragment extends Fragment {
     private static final String TAG="UploadPhotoFragment";
 
     private static final int REQUEST_CODE_PICK_PICTURE=1;
+    private static final String BOUNDARYSTR="---------------------------7d44e178b0434";
+    private static final String BOUNDARY="--" + BOUNDARYSTR + "\r\n";
 
     EditText editTitle;
     EditText editDescription;
@@ -52,6 +66,7 @@ public class UploadPhotoFragment extends Fragment {
     private String title;
     private String description;
     private ArrayList<byte[]>bitmapByteArrays=new ArrayList<>();
+    private ArrayList<String>photoPaths=new ArrayList<>();
 
     @Nullable
     @Override
@@ -64,9 +79,6 @@ public class UploadPhotoFragment extends Fragment {
         cancelButton=(Button)v.findViewById(R.id.cancel_post_new_photo_button);
         postButton=(Button)v.findViewById(R.id.post_new_photo_button);
 
-        title=editTitle.getText().toString().trim();
-        description=editDescription.getText().toString().trim();
-
         //添加点击图片
         Bitmap addRes= BitmapFactory.decodeResource(getResources(),R.drawable.add_photo);
         HashMap<String,Object> map=new HashMap<>();
@@ -74,6 +86,23 @@ public class UploadPhotoFragment extends Fragment {
         imageItems.add(map);
 
         setupAdapter();
+
+        postButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        for (int i=0;i<bitmapByteArrays.size();i++){
+                            byte[] b=bitmapByteArrays.get(i);
+                            String path=photoPaths.get(i);
+                            uploadPhoto(b,path);
+                        }
+                    }
+                }).start();
+            }
+
+        });
 
         newPhotoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -169,6 +198,7 @@ public class UploadPhotoFragment extends Fragment {
             newPic.compress(Bitmap.CompressFormat.JPEG,100,baos);
             byte[] bitmapByteArray=baos.toByteArray();
             bitmapByteArrays.add(bitmapByteArray);
+            photoPaths.add(imagePath);
 
             //Bitmap newPic=BitmapFactory.decodeFile(imagePath);
             Bitmap pic=Bitmap.createScaledBitmap(newPic,40,40,false);
@@ -186,7 +216,11 @@ public class UploadPhotoFragment extends Fragment {
         }
     }
 
-    private void uploadPhoto(byte[] photoBinary){
+    private void uploadPhoto(byte[] photoBinary,String path){
+
+        title=editTitle.getText().toString().trim();
+        description=editDescription.getText().toString().trim();
+
         String[] mSignFullTokenStringArray = {"api_key" + LogInFragment.API_KEY,
                 "auth_token" + MainLayoutActivity.fullToken,
                 LogInFragment.PUBLIC_CODE, "title"+title, "description"+description};
@@ -197,12 +231,142 @@ public class UploadPhotoFragment extends Fragment {
         }
         String apiSig = StaticMethodUtil.countMD5OfString(mSB.toString());
 
+        HttpParams params=new HttpParams();
+        params.put("photo",photoBinary);
+
         String url = Uri.parse("https://up.flickr.com/services/upload/").buildUpon()
                 .appendQueryParameter("api_key", LogInFragment.API_KEY)
-                .appendQueryParameter("photo",photoBinary.toString())
                 .appendQueryParameter("auth_token", MainLayoutActivity.fullToken)
+                .appendQueryParameter("title",title)
+                .appendQueryParameter("description",description)
                 .appendQueryParameter("api_sig",apiSig)
                 .build().toString();
+
+        Log.d(TAG, "uploadPhoto: title is "+title);
+        Log.d(TAG, "uploadPhoto: description is "+description);
+        Log.d(TAG, "uploadPhoto: url is "+url+"?"+params);
+
+        HttpURLConnection connection=null;
+        String res=null;//服务器返回的上传结果
+        try{
+            URL uploadUrl=new URL(url+"?"+params);
+            connection= (HttpURLConnection) uploadUrl.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setConnectTimeout(5*60*1000);
+            connection.setReadTimeout(5*60*1000);
+            connection.addRequestProperty("Content-Type","multipart/form-data; boundary="+BOUNDARYSTR);
+            connection.connect();
+            BufferedOutputStream out=new BufferedOutputStream(connection.getOutputStream());
+
+            StringBuilder sb=new StringBuilder();
+            sb.append(BOUNDARY);
+            sb.append("Content-Disposition: form-data; name=\"api_key\"");
+            sb.append("\r\n\r\n");
+            sb.append(LogInFragment.API_KEY);
+            out.write(sb.toString().getBytes());
+
+            StringBuilder tokenBuilder=new StringBuilder();
+            tokenBuilder
+                    .append("\r\n")
+                    .append(BOUNDARY)
+                    .append("Content-Disposition: form-data; name=\"auth_token\"")
+                    .append("\r\n\r\n")
+                    .append(MainLayoutActivity.fullToken);
+            out.write(tokenBuilder.toString().getBytes());
+
+            StringBuilder apisigBuilder=new StringBuilder();
+            apisigBuilder
+                    .append("\r\n")
+                    .append(BOUNDARY)
+                    .append("Content-Disposition: form-data; name=\"api_sig\"")
+                    .append("\r\n\r\n")
+                    .append(apiSig);
+            out.write(apisigBuilder.toString().getBytes());
+
+            StringBuilder titleBuilder=new StringBuilder();
+            titleBuilder.append("\r\n")
+                    .append(BOUNDARY)
+                    .append("Content-Disposition: form-data; name=\"title\"")
+                    .append("\r\n\r\n")
+                    .append(title);
+            out.write(titleBuilder.toString().getBytes());
+
+            StringBuilder descriptionBuilder=new StringBuilder();
+            descriptionBuilder.append("\r\n")
+                    .append(BOUNDARY)
+                    .append("Content-Disposition: form-data; name=\"description\"")
+                    .append("\r\n\r\n")
+                    .append(description);
+            out.write(descriptionBuilder.toString().getBytes());
+
+            StringBuilder photoBuilder=new StringBuilder();
+            photoBuilder
+                    .append("\r\n")
+                    .append(BOUNDARY)
+                    .append("Content-Disposition: form-data; name=\"photo\";filename=\""+path+"\'")
+                    .append("\r\nContent-Type:image/jpeg")
+                    .append("\r\n\r\n");
+            out.write(photoBuilder.toString().getBytes());
+            out.write(photoBinary);
+
+            StringBuilder endBuilder=new StringBuilder();
+            endBuilder.append("\r\n")
+                    .append(BOUNDARY)
+                    .append("--\r\n");
+            out.write(endBuilder.toString().getBytes());
+            out.flush();
+            out.close();
+
+            // 读取返回数据
+            StringBuffer strBuf = new StringBuffer();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                strBuf.append(line).append("\n");
+            }
+            res= strBuf.toString();
+            Log.d(TAG, "uploadPhoto: respond result is "+res);
+            reader.close();
+            reader = null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+                connection = null;
+            }
+        }
+
+        //解析返回的结果
+        if (!TextUtils.isEmpty(res)){
+            try {
+                XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
+                XmlPullParser parser=factory.newPullParser();
+                parser.setInput(new StringReader(res));
+
+                int eventType=parser.getEventType();
+                while (eventType!=XmlPullParser.END_DOCUMENT){
+                    if (eventType==XmlPullParser.START_TAG&&"rsp".equals(parser.getName())){
+                        String state=parser.getAttributeValue(null,"stat");
+                        if (state.equals("ok")){
+                            Toast.makeText(getActivity(),R.string.Upload_photo_successfully,Toast.LENGTH_SHORT).show();
+                            getActivity().finish();
+                        }
+                    }
+
+                    if (eventType==XmlPullParser.START_TAG&&"err".equals(parser.getName())){
+                        String errorMessage=parser.getAttributeValue(null,"msg");
+                        Toast.makeText(getActivity(),errorMessage,Toast.LENGTH_SHORT).show();
+                    }
+                    eventType=parser.next();
+                }
+            }catch (XmlPullParserException xppe) {
+                xppe.printStackTrace();
+            } catch (IOException ioe) {
+                ioe.printStackTrace();
+            }
+        }
+
     }
 
 }

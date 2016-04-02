@@ -52,4 +52,5 @@
     <string name="add_photo_toast">Add more pictures</string>
     <string name="menu_title_upload_photo">Upload photo</string>
     <string name="delete_photo_confirm_dialog">Do you confirm to delete this photo ?</string>
+    <string name="Upload_photo_successfully">Uploaded photo successfully</string>
 </resources>
