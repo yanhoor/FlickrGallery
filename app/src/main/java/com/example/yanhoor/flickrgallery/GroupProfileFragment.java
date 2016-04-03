@@ -143,7 +143,7 @@ public class GroupProfileFragment extends Fragment  implements View.OnClickListe
                 joinButton.setBackgroundResource(R.color.colorRedLight);
             }else {
                 joinButton.setText(R.string.join_group);
-                joinButton.setBackgroundResource(R.color.colorGreenLight);
+                joinButton.setBackgroundResource(R.color.colorGreenDark);
             }
         }
 

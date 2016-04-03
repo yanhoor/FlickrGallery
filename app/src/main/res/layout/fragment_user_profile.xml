@@ -99,7 +99,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/groupLayout_profile"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone">
 
                     <TextView
                         android:id="@+id/location_text_profile"
@@ -107,8 +108,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/location"
                         android:textStyle="bold|italic"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:visibility="gone"/>
+                        android:textColor="@color/colorPrimaryDark"/>
 
                     <TextView
                         android:id="@+id/location_profile"

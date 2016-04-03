@@ -37,20 +37,22 @@
     <GridView
         android:id="@+id/add_photo_gridView"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="234dp"
         android:layout_marginTop="12dp"
         android:numColumns="4"
         android:horizontalSpacing="5dp"
         android:verticalSpacing="5dp"
         android:stretchMode="columnWidth"
         android:columnWidth="90dp"
-        android:gravity="center"/>
+        android:gravity="center"
+        android:background="@color/colorGrayLight"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:text="@string/add_photo_hint"
+        android:textColor="@color/colorAccent"
         android:textSize="18sp"
         android:gravity="center"/>
 
@@ -73,7 +75,7 @@
             android:layout_alignParentEnd="true"
             style="@style/button_rectangle_oval"
             android:text="@string/post_text"
-            android:textColor="@color/colorGreenLight"
+            android:textColor="@color/colorGreenDark"
             android:layout_marginEnd="24dp"/>
 
     </RelativeLayout>

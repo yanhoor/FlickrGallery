@@ -122,8 +122,8 @@ public class GetUserProfileUtil {
                         }
 
                         if (eventType == XmlPullParser.START_TAG && "location".equals(parser.getName())) {
-                            String location = parser.nextText();
-                            mUser.setLocation(location.trim());
+                            String location = parser.nextText().trim();
+                            mUser.setLocation(location);
                         }
 
                         if (eventType==XmlPullParser.START_TAG&&"description".equals(parser.getName())){

@@ -52,6 +52,6 @@
         android:layout_height="1dp"
         android:layout_below="@+id/topic_message"
         android:layout_marginTop="8dp"
-        android:background="@color/colorGray"/>
+        android:background="@color/colorGrayLight"/>
 
 </RelativeLayout>

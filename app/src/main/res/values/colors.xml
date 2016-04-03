@@ -6,8 +6,9 @@
     <color name="colorRedLight">#d90f54</color>
     <color name="colorPurple">#aa07b9</color>
     <color name="colorGreenLight">#25e710</color>
+    <color name="colorGreenDark">#0e7304</color>
     <color name="colorOrangeLight">#d96d1b</color>
     <color name="colorWhite">#ffff</color>
     <color name="colorBlack">#000000</color>
-    <color name="colorGray">#8f8a8a</color>
+    <color name="colorGrayLight">#d7d4d4</color>
 </resources>

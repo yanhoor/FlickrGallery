@@ -98,18 +98,43 @@ public class UploadPhotoFragment extends Fragment {
         postButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        for (int i=0;i<bitmapByteArrays.size();i++){
-                            byte[] b=bitmapByteArrays.get(i);
-                            String path=photoPaths.get(i);
-                            uploadPhoto(b,path);
+                if (bitmapByteArrays.size()!=0){
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (int i=0;i<bitmapByteArrays.size();i++){
+                                byte[] b=bitmapByteArrays.get(i);
+                                String path=photoPaths.get(i);
+                                uploadPhoto(b,path);
+                            }
                         }
-                    }
-                }).start();
+                    }).start();
+                }else{
+                    Toast.makeText(getActivity(),R.string.no_photo_added_upload_photo,Toast.LENGTH_SHORT).show();
+                }
             }
 
+        });
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                android.app.AlertDialog.Builder builder=new android.app.AlertDialog.Builder(getActivity());
+                builder.setMessage(R.string.Cancel_msg_upload_photo)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                getActivity().finish();
+                            }
+                        })
+                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .create().show();
+            }
         });
 
         newPhotoGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -181,6 +206,13 @@ public class UploadPhotoFragment extends Fragment {
                 if (cursor==null)return;
                 cursor.moveToFirst();
                 imagePath=cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+                for (int i=0;i<photoPaths.size();i++){
+                    if (imagePath.equals(photoPaths.get(i))){
+                        Toast.makeText(getActivity(),R.string.same_photo_toast_upload_photo,Toast.LENGTH_SHORT).show();
+                        imagePath=null;
+                        break;
+                    }
+                }
                 cursor.close();
             }
         }

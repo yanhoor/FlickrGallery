@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +47,7 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
     TextView groupNumber;
     RelativeLayout groupLayout;
     TextView locationTextView;
+    RelativeLayout locationLayout;
     TextView location;
     ImageView buddyIconImageView;
     GetUserProfileUtil mGetUserProfileUtil;
@@ -113,6 +115,7 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
         groupLayout=(RelativeLayout)v.findViewById(R.id.groupLayout_profile);
         groupLayout.setOnClickListener(this);
 
+        locationLayout=(RelativeLayout)v.findViewById(R.id.location_layout);
         locationTextView=(TextView)v.findViewById(R.id.location_profile);
         location=(TextView)v.findViewById(R.id.location_text_profile);
         //使用自定义ExpandableHeightGridView防止与scrollview冲突
@@ -200,9 +203,9 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
             groupNumber.setText(String.valueOf(mUser.getGroups().size()));
         }
 
-        //Log.d(TAG,"location length is "+mUser.getLocation().length());
-        if (mUser.getLocation()!=null&&mUser.getLocation().length()!=0){
-            location.setVisibility(View.VISIBLE);
+        Log.d(TAG,"location is "+mUser.getLocation());
+        if (!TextUtils.isEmpty(mUser.getLocation())){
+            locationLayout.setVisibility(View.VISIBLE);
             locationTextView.setText(mUser.getLocation());
         }
 
