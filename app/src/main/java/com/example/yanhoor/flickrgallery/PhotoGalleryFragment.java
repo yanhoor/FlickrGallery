@@ -105,15 +105,17 @@ public class PhotoGalleryFragment extends VisibleFragment {
                 mSRL.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        ConnectivityManager connectivityManager=(ConnectivityManager)getActivity()
-                                .getSystemService(Context.CONNECTIVITY_SERVICE);
-                        NetworkInfo networkInfo=connectivityManager.getActiveNetworkInfo();
-                        if (networkInfo!=null&&networkInfo.isAvailable()){
-                            updateItems();
-                        }else{
-                            Toast.makeText(getActivity(),R.string.networt_unavailable,Toast.LENGTH_SHORT).show();
+                        if (getActivity()!=null){
+                            ConnectivityManager connectivityManager=(ConnectivityManager)getActivity()
+                                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+                            NetworkInfo networkInfo=connectivityManager.getActiveNetworkInfo();
+                            if (networkInfo!=null&&networkInfo.isAvailable()){
+                                updateItems();
+                            }else{
+                                Toast.makeText(getActivity(),R.string.networt_unavailable,Toast.LENGTH_SHORT).show();
+                            }
+                            mSRL.setRefreshing(false);
                         }
-                        mSRL.setRefreshing(false);
                     }
                 },5000);
             }
