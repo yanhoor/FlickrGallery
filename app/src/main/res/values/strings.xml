@@ -58,4 +58,7 @@
     <string name="back_key_note">Do you confirm to go back ?</string>
     <string name="Cancel_msg_upload_photo">Do you confirm to cancel and go back ?</string>
     <string name="no_photo_added_upload_photo">Please add some photo first</string>
+    <string name="delete_photo_successfully">Delete photo successfully</string>
+    <string name="delete_photo_menu">Delete photo</string>
+    <string name="delete_photo_confirmation">Do you confirm to delete photo ?</string>
 </resources>
