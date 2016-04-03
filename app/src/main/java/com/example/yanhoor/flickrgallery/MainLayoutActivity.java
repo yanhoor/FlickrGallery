@@ -97,7 +97,9 @@ public class MainLayoutActivity extends FragmentActivity {
                     .putString(FlickrFetchr.PREF_SEARCH_QUERY,query)
                     .commit();
         }
-        fragment.updateItems();
+        if (fragment!=null){
+            fragment.updateItems();
+        }
     }
 
 }

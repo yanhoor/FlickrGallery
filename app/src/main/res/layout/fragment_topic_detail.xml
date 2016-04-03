@@ -58,7 +58,7 @@
                 android:layout_height="1dp"
                 android:layout_below="@+id/topic_author_layout"
                 android:layout_marginTop="8dp"
-                android:background="@color/colorGray"/>
+                android:background="@color/colorAccent"/>
 
             <TextView
                 android:id="@+id/topic_subject"
@@ -126,10 +126,8 @@
 
                 <Button
                     android:id="@+id/post_reply"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:background="@color/colorWhite"
+                    style="@style/button_rectangle_oval"
                     android:text="@string/add_topic_reply"/>
 
             </RelativeLayout>

@@ -175,7 +175,7 @@ public class AdministratorProfileFragment extends Fragment implements View.OnCli
             locationTextView.setText(mUser.getLocation());
         }
 
-        if (mUser.getGalleryItems().size()>0){
+        if (mUser.getGalleryItems().size()>0&&getActivity()!=null){
             userPhotoGridView.setAdapter(new GalleryItemAdapter(mUser.getGalleryItems()));
         }else {
             userPhotoGridView.setAdapter(null);

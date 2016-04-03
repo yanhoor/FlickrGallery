@@ -41,6 +41,7 @@
     <string name="no">No</string>
     <string name="topic_reply_sum_title">Total reply: </string>
     <string name="add_topic_reply">Reply</string>
+    <string name="reply_topic_hint">Reply the topic</string>
     <string name="reply_successfully">Reply successfully</string>
     <string name="post_new_photo">Post new photo</string>
     <string name="title_new_photo_hint">Title</string>
