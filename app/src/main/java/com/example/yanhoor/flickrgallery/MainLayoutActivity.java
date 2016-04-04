@@ -1,7 +1,11 @@
 package com.example.yanhoor.flickrgallery;
 
 import android.app.SearchManager;
+import android.app.SearchableInfo;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
@@ -11,6 +15,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.SearchView;
+import android.widget.Toolbar;
 
 /**
  * Created by yanhoor on 2016/3/10.
@@ -23,6 +31,8 @@ public class MainLayoutActivity extends FragmentActivity {
 
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
+    private Toolbar mToolbar;
+    private PagerAdapter pagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,11 +46,13 @@ public class MainLayoutActivity extends FragmentActivity {
         administratorId=PreferenceManager.getDefaultSharedPreferences(this)
                 .getString(LogInFragment.PREF_USER_ID,null);
 
-        mTabLayout=(TabLayout) findViewById(R.id.tablayout);
+        mTabLayout=(TabLayout) findViewById(R.id.tabLayout);
         mViewPager=(ViewPager)findViewById(R.id.viewPager);
+        mToolbar=(Toolbar)findViewById(R.id.toolbar);
+        setActionBar(mToolbar);
 
         FragmentManager fm=getSupportFragmentManager();
-        PagerAdapter pagerAdapter=new PagerAdapter(fm);
+        pagerAdapter=new PagerAdapter(fm);
         mViewPager.setAdapter(pagerAdapter);
 
         mTabLayout.setupWithViewPager(mViewPager);
@@ -85,21 +97,81 @@ public class MainLayoutActivity extends FragmentActivity {
 
     @Override
     protected void onNewIntent(Intent intent) {
-        PhotoGalleryFragment fragment=(PhotoGalleryFragment)getSupportFragmentManager()
-                .findFragmentById(R.id.fragmentContainer);
-
         if (Intent.ACTION_SEARCH.equals(intent.getAction())){
             String query=intent.getStringExtra(SearchManager.QUERY);
             Log.d(TAG,"Received a new search query: "+query);
+            Intent searchIntent=new Intent(this,SearchActivity.class);
+            searchIntent.putExtra(SearchGalleryFragment.EXTRA_QUERY_GALLERY,query);
+            startActivity(searchIntent);
+        }
+    }
 
-            PreferenceManager.getDefaultSharedPreferences(this)
-                    .edit()
-                    .putString(FlickrFetchr.PREF_SEARCH_QUERY,query)
-                    .commit();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.fragment_photo_gallery,menu);
+
+        MenuItem searchItem=menu.findItem(R.id.menu_item_search);
+        SearchView searchView=(SearchView)searchItem.getActionView();
+
+        SearchManager searchManager=(SearchManager)getSystemService(Context.SEARCH_SERVICE);
+        ComponentName name=getComponentName();
+        SearchableInfo searchableInfo=searchManager.getSearchableInfo(name);
+
+        searchView.setSearchableInfo(searchableInfo);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.menu_item_search:
+                onSearchRequested();
+                return true;
+
+            case R.id.menu_item_clear:
+                PreferenceManager.getDefaultSharedPreferences(this)
+                        .edit()
+                        .putString(FlickrFetchr.PREF_SEARCH_QUERY,null)
+                        .commit();
+                //updateItems();
+                return true;
+
+            case R.id.menu_item_toggle_polling:
+                boolean shouldStartAlarm=!PollService.isServiceAlarmOn(this);
+                PollService.setServiceAlarm(this,shouldStartAlarm);
+                if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB)
+                    invalidateOptionsMenu();//刷新菜单项
+                return true;
+
+            case R.id.menu_item_login:
+                Intent i=new Intent(this,LogInActivity.class);
+                startActivity(i);
+                return true;
+
+            case R.id.menu_item_upload_photo:
+                Intent uploadIntent=new Intent(this,UploadPhotoActivity.class);
+                startActivity(uploadIntent);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        if (fragment!=null){
-            fragment.updateItems();
+    }
+
+    //更新选项菜单，除了菜单的首次创建外，每次菜单需要配置都会调用
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        MenuItem toggleItem=menu.findItem(R.id.menu_item_toggle_polling);
+        if (PollService.isServiceAlarmOn(this)){
+            toggleItem.setTitle(R.string.stop_polling);
+        }else {
+            toggleItem.setTitle(R.string.start_polling);
         }
+
+        return true;
     }
 
 }

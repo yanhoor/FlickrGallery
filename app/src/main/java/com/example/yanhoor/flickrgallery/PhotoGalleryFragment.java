@@ -1,34 +1,24 @@
 package com.example.yanhoor.flickrgallery;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.SearchManager;
-import android.app.SearchableInfo;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.yanhoor.flickrgallery.model.GalleryItem;
@@ -151,17 +141,12 @@ public class PhotoGalleryFragment extends VisibleFragment {
         @Override
         protected ArrayList<GalleryItem> doInBackground(Void... params) {
             Activity activity=getActivity();
+
+            Log.d(TAG, "doInBackground: activity is "+activity);
             if (activity==null)
                 return new ArrayList<>();
 
-            String query= PreferenceManager.getDefaultSharedPreferences(activity)
-                    .getString(FlickrFetchr.PREF_SEARCH_QUERY,null);
-
-            if (query!=null){
-                return new FlickrFetchr().search(query);
-            }else {
-                return new FlickrFetchr().fetchItems();
-            }
+            return new FlickrFetchr().fetchItems();
         }
 
         //在主线程运行，在doinbackground之后执行
@@ -201,74 +186,6 @@ public class PhotoGalleryFragment extends VisibleFragment {
     public void onDestroyView() {
         super.onDestroyView();
         mThumbnaiThread.clearQueue();
-    }
-
-    @Override
-    @TargetApi(11)
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.fragment_photo_gallery,menu);
-        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB){
-            MenuItem searchItem=menu.findItem(R.id.menu_item_search);
-            SearchView searchView=(SearchView)searchItem.getActionView();
-
-            SearchManager searchManager=(SearchManager)getActivity()
-                    .getSystemService(Context.SEARCH_SERVICE);
-            ComponentName name=getActivity().getComponentName();
-            SearchableInfo searchableInfo=searchManager.getSearchableInfo(name);
-
-            searchView.setSearchableInfo(searchableInfo);
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.menu_item_search:
-                getActivity().onSearchRequested();
-                return true;
-
-            case R.id.menu_item_clear:
-                PreferenceManager.getDefaultSharedPreferences(getActivity())
-                        .edit()
-                        .putString(FlickrFetchr.PREF_SEARCH_QUERY,null)
-                        .commit();
-                updateItems();
-                return true;
-
-            case R.id.menu_item_toggle_polling:
-                boolean shouldStartAlarm=!PollService.isServiceAlarmOn(getActivity());
-                PollService.setServiceAlarm(getActivity(),shouldStartAlarm);
-                if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.HONEYCOMB)
-                    getActivity().invalidateOptionsMenu();//刷新菜单项
-                return true;
-
-            case R.id.menu_item_login:
-                Intent i=new Intent(getActivity(),LogInActivity.class);
-                startActivity(i);
-                return true;
-
-            case R.id.menu_item_upload_photo:
-                Intent uploadIntent=new Intent(getActivity(),UploadPhotoActivity.class);
-                startActivity(uploadIntent);
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    //更新选项菜单，除了菜单的首次创建外，每次菜单需要配置都会调用
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-
-        MenuItem toggleItem=menu.findItem(R.id.menu_item_toggle_polling);
-        if (PollService.isServiceAlarmOn(getActivity())){
-            toggleItem.setTitle(R.string.stop_polling);
-        }else {
-            toggleItem.setTitle(R.string.start_polling);
-        }
     }
 
     @Override
