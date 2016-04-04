@@ -345,7 +345,6 @@ public class GroupProfileFragment extends Fragment  implements View.OnClickListe
     @Override
     public void onResume() {
         super.onResume();
-        updateData();
     }
 
     private class GridViewAdapter extends ArrayAdapter<GalleryItem>{
