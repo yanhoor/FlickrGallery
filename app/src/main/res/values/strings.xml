@@ -61,4 +61,10 @@
     <string name="delete_photo_successfully">Delete photo successfully</string>
     <string name="delete_photo_menu">Delete photo</string>
     <string name="delete_photo_confirmation">Do you confirm to delete photo ?</string>
+    <string name="search_photo">Search photos</string>
+    <string name="search_user_by_email">Search users by Email</string>
+    <string name="search_user_by_username">Search users by user name</string>
+    <string name="search_group">Search groups</string>
+    <string name="no_select_search_activity">Please select a search type first</string>
+    <string name="over_count_selected">You can select one search type only</string>
 </resources>

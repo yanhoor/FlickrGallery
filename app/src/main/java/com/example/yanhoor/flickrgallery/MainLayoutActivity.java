@@ -96,17 +96,6 @@ public class MainLayoutActivity extends FragmentActivity {
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
-        if (Intent.ACTION_SEARCH.equals(intent.getAction())){
-            String query=intent.getStringExtra(SearchManager.QUERY);
-            Log.d(TAG,"Received a new search query: "+query);
-            Intent searchIntent=new Intent(this,SearchActivity.class);
-            searchIntent.putExtra(SearchGalleryFragment.EXTRA_QUERY_GALLERY,query);
-            startActivity(searchIntent);
-        }
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.fragment_photo_gallery,menu);
 
@@ -126,7 +115,8 @@ public class MainLayoutActivity extends FragmentActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.menu_item_search:
-                onSearchRequested();
+                Intent searchIntent=new Intent(this,SearchActivity.class);
+                startActivity(searchIntent);
                 return true;
 
             case R.id.menu_item_clear:

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <SearchView
+        android:id="@+id/search_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:iconifiedByDefault="false"
+        android:imeOptions="actionSearch"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:text="@string/over_count_selected"
+        android:layout_marginTop="24dp"
+        android:textSize="18sp"
+        android:textColor="@color/colorAccent"/>
+
+    <RelativeLayout
+        style="@style/search_style">
+        <TextView
+            style="@style/search_text_style"
+            android:text="@string/search_photo"/>
+        <CheckBox
+            android:id="@+id/search_photo_checkBox"
+            style="@style/search_check_box_style"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        style="@style/search_style">
+        <TextView
+            style="@style/search_text_style"
+            android:text="@string/search_group"/>
+        <CheckBox
+            android:id="@+id/search_group_checkBox"
+            style="@style/search_check_box_style"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        style="@style/search_style">
+        <TextView
+            style="@style/search_text_style"
+            android:text="@string/search_user_by_email"/>
+        <CheckBox
+            android:id="@+id/search_user_by_Email_checkBox"
+            style="@style/search_check_box_style"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        style="@style/search_style">
+        <TextView
+            style="@style/search_text_style"
+            android:text="@string/search_user_by_username"/>
+        <CheckBox
+            android:id="@+id/search_user_by_userName_checkBox"
+            style="@style/search_check_box_style"/>
+    </RelativeLayout>
+
+</LinearLayout>

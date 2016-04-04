@@ -240,6 +240,7 @@ public class GetGroupProfileUtil {
 
             @Override
             public void onSuccess(String t) {
+                mGalleryItems=new ArrayList<>();
                 super.onSuccess(t);
                 Log.d(TAG,"Getting group photo from "+t);
 

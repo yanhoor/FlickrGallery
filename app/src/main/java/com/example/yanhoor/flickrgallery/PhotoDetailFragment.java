@@ -374,7 +374,6 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
     }
 
     public void postComment(String commentText){
-
         String[] mSignFullTokenStringArray = {"method" + "flickr.photos.comments.addComment",
                 "api_key" + LogInFragment.API_KEY, "auth_token" + mFullToken,
                 LogInFragment.PUBLIC_CODE, "photo_id" + mGalleryItem.getId(),

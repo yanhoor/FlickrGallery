@@ -14,4 +14,27 @@
         <item name="android:background">@drawable/button_oval_shape</item>
     </style>
 
+    <style name="search_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:layout_marginStart">30dp</item>
+        <item name="android:layout_marginEnd">30dp</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="search_text_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:layout_alignParentStart">true</item>
+    </style>
+
+    <style name="search_check_box_style">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentEnd">true</item>
+        <item name="android:focusable">false</item>
+    </style>
+
 </resources>
