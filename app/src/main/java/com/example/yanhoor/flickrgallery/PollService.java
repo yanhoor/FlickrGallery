@@ -40,15 +40,11 @@ public class PollService extends IntentService {
         if (!isNetworkAvailable) return;
 
         SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(this);
-        String query=prefs.getString(FlickrFetchr.PREF_SEARCH_QUERY,null);
         String lastResultId=prefs.getString(FlickrFetchr.PREF_LAST_RESULT_ID,null);
 
         ArrayList<GalleryItem>items;
-        if (query!=null){
-            items=new FlickrFetchr().search(query);
-        }else {
-            items=new FlickrFetchr().fetchItems();
-        }
+
+        items=new FlickrFetchr().fetchItems();
 
         if (items.size()==0){
             return;
