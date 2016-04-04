@@ -121,6 +121,10 @@ public class User implements Serializable{
         mContact = contact;
     }
 
+    public String getUserPageUrl(){
+        return "https://www.flickr.com/people/"+mId+"/";
+    }
+
     public String getUserIconUrl(){
         String iconUrl;
         //http://farm{icon-farm}.staticflickr.com/{icon-server}/buddyicons/{nsid}.jpg

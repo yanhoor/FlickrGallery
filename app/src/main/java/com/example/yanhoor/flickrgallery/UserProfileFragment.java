@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -39,7 +38,7 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
     private ArrayList<Group>mGroups;
     ExpandableHeightGridView userPhotoGridView;
     TextView userName;
-    Button followingButton;
+    TextView personalPage;
     RelativeLayout descriptionLayout;
     ExpandableTextView userDescription;
     TextView followingNumber;
@@ -89,13 +88,6 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
         });
     }
 
-    @Override
-    public void onStart() {
-        Log.d(TAG,"onStart");
-        updateData();
-        super.onStart();
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -103,8 +95,8 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
 
         buddyIconImageView=(ImageView)v.findViewById(R.id.buddy_icon_profile);
         userName=(TextView)v.findViewById(R.id.user_name_profile);
-        followingButton=(Button)v.findViewById(R.id.following_button_profile);
-        followingButton.setOnClickListener(this);
+        personalPage =(TextView) v.findViewById(R.id.personal_page_text_profile);
+        personalPage.setOnClickListener(this);
         descriptionLayout=(RelativeLayout)v.findViewById(R.id.description_layout_profile);
         userDescription=(ExpandableTextView) v.findViewById(R.id.user_description_profile);
         followingLayout=(RelativeLayout)v.findViewById(R.id.following_layout);
@@ -169,7 +161,11 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
                 }
                 break;
 
-            case R.id.following_button_profile:
+            case R.id.personal_page_text_profile:
+                Intent i=new Intent(getActivity(),WebViewActivity.class);
+                i.putExtra(WebViewFragment.EXTRA_URL,mUser.getUserPageUrl());
+                startActivity(i);
+                break;
 
             default:
                 break;
@@ -178,11 +174,6 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
 
     void updateUI(){
         contact=mUser.getContact();
-        if (contact==null||contact.equals("0")){
-            followingButton.setText(R.string.following_user_profile);
-        }else {
-            followingButton.setText(R.string.unFollowing_user_profile);
-        }
 
         //加载icon
         new KJBitmap.Builder().view(buddyIconImageView).imageUrl(mUser.getUserIconUrl()).display();

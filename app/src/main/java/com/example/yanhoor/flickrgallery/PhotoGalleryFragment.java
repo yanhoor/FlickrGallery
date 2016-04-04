@@ -25,11 +25,6 @@ import com.example.yanhoor.flickrgallery.model.GalleryItem;
 import com.example.yanhoor.flickrgallery.model.GalleryItemLab;
 
 import java.util.ArrayList;
-/*
-Flickr的key: 0964378968b9ce3044e29838e2fc0cd8
-密钥:a0e8c8d18675b5e2
-*/
-
 /**
  * Created by yanhoor on 2016/3/3.
  */
@@ -57,14 +52,6 @@ public class PhotoGalleryFragment extends VisibleFragment {
                 if (isVisible()){
                     Log.d(TAG,"setListener");
                     imageView.setImageBitmap(thumbnail);
-                    /*
-                    //先压缩图片
-                    int reqWidth=imageView.getWidth();
-                    int reqHeight=imageView.getHeight();
-                    Bitmap bitmap= StaticMethodUtil.decodeSampledBitmapFromResource(getResources()
-                    ,R.id.gallery_item_imageView,reqWidth,reqHeight);
-                    imageView.setImageBitmap(bitmap);
-                    */
                 }
             }
         });
@@ -116,8 +103,6 @@ public class PhotoGalleryFragment extends VisibleFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 GalleryItem item=mItems.get(position);
                     Intent i=new Intent(getActivity(),PhotoDetailActivity.class);
-                    //用于代替PhotoDetailActivity实现滑动查看图片详情
-                    //Intent i=new Intent(getActivity(),PhotoPageActivity.class);
                     i.putExtra(PhotoDetailFragment.EXTRA_GALLERYITEM_mId,item.getId());
                     startActivity(i);
             }

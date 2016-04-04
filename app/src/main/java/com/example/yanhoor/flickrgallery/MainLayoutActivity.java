@@ -121,14 +121,6 @@ public class MainLayoutActivity extends FragmentActivity {
                 startActivity(searchIntent);
                 return true;
 
-            case R.id.menu_item_clear:
-                PreferenceManager.getDefaultSharedPreferences(this)
-                        .edit()
-                        .putString(FlickrFetchr.PREF_SEARCH_QUERY,null)
-                        .commit();
-                //updateItems();
-                return true;
-
             case R.id.menu_item_toggle_polling:
                 boolean shouldStartAlarm=!PollService.isServiceAlarmOn(this);
                 PollService.setServiceAlarm(this,shouldStartAlarm);

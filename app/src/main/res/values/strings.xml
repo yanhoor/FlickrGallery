@@ -32,6 +32,7 @@
     <string name="content_empty">Please write something first</string>
     <string name="following_user_profile">Follow</string>
     <string name="unFollowing_user_profile">Unfollow</string>
+    <string name="view_user_page">Personal page</string>
     <string name="join_group">Join in</string>
     <string name="leave_group">Leave</string>
     <string name="join_group_successfully">Join group successfully</string>

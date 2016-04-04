@@ -121,15 +121,18 @@
 
             </RelativeLayout>
 
-            <Button
-                android:visibility="gone"
-                android:id="@+id/following_button_profile"
+            <TextView
+                android:id="@+id/personal_page_text_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="10dp"
-                android:background="@color/colorWhite"/>
+                android:text="@string/view_user_page"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="18sp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"/>
 
         </RelativeLayout>
 
