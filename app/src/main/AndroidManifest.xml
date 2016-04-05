@@ -30,9 +30,6 @@
 
         <activity android:name="com.example.yanhoor.flickrgallery.SingleFragmentActivity"/>
 
-        <activity android:name="com.example.yanhoor.flickrgallery.PhotoPageActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"/>
-
         <activity android:name="com.example.yanhoor.flickrgallery.LogInActivity"/>
 
         <activity android:name=".WebViewActivity"/>

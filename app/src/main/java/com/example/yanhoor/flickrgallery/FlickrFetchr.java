@@ -23,7 +23,6 @@ import java.util.ArrayList;
 public class FlickrFetchr {
     public static final String TAG="FlickrFetchr";
 
-    public static final String PREF_SEARCH_QUERY ="searchQuery";
     public static final String PREF_LAST_RESULT_ID="lastResultId";
 
     private static final String ENDPOINT="https://api.flickr.com/services/rest/";

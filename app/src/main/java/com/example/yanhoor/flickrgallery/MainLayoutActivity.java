@@ -51,7 +51,7 @@ public class MainLayoutActivity extends FragmentActivity {
         mTabLayout=(TabLayout) findViewById(R.id.tabLayout);
         mViewPager=(ViewPager)findViewById(R.id.viewPager);
         mToolbar=(Toolbar)findViewById(R.id.toolbar);
-        mToolbar.setTitle(null);
+        mToolbar.setTitle("");
         setActionBar(mToolbar);
 
         FragmentManager fm=getSupportFragmentManager();
