@@ -99,6 +99,7 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
     private void updateData(){
         //获取照片信息，userName,description,location等
         mGalleryItem=mPhotoInfoUtil.getPhotoInfo(mGalleryItem);
+        mGalleryItem=mPhotoInfoUtil.getFavorites(mGalleryItem);
         getPhotoStates();//获取照片comment,favorites,views等
         getComments(mComments,mGalleryId);//获取评论
     }
@@ -200,9 +201,13 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
         Log.d(TAG,"mComments size is "+mComments.size());
         commentNumber.setText(String.valueOf(mComments.size()));
 
-        favoritesNumber.setText(mFavorites);
+        if (mGalleryItem.getTotalFavoritesNum()!=null){
+            favoritesNumber.setText(mGalleryItem.getTotalFavoritesNum());
+        }
 
-        viewsNumber.setText(mViews);
+        if (mGalleryItem.getViews()!=null){
+            viewsNumber.setText(mGalleryItem.getViews());
+        }
 
         mRV.setLayoutManager(new LinearLayoutManager(getActivity()));
         mRV.setItemAnimator(new DefaultItemAnimator());

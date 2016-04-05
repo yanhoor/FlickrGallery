@@ -4,6 +4,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.UUID;
 
 /**
@@ -32,6 +33,9 @@ public class GalleryItem implements Serializable{
     private User mOwner;
     private String mDescription=null;
     private String mPostedTime;
+    private String mViews;
+    private String mTotalFavoritesNum;
+    private ArrayList<User>mFavorites=new ArrayList<>();
 
     public GalleryItem(){
         mUUID=UUID.randomUUID();
@@ -157,6 +161,30 @@ public class GalleryItem implements Serializable{
 
     public void setPostedTime(String postedTime) {
         mPostedTime = postedTime;
+    }
+
+    public ArrayList<User> getFavorites() {
+        return mFavorites;
+    }
+
+    public void setFavorites(ArrayList<User> favorites) {
+        mFavorites.addAll(favorites);
+    }
+
+    public String getViews() {
+        return mViews;
+    }
+
+    public void setViews(String views) {
+        mViews = views;
+    }
+
+    public String getTotalFavoritesNum() {
+        return mTotalFavoritesNum;
+    }
+
+    public void setTotalFavoritesNum(String totalFavoritesNum) {
+        mTotalFavoritesNum = totalFavoritesNum;
     }
 
     public String getPhotoPageUrl(){

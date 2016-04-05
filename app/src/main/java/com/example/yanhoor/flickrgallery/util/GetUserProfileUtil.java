@@ -37,14 +37,14 @@ public class GetUserProfileUtil {
     private ArrayList<GalleryItem>mGalleryItems;
     private ArrayList<Group>mGroups;
 
-    listener mMainThreadListener;
+    listener mPersonalProfileListener;
 
     public interface listener {
         void onUpdateFinish(User user);
     }
 
-    public void setListener(listener mListener){
-        mMainThreadListener=mListener;
+    public void setPersonalProfileListener(listener mListener){
+        mPersonalProfileListener =mListener;
     }
 
     public User getUserProfile(String userId){
@@ -87,7 +87,7 @@ public class GetUserProfileUtil {
             @Override
             public void onFinish() {
                 super.onFinish();
-                mMainThreadListener.onUpdateFinish(mUser);
+                mPersonalProfileListener.onUpdateFinish(mUser);
                 Log.d(TAG,"location is0"+mUser.getLocation()+"0");
             }
 
@@ -157,7 +157,7 @@ public class GetUserProfileUtil {
             @Override
             public void onFinish() {
                 super.onFinish();
-                mMainThreadListener.onUpdateFinish(mUser);
+                mPersonalProfileListener.onUpdateFinish(mUser);
             }
 
             @Override
@@ -219,7 +219,7 @@ public class GetUserProfileUtil {
             @Override
             public void onFinish() {
                 super.onFinish();
-                mMainThreadListener.onUpdateFinish(mUser);
+                mPersonalProfileListener.onUpdateFinish(mUser);
             }
 
             @Override
@@ -288,7 +288,7 @@ public class GetUserProfileUtil {
             @Override
             public void onFinish() {
                 super.onFinish();
-                mMainThreadListener.onUpdateFinish(mUser);
+                mPersonalProfileListener.onUpdateFinish(mUser);
             }
 
             @Override
@@ -347,7 +347,7 @@ public class GetUserProfileUtil {
             @Override
             public void onFinish() {
                 super.onFinish();
-                mMainThreadListener.onUpdateFinish(mUser);
+                mPersonalProfileListener.onUpdateFinish(mUser);
             }
 
             @Override

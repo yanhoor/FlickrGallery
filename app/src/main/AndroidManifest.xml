@@ -28,6 +28,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".AdministratorProfileActivity"/>
+
         <activity android:name="com.example.yanhoor.flickrgallery.SingleFragmentActivity"/>
 
         <activity android:name="com.example.yanhoor.flickrgallery.LogInActivity"/>
@@ -36,8 +38,6 @@
 
         <activity android:name="com.example.yanhoor.flickrgallery.PhotoDetailActivity"
             android:windowSoftInputMode="stateHidden"/>
-
-        <activity android:name="com.example.yanhoor.flickrgallery.PhotoDetailPagerActivity"/>
 
         <activity android:name=".UserProfileActivity"/>
 

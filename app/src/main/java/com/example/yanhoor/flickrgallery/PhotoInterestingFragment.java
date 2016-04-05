@@ -28,8 +28,8 @@ import java.util.ArrayList;
 /**
  * Created by yanhoor on 2016/3/3.
  */
-public class PhotoGalleryFragment extends VisibleFragment {
-    private static final String TAG="PhotoGalleryFragment";
+public class PhotoInterestingFragment extends VisibleFragment {
+    private static final String TAG="PhotoInteresting";
 
     GridView mGridView;
     ArrayList<GalleryItem> mItems;

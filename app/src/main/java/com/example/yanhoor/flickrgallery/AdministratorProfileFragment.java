@@ -88,7 +88,7 @@ public class AdministratorProfileFragment extends Fragment implements View.OnCli
         mUser.setId(mId);
         mGetUserProfileUtil=new GetUserProfileUtil();
         updateData();
-        mGetUserProfileUtil.setListener(new GetUserProfileUtil.listener() {
+        mGetUserProfileUtil.setPersonalProfileListener(new GetUserProfileUtil.listener() {
             @Override
             public void onUpdateFinish(User user) {
                 mUser =user;

@@ -74,10 +74,12 @@ public class PhotoInfoUtil {
                             String secret=parser.getAttributeValue(null,"secret");
                             String server=parser.getAttributeValue(null,"server");
                             String farm=parser.getAttributeValue(null,"farm");
+                            String views=parser.getAttributeValue(null,"views");
 
                             galleryItem.setSecret(secret);
                             galleryItem.setServer(server);
                             galleryItem.setFarm(farm);
+                            galleryItem.setViews(views);
                         }
 
                         if (eventType==XmlPullParser.START_TAG&&"owner".equals(parser.getName())){
@@ -127,6 +129,48 @@ public class PhotoInfoUtil {
             }
         });
         galleryItem.setOwner(owner);
+        return galleryItem;
+    }
+
+    public GalleryItem getFavorites(final GalleryItem galleryItem){
+        String photo_id=galleryItem.getId();
+        String url= Uri.parse(ENDPOINT).buildUpon()
+                .appendQueryParameter("method","flickr.photos.getFavorites")
+                .appendQueryParameter("api_key",API_KEY)
+                .appendQueryParameter("photo_id",photo_id)
+                .build().toString();
+
+        HttpConfig config=new HttpConfig();
+        config.cacheTime=0;
+        new KJHttp(config).get(url, new HttpCallBack() {
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                mMainThreadListener.onUpdateFinish(galleryItem);
+            }
+
+            @Override
+            public void onSuccess(String t) {
+                super.onSuccess(t);
+
+                try {
+                    XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
+                    XmlPullParser parser=factory.newPullParser();
+                    parser.setInput(new StringReader(t));
+
+                    int eventType=parser.getEventType();
+                    while(eventType!=XmlPullParser.END_DOCUMENT){
+                        if (eventType==XmlPullParser.START_TAG&&"photo".equals(parser.getName())){
+                            String total=parser.getAttributeValue(null,"total");
+                            galleryItem.setTotalFavoritesNum(total);
+                        }
+                    }
+                }catch (XmlPullParserException xppe){
+                    xppe.printStackTrace();
+                }
+            }
+        });
+
         return galleryItem;
     }
 

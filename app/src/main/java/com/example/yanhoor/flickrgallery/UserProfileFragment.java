@@ -78,7 +78,7 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
         mUser.setId(mUserId);
         mGetUserProfileUtil=new GetUserProfileUtil();
         updateData();
-        mGetUserProfileUtil.setListener(new GetUserProfileUtil.listener() {
+        mGetUserProfileUtil.setPersonalProfileListener(new GetUserProfileUtil.listener() {
             @Override
             public void onUpdateFinish(User user) {
                 mUser=user;

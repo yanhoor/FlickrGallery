@@ -14,12 +14,23 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.Window;
+import android.widget.LinearLayout;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toolbar;
+
+import com.example.yanhoor.flickrgallery.model.User;
+import com.example.yanhoor.flickrgallery.util.GetUserProfileUtil;
+import com.squareup.picasso.Picasso;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by yanhoor on 2016/3/10.
@@ -30,6 +41,16 @@ public class MainLayoutActivity extends FragmentActivity {
     public static String fullToken;
     public static String administratorId;
 
+    private int[] stringId;
+    GetUserProfileUtil mGetUserProfileUtil;
+    private User administrator;
+
+    private DrawerLayout mDrawerLayout;
+    private LinearLayout drawerMenuList;
+    private LinearLayout administratorLayout;
+    private CircleImageView administratorIcon;
+    private TextView administratorName;
+    private RecyclerView menuList;
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
     private Toolbar mToolbar;
@@ -44,13 +65,38 @@ public class MainLayoutActivity extends FragmentActivity {
 
         fullToken=PreferenceManager.getDefaultSharedPreferences(this)
                 .getString(LogInFragment.PREF_FULL_TOKEN,null);
-
         administratorId=PreferenceManager.getDefaultSharedPreferences(this)
                 .getString(LogInFragment.PREF_USER_ID,null);
 
+        administrator=new User();
+        administrator.setId(administratorId);
+        mGetUserProfileUtil=new GetUserProfileUtil();
+        updateData();
+        mGetUserProfileUtil.setPersonalProfileListener(new GetUserProfileUtil.listener() {
+            @Override
+            public void onUpdateFinish(User user) {
+                administrator=user;
+                updateUI();
+            }
+        });
+
+        mDrawerLayout=(DrawerLayout)findViewById(R.id.drawer_layout);
+        administratorLayout=(LinearLayout)findViewById(R.id.administrator_layout);
+        administratorIcon=(CircleImageView)findViewById(R.id.administrator_icon_profile);
+        administratorName=(TextView)findViewById(R.id.administrator_name);
+        menuList=(RecyclerView)findViewById(R.id.menu_list_drawerLayout);
         mTabLayout=(TabLayout) findViewById(R.id.tabLayout);
         mViewPager=(ViewPager)findViewById(R.id.viewPager);
         mToolbar=(Toolbar)findViewById(R.id.toolbar);
+
+        administratorLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(getBaseContext(),AdministratorProfileActivity.class);
+                startActivity(i);
+            }
+        });
+
         mToolbar.setTitle("");
         setActionBar(mToolbar);
 
@@ -59,6 +105,22 @@ public class MainLayoutActivity extends FragmentActivity {
         mViewPager.setAdapter(pagerAdapter);
 
         mTabLayout.setupWithViewPager(mViewPager);
+
+    }
+
+    private void updateData(){
+        mGetUserProfileUtil.getUserProfile(administratorId);
+    }
+
+    private void updateUI(){
+        Picasso.with(this)
+                .load(administrator.getUserIconUrl())
+                .resize(100,100)
+                .centerCrop()
+                .into(administratorIcon);
+        if (administrator.getUserName()!=null){
+            administratorName.setText(administrator.getUserName());
+        }
 
     }
 
@@ -72,27 +134,32 @@ public class MainLayoutActivity extends FragmentActivity {
         public Fragment getItem(int position) {
             switch (position){
                 case 0:
-                    return new PhotoGalleryFragment();
+                    return new PhotoInterestingFragment();
                 case 1:
-                    return new AdministratorProfileFragment();
+                    return new PhotoLatestFragment();
+                case 2:
+                    return new PhotoContactsFragment();
                 default:
-                    return new PhotoGalleryFragment();
+                    return new PhotoInterestingFragment();
             }
         }
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
             switch (position){
                 case 0:
-                    return "New photo";
+                    return "Interesting";
                 case 1:
+                    return "Latest";
+                case 2:
+                    return "Contacts";
                 default:
-                    return "Profile";
+                    return "Interesting";
             }
         }
 
