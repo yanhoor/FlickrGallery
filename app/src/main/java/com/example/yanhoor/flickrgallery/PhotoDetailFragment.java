@@ -75,6 +75,8 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
     TextView postedTime;
     ImageView mImageView;
     TextView commentNumber;
+    RelativeLayout favoritesLayout;
+    TextView favoritesText;
     TextView favoritesNumber;
     TextView viewsNumber;
     EditText editComment;
@@ -100,7 +102,6 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
         //获取照片信息，userName,description,location等
         mGalleryItem=mPhotoInfoUtil.getPhotoInfo(mGalleryItem);
         mGalleryItem=mPhotoInfoUtil.getFavorites(mGalleryItem);
-        getPhotoStates();//获取照片comment,favorites,views等
         getComments(mComments,mGalleryId);//获取评论
     }
 
@@ -155,12 +156,15 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
         postedTime=(TextView)v.findViewById(R.id.posted_time_text);
         mImageView=(ImageView) v.findViewById(R.id.photo_imageView);
         commentNumber=(TextView)v.findViewById(R.id.comment_number);
+        favoritesLayout=(RelativeLayout)v.findViewById(R.id.favorites_layout);
+        favoritesText=(TextView)v.findViewById(R.id.favorites_text);
         favoritesNumber=(TextView)v.findViewById(R.id.favorites_number);
         viewsNumber=(TextView)v.findViewById(R.id.views_number);
         editComment=(EditText)v.findViewById(R.id.comment_editText);
         sendComment=(Button)v.findViewById(R.id.send_comment_button);
         mRV=(RecyclerView)v.findViewById(R.id.comment_list_view_RV);
 
+        favoritesLayout.setOnClickListener(this);
         ownerLayout.setOnClickListener(this);
         sendComment.setOnClickListener(this);
         updateUI();
@@ -201,6 +205,9 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
         Log.d(TAG,"mComments size is "+mComments.size());
         commentNumber.setText(String.valueOf(mComments.size()));
 
+        if (mGalleryItem.getIsFavorite()!=null&&mGalleryItem.getIsFavorite().equals("1")){
+            favoritesText.setTextColor(getResources().getColor(R.color.colorAccent));
+        }
         if (mGalleryItem.getTotalFavoritesNum()!=null){
             favoritesNumber.setText(mGalleryItem.getTotalFavoritesNum());
         }
@@ -233,74 +240,18 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
                 startActivity(i);
                 Log.d(TAG,"Going to user profile");
                 break;
+
+            case R.id.favorites_layout:
+                if (mGalleryItem.getIsFavorite().equals("0")){
+                    addAsFavorite();
+                }else {
+                    removeFavorite();
+                }
+                break;
+
             default:
                 break;
         }
-    }
-
-    //获取照片评论数等
-    public void getPhotoStates() {
-        Date mCurrentDate = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        String mCurrentDateString = sdf.format(mCurrentDate);
-
-        //为flickr.stats.getPhotoStats方法获取api_sig
-        String[] mSignFullTokenStringArray = {"method" + METHOD, "date" + mCurrentDateString,
-                "api_key" + LogInFragment.API_KEY, "auth_token" + mFullToken,
-                LogInFragment.PUBLIC_CODE, "photo_id" + mGalleryItem.getId()};
-        Arrays.sort(mSignFullTokenStringArray);
-        StringBuilder mSB = new StringBuilder();
-        for (String s : mSignFullTokenStringArray) {
-            mSB.append(s);
-        }
-        String apiSig = StaticMethodUtil.countMD5OfString(mSB.toString());
-        Log.d(TAG, "apiSig is " + apiSig);
-
-        String url = Uri.parse(ENDPOINT).buildUpon()
-                .appendQueryParameter("method", "flickr.stats.getPhotoStats")
-                .appendQueryParameter("api_key", API_KEY)
-                .appendQueryParameter("date", sdf.format(mCurrentDate))
-                .appendQueryParameter("photo_id", mGalleryItem.getId())
-                .appendQueryParameter("auth_token", mFullToken)
-                .appendQueryParameter("api_sig", apiSig)
-                .build().toString();
-        Log.d(TAG, "Get photo states from " + url);
-
-        KJHttp kjHttp = new KJHttp();
-        kjHttp.get(url, new HttpCallBack() {
-            @Override
-            public void onFinish() {
-                super.onFinish();
-                updateUI();
-            }
-
-            @Override
-            public void onSuccess(String t) {
-                super.onSuccess(t);
-                Log.d(TAG, "Response string is " + t);
-                try {
-                    XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
-                    XmlPullParser parser = factory.newPullParser();
-                    parser.setInput(new StringReader(t));
-                    int eventType = parser.getEventType();
-                    while (eventType != XmlPullParser.END_DOCUMENT) {
-                        if ("err".equals(parser.getName())) {
-                            Log.d(TAG, "Error occur when getting states");
-                            break;
-                        } else if (eventType == XmlPullParser.START_TAG && "stats".equals(parser.getName())) {
-                            mViews = parser.getAttributeValue(null, "views");
-                            mComment = parser.getAttributeValue(null, "comments");
-                            mFavorites = parser.getAttributeValue(null, "favorites");
-                        }
-                        eventType = parser.next();
-                    }
-                }catch (XmlPullParserException xppe){
-                    xppe.printStackTrace();
-                }catch (IOException ioe){
-                    ioe.printStackTrace();
-                }
-            }
-        });
     }
 
     //获取评论
@@ -438,6 +389,126 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
             }
         });
 
+    }
+
+    private void addAsFavorite(){
+        String[] mSignFullTokenStringArray = {"method" + "flickr.favorites.add",
+                "api_key" + LogInFragment.API_KEY, "auth_token" + mFullToken,
+                LogInFragment.PUBLIC_CODE, "photo_id" + mGalleryItem.getId()};
+
+        Arrays.sort(mSignFullTokenStringArray);
+        StringBuilder mSB = new StringBuilder();
+        for (String s : mSignFullTokenStringArray) {
+            mSB.append(s);
+        }
+        String apiSig = StaticMethodUtil.countMD5OfString(mSB.toString());
+        String url = Uri.parse(ENDPOINT).buildUpon()
+                .appendQueryParameter("method", "flickr.favorites.add")
+                .appendQueryParameter("api_key", API_KEY)
+                .appendQueryParameter("photo_id", mGalleryItem.getId())
+                .appendQueryParameter("auth_token", mFullToken)
+                .appendQueryParameter("api_sig", apiSig)
+                .build().toString();
+
+        new KJHttp().post(url, null, new HttpCallBack() {
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                updateData();
+            }
+
+            @Override
+            public void onSuccess(String t) {
+                super.onSuccess(t);
+
+                try {
+                    XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
+                    XmlPullParser parser=factory.newPullParser();
+                    parser.setInput(new StringReader(t));
+
+                    int eventType=parser.getEventType();
+                    while (eventType!=XmlPullParser.END_DOCUMENT){
+                        if (eventType==XmlPullParser.START_TAG&&"rsp".equals(parser.getName())){
+                            String state=parser.getAttributeValue(null,"stat");
+                            if (state.equals("ok")){
+                                updateData();
+                                Toast.makeText(getActivity(),R.string.add_as_fav_success,Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        if (eventType==XmlPullParser.START_TAG&&"err".equals(parser.getName())){
+                            String errorMessage=parser.getAttributeValue(null,"msg");
+                            Toast.makeText(getActivity(),errorMessage,Toast.LENGTH_SHORT).show();
+                        }
+                        eventType=parser.next();
+                    }
+                }catch (XmlPullParserException xppe) {
+                    xppe.printStackTrace();
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private void removeFavorite(){
+        String[] mSignFullTokenStringArray = {"method" + "flickr.favorites.remove",
+                "api_key" + LogInFragment.API_KEY, "auth_token" + mFullToken,
+                LogInFragment.PUBLIC_CODE, "photo_id" + mGalleryItem.getId()};
+
+        Arrays.sort(mSignFullTokenStringArray);
+        StringBuilder mSB = new StringBuilder();
+        for (String s : mSignFullTokenStringArray) {
+            mSB.append(s);
+        }
+        String apiSig = StaticMethodUtil.countMD5OfString(mSB.toString());
+        String url = Uri.parse(ENDPOINT).buildUpon()
+                .appendQueryParameter("method", "flickr.favorites.remove")
+                .appendQueryParameter("api_key", API_KEY)
+                .appendQueryParameter("photo_id", mGalleryItem.getId())
+                .appendQueryParameter("auth_token", mFullToken)
+                .appendQueryParameter("api_sig", apiSig)
+                .build().toString();
+
+        new KJHttp().post(url, null, new HttpCallBack() {
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                updateData();
+            }
+
+            @Override
+            public void onSuccess(String t) {
+                super.onSuccess(t);
+
+                try {
+                    XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
+                    XmlPullParser parser=factory.newPullParser();
+                    parser.setInput(new StringReader(t));
+
+                    int eventType=parser.getEventType();
+                    while (eventType!=XmlPullParser.END_DOCUMENT){
+                        if (eventType==XmlPullParser.START_TAG&&"rsp".equals(parser.getName())){
+                            String state=parser.getAttributeValue(null,"stat");
+                            if (state.equals("ok")){
+                                updateData();
+                                Toast.makeText(getActivity(),R.string.remove_from_fav_success,Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        if (eventType==XmlPullParser.START_TAG&&"err".equals(parser.getName())){
+                            String errorMessage=parser.getAttributeValue(null,"msg");
+                            Toast.makeText(getActivity(),errorMessage,Toast.LENGTH_SHORT).show();
+                        }
+                        eventType=parser.next();
+                    }
+                }catch (XmlPullParserException xppe) {
+                    xppe.printStackTrace();
+                } catch (IOException ioe) {
+                    ioe.printStackTrace();
+                }
+            }
+        });
     }
 
     private class RVAdapter extends RecyclerView.Adapter<RVAdapter.RVViewHolder>{

@@ -74,11 +74,13 @@ public class PhotoInfoUtil {
                             String secret=parser.getAttributeValue(null,"secret");
                             String server=parser.getAttributeValue(null,"server");
                             String farm=parser.getAttributeValue(null,"farm");
+                            String isFavorite=parser.getAttributeValue(null,"isfavorite");
                             String views=parser.getAttributeValue(null,"views");
 
                             galleryItem.setSecret(secret);
                             galleryItem.setServer(server);
                             galleryItem.setFarm(farm);
+                            galleryItem.setIsFavorite(isFavorite);
                             galleryItem.setViews(views);
                         }
 
@@ -164,9 +166,12 @@ public class PhotoInfoUtil {
                             String total=parser.getAttributeValue(null,"total");
                             galleryItem.setTotalFavoritesNum(total);
                         }
+                        eventType=parser.next();
                     }
                 }catch (XmlPullParserException xppe){
                     xppe.printStackTrace();
+                }catch (IOException ioe){
+                    ioe.printStackTrace();
                 }
             }
         });

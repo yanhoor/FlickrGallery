@@ -28,6 +28,7 @@ public class GalleryItem implements Serializable{
     private String mSecret;
     private String mServer;
     private String mFarm;
+    private String isFavorite;
 
     //需要调用PhotoInfoUtil才能获取
     private User mOwner;
@@ -185,6 +186,14 @@ public class GalleryItem implements Serializable{
 
     public void setTotalFavoritesNum(String totalFavoritesNum) {
         mTotalFavoritesNum = totalFavoritesNum;
+    }
+
+    public String getIsFavorite() {
+        return isFavorite;
+    }
+
+    public void setIsFavorite(String isFavorite) {
+        this.isFavorite = isFavorite;
     }
 
     public String getPhotoPageUrl(){
