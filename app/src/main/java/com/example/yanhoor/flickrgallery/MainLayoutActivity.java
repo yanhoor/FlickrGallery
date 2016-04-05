@@ -17,6 +17,7 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.SearchView;
 import android.widget.Toolbar;
 
@@ -38,6 +39,7 @@ public class MainLayoutActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.d(TAG,"on create");
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main_layout);
 
         fullToken=PreferenceManager.getDefaultSharedPreferences(this)
@@ -50,7 +52,6 @@ public class MainLayoutActivity extends FragmentActivity {
         mViewPager=(ViewPager)findViewById(R.id.viewPager);
         mToolbar=(Toolbar)findViewById(R.id.toolbar);
         mToolbar.setTitle(null);
-        mToolbar.setTitleTextColor(getResources().getColor(R.color.colorWhite));
         setActionBar(mToolbar);
 
         FragmentManager fm=getSupportFragmentManager();
