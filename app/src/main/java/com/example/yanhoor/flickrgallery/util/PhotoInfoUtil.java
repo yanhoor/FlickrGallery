@@ -3,6 +3,8 @@ package com.example.yanhoor.flickrgallery.util;
 import android.net.Uri;
 import android.util.Log;
 
+import com.example.yanhoor.flickrgallery.LogInFragment;
+import com.example.yanhoor.flickrgallery.MainLayoutActivity;
 import com.example.yanhoor.flickrgallery.model.GalleryItem;
 import com.example.yanhoor.flickrgallery.model.User;
 
@@ -16,6 +18,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.IOException;
 import java.io.StringReader;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
@@ -42,10 +45,24 @@ public class PhotoInfoUtil {
     public GalleryItem getPhotoInfo(final GalleryItem galleryItem){
         final User owner=new User();
         String photo_id=galleryItem.getId();
+
+        String[] mSignFullTokenStringArray = {"method" + "flickr.photos.getInfo",
+                "api_key" + LogInFragment.API_KEY, "auth_token" + MainLayoutActivity.fullToken,
+                LogInFragment.PUBLIC_CODE, "photo_id" + photo_id};
+
+        Arrays.sort(mSignFullTokenStringArray);
+        StringBuilder mSB = new StringBuilder();
+        for (String s : mSignFullTokenStringArray) {
+            mSB.append(s);
+        }
+        String apiSig = StaticMethodUtil.countMD5OfString(mSB.toString());
+
         String url= Uri.parse(ENDPOINT).buildUpon()
                 .appendQueryParameter("method","flickr.photos.getInfo")
                 .appendQueryParameter("api_key",API_KEY)
                 .appendQueryParameter("photo_id",photo_id)
+                .appendQueryParameter("auth_token", MainLayoutActivity.fullToken)
+                .appendQueryParameter("api_sig", apiSig)
                 .build().toString();
 
         HttpConfig config=new HttpConfig();

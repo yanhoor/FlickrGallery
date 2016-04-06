@@ -208,6 +208,8 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
 
         if (mGalleryItem.getIsFavorite()!=null&&mGalleryItem.getIsFavorite().equals("1")){
             favoritesText.setTextColor(getResources().getColor(R.color.colorAccent));
+        }else {
+            favoritesText.setTextColor(getResources().getColor(R.color.colorBlackGray));
         }
         if (mGalleryItem.getTotalFavoritesNum()!=null){
             favoritesNumber.setText(mGalleryItem.getTotalFavoritesNum());
@@ -424,7 +426,6 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
             @Override
             public void onFinish() {
                 super.onFinish();
-                updateData();
             }
 
             @Override
@@ -485,7 +486,6 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
             @Override
             public void onFinish() {
                 super.onFinish();
-                updateData();
             }
 
             @Override
