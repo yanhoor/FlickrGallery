@@ -256,7 +256,7 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
 
     //获取评论
     public void getComments(final ArrayList<Comment>requestComments,String id){
-        requestComments.clear();//先清除原来的，防止重复
+        Log.d(TAG,"requestComments size in getComments is "+requestComments.size());
         final ArrayList<Comment> comments=new ArrayList<>();
 
         String url=Uri.parse(ENDPOINT).buildUpon()
@@ -275,8 +275,10 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
                 for (int i=comments.size()-1;i>=0;i--){
                     newComments.add(comments.get(i));
                 }
+                requestComments.clear();//先清除原来的，防止重复
                 requestComments.addAll(newComments);
-                Log.d(TAG,"mComments size in getComments is "+mComments.size());
+                Log.d(TAG,"requestComments size in getComments is "+requestComments.size());
+                Log.d(TAG, "onSuccess: comments size is "+comments.size());
                 updateUI();
             }
 
@@ -314,7 +316,6 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
                             comment.setAuthor(author);
                             comment.setDateCreate(dateString);
                             comment.setContent(content);
-                            Log.d(TAG,"Comment content is "+content);
                             comments.add(comment);
                         }
                         eventType=parser.next();
@@ -420,6 +421,7 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
             @Override
             public void onSuccess(String t) {
                 super.onSuccess(t);
+                Log.d(TAG, "onSuccess: response is "+t);
 
                 try {
                     XmlPullParserFactory factory=XmlPullParserFactory.newInstance();

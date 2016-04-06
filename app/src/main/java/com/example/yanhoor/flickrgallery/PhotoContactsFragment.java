@@ -73,7 +73,7 @@ public class PhotoContactsFragment extends Fragment {
                             mSRL.setRefreshing(false);
                         }
                     }
-                },5000);
+                },4000);
             }
         });
 
@@ -137,6 +137,7 @@ public class PhotoContactsFragment extends Fragment {
                     XmlPullParser parser=factory.newPullParser();
                     parser.setInput(new StringReader(t));
 
+                    mGalleryItems.clear();
                     new FlickrFetchr().parseItems(mGalleryItems,parser);
                 }catch (XmlPullParserException xppe) {
                     xppe.printStackTrace();

@@ -94,7 +94,7 @@ public class PhotoInterestingFragment extends VisibleFragment {
                             mSRL.setRefreshing(false);
                         }
                     }
-                },5000);
+                },4000);
             }
         });
 

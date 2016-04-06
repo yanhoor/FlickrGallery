@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:compat="http://schemas.android.com/apk/res-auto"
-    android:background="#3F51B5">
+      xmlns:app="http://schemas.android.com/tools"
+      android:background="#3F51B5">
 
     <item android:id="@+id/menu_item_search"
           android:title="@string/search"
           android:icon="@android:drawable/ic_menu_search"
-          compat:showAsAction="always"
+          app:showAsAction="always"
         android:actionViewClass="android.widget.SearchView"/>
 
     <item android:id="@+id/menu_item_toggle_polling"
           android:title="@string/start_polling"
-          compat:showAsAction="ifRoom"/>
+          app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/menu_item_login"
           android:title="@string/login_menu"
-          compat:showAsAction="ifRoom"/>
+          app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/menu_item_upload_photo"
           android:title="@string/menu_title_upload_photo"
-          compat:showAsAction="ifRoom"/>
+          app:showAsAction="ifRoom"/>
 
 </menu>

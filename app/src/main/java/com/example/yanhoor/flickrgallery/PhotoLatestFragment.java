@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ import com.squareup.picasso.Picasso;
 
 import org.kymjs.kjframe.KJHttp;
 import org.kymjs.kjframe.http.HttpCallBack;
+import org.kymjs.kjframe.http.HttpConfig;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -31,6 +33,8 @@ import java.util.ArrayList;
  * Created by yanhoor on 2016/4/5.
  */
 public class PhotoLatestFragment extends Fragment{
+    private static final String TAG="PhotoLatestFragment";
+
     private static final String ENDPOINT="https://api.flickr.com/services/rest/";
     private static final String API_KEY="0964378968b9ce3044e29838e2fc0cd8";
     private static final String METHOD_GET_RECENT="flickr.photos.getRecent";
@@ -70,7 +74,7 @@ public class PhotoLatestFragment extends Fragment{
                             mSRL.setRefreshing(false);
                         }
                     }
-                },5000);
+                },4000);
             }
         });
 
@@ -104,7 +108,9 @@ public class PhotoLatestFragment extends Fragment{
                 .appendQueryParameter(PARAM_EXTRAS,EXTRA_SMALL_URL)
                 .build().toString();
 
-        new KJHttp().get(url, new HttpCallBack() {
+        HttpConfig config=new HttpConfig();
+        config.cacheTime=0;
+        new KJHttp(config).get(url, new HttpCallBack() {
             @Override
             public void onFinish() {
                 super.onFinish();
@@ -114,11 +120,13 @@ public class PhotoLatestFragment extends Fragment{
             @Override
             public void onSuccess(String t) {
                 super.onSuccess(t);
+                Log.d(TAG, "onSuccess: Getting recent photos from "+t);
                 try {
                     XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
                     XmlPullParser parser=factory.newPullParser();
                     parser.setInput(new StringReader(t));
 
+                    mGalleryItems.clear();
                     new FlickrFetchr().parseItems(mGalleryItems,parser);
                 }catch (XmlPullParserException xppe) {
                     xppe.printStackTrace();

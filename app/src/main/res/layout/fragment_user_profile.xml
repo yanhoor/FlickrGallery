@@ -130,6 +130,7 @@
                 android:layout_marginEnd="10dp"
                 android:text="@string/view_user_page"
                 android:textColor="@color/colorPrimaryDark"
+                android:textStyle="bold|italic"
                 android:textSize="18sp"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"/>
