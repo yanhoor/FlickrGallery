@@ -200,8 +200,12 @@ public class GalleryItem implements Serializable{
         return "http://www.flickr.com/photos/"+ mOwner.getId() +"/"+mId;
     }
 
-    public String getDetailPhotoUrl(){
-        return "https://farm"+mFarm+".staticflickr.com/"+mServer+"/"+mId+"_"+mSecret+"_b.jpg";
+    public String getLargePhotoUrl(){
+        return "https://farm"+mFarm+".staticflickr.com/"+mServer+"/"+mId+"_"+mSecret+"_n.jpg";
+    }
+
+    public String getlargestPhotoUrl(){
+        return "https://farm"+mFarm+".staticflickr.com/"+mServer+"/"+mId+"_"+mSecret+"_h.jpg";
     }
 
 }

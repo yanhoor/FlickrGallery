@@ -25,7 +25,7 @@
             android:layout_height="24dp"
             android:background="@color/colorPrimary"
             app:tabTextColor="@color/colorGray"
-            app:tabSelectedTextColor="@color/colorWhite"
+            app:tabSelectedTextColor="@color/colorAccent"
             app:tabIndicatorHeight="1dp"
             app:tabMode="fixed"/>
 

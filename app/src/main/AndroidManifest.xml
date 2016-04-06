@@ -55,6 +55,8 @@
         <activity android:name=".SearchActivity"/>
 
         <activity android:name=".SearchProcessActivity"/>
+        
+        <activity android:name=".PhotoViewActivity"/>
 
         <service android:name="com.example.yanhoor.flickrgallery.PollService"/>
 

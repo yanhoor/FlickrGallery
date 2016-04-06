@@ -167,6 +167,7 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
         favoritesLayout.setOnClickListener(this);
         ownerLayout.setOnClickListener(this);
         sendComment.setOnClickListener(this);
+        mImageView.setOnClickListener(this);
         updateUI();
 
         return v;
@@ -195,11 +196,11 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
 
         postedTime.setText(mGalleryItem.getPostedTime());
 
-        Log.d(TAG,"Getting detail photo from "+mGalleryItem.getDetailPhotoUrl());
+        Log.d(TAG,"Getting detail photo from "+mGalleryItem.getLargePhotoUrl());
         //使用kjbitmap
         new KJBitmap.Builder()
                 .view(mImageView)
-                .imageUrl(mGalleryItem.getDetailPhotoUrl())
+                .imageUrl(mGalleryItem.getLargePhotoUrl())
                 .display();
 
         Log.d(TAG,"mComments size is "+mComments.size());
@@ -246,6 +247,14 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
                     addAsFavorite();
                 }else {
                     removeFavorite();
+                }
+                break;
+
+            case R.id.photo_imageView:
+                if (mGalleryItem.getlargestPhotoUrl()!=null){
+                    Intent viewPhotoIntent=new Intent(getActivity(),PhotoViewActivity.class);
+                    viewPhotoIntent.putExtra(PhotoViewFragment.EXTRA_PHOTO_URL,mGalleryItem.getlargestPhotoUrl());
+                    startActivity(viewPhotoIntent);
                 }
                 break;
 

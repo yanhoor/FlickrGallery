@@ -70,4 +70,6 @@
     <string name="over_count_selected">You can select one search type only</string>
     <string name="add_as_fav_success">Add as favorite</string>
     <string name="remove_from_fav_success">Remove favorite</string>
+    <string name="downloading_photo_progressdialog">Downloading photo&#8230;</string>
+    <string name="save_photo_title_menu">Save</string>
 </resources>

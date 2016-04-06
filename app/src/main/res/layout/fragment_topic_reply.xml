@@ -11,7 +11,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/upload_photo_edit_text_shape"
+        android:layout_marginTop="48dp"
         android:hint="@string/reply_topic_hint"
+        android:gravity="top|left"
         android:layout_weight="1"/>
 
     <Button
