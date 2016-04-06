@@ -72,4 +72,5 @@
     <string name="remove_from_fav_success">Remove favorite</string>
     <string name="downloading_photo_progressdialog">Downloading photo&#8230;</string>
     <string name="save_photo_title_menu">Save</string>
+    <string name="save_photo_success">Saved the photo</string>
 </resources>

@@ -3,21 +3,20 @@ package com.example.yanhoor.flickrgallery;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import org.kymjs.kjframe.KJBitmap;
 import org.kymjs.kjframe.bitmap.BitmapCallBack;
@@ -60,6 +59,7 @@ public class PhotoViewFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         photoUrl=getArguments().getString(EXTRA_PHOTO_URL);
         Log.d(TAG, "onCreate: photoUrl is "+photoUrl);
     }
@@ -70,57 +70,6 @@ public class PhotoViewFragment extends Fragment {
         View v=inflater.inflate(R.layout.fragment_photo_view,container,false);
 
         mImageView=(ImageView)v.findViewById(R.id.imageView_photo_fragment);
-        mImageView.setLongClickable(true);
-        mImageView.setClickable(true);
-        mImageView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                Log.d(TAG, "onLongClick: long click");
-                AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
-                builder.setMessage("Would you want to save the photo ?")
-                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                saveImage(mBitmap);
-                            }
-                        })
-                        .setNegativeButton(R.string.no,null)
-                        .create().show();
-
-                getActivity().startActionMode(new ActionMode.Callback() {
-                    @Override
-                    public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                        mode.getMenuInflater().inflate(R.menu.save_photo_context_menu,menu);
-                        return true;
-                    }
-
-                    @Override
-                    public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                        switch (item.getItemId()){
-                            case R.id.save_photo_menu:
-                                saveImage(mBitmap);
-                                return true;
-                            default:
-                                return false;
-                        }
-                    }
-
-                    @Override
-                    public void onDestroyActionMode(ActionMode mode) {
-
-                    }
-                });
-
-                v.setSelected(true);
-
-                return true;
-            }
-        });
 
         final ProgressDialog progressDialog=new ProgressDialog(getActivity());
         progressDialog.setMessage(getResources().getString(R.string.downloading_photo_progressdialog));;
@@ -158,6 +107,7 @@ public class PhotoViewFragment extends Fragment {
             bmp.compress(Bitmap.CompressFormat.JPEG, 100, fos);
             fos.flush();
             fos.close();
+            Toast.makeText(getActivity(),R.string.save_photo_success,Toast.LENGTH_SHORT).show();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -165,4 +115,23 @@ public class PhotoViewFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu,inflater);
+        inflater.inflate(R.menu.save_photo_context_menu,menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.save_photo_menu:
+                if (mBitmap!=null){
+                    saveImage(mBitmap);
+                }
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 }
