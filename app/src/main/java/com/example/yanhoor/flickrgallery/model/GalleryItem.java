@@ -29,6 +29,8 @@ public class GalleryItem implements Serializable{
     private String mServer;
     private String mFarm;
     private String isFavorite;
+    private String mOriginalsecret;
+    private String mOriginalformat;
 
     //需要调用PhotoInfoUtil才能获取
     private User mOwner;
@@ -196,16 +198,38 @@ public class GalleryItem implements Serializable{
         this.isFavorite = isFavorite;
     }
 
+    public String getOriginalformat() {
+        return mOriginalformat;
+    }
+
+    public void setOriginalformat(String originalformat) {
+        mOriginalformat = originalformat;
+    }
+
+    public String getOriginalsecret() {
+        return mOriginalsecret;
+    }
+
+    public void setOriginalsecret(String originalsecret) {
+        mOriginalsecret = originalsecret;
+    }
+
     public String getPhotoPageUrl(){
         return "http://www.flickr.com/photos/"+ mOwner.getId() +"/"+mId;
     }
 
     public String getLargePhotoUrl(){
+        //<320
         return "https://farm"+mFarm+".staticflickr.com/"+mServer+"/"+mId+"_"+mSecret+"_n.jpg";
     }
 
-    public String getlargestPhotoUrl(){
+    public String getLargestPhotoUrl(){
+        //<1600
         return "https://farm"+mFarm+".staticflickr.com/"+mServer+"/"+mId+"_"+mSecret+"_h.jpg";
+    }
+
+    public String getOriginalPhotoUrl(){
+        return "https://farm"+mFarm+".staticflickr.com/"+mServer+"/"+mId+"_"+mOriginalsecret+"_o."+mOriginalformat;
     }
 
 }

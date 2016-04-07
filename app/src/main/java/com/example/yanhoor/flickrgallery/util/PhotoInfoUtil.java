@@ -48,7 +48,7 @@ public class PhotoInfoUtil {
 
         String[] mSignFullTokenStringArray = {"method" + "flickr.photos.getInfo",
                 "api_key" + LogInFragment.API_KEY, "auth_token" + MainLayoutActivity.fullToken,
-                LogInFragment.PUBLIC_CODE, "photo_id" + photo_id};
+                LogInFragment.PUBLIC_CODE, "photo_id" + photo_id,"format"+"rest"};
 
         Arrays.sort(mSignFullTokenStringArray);
         StringBuilder mSB = new StringBuilder();
@@ -61,6 +61,7 @@ public class PhotoInfoUtil {
                 .appendQueryParameter("method","flickr.photos.getInfo")
                 .appendQueryParameter("api_key",API_KEY)
                 .appendQueryParameter("photo_id",photo_id)
+                .appendQueryParameter("format","rest")
                 .appendQueryParameter("auth_token", MainLayoutActivity.fullToken)
                 .appendQueryParameter("api_sig", apiSig)
                 .build().toString();
@@ -92,12 +93,16 @@ public class PhotoInfoUtil {
                             String server=parser.getAttributeValue(null,"server");
                             String farm=parser.getAttributeValue(null,"farm");
                             String isFavorite=parser.getAttributeValue(null,"isfavorite");
+                            String originalSecret=parser.getAttributeValue(null,"originalsecret");
+                            String originalFormat=parser.getAttributeValue(null,"originalformat");
                             String views=parser.getAttributeValue(null,"views");
 
                             galleryItem.setSecret(secret);
                             galleryItem.setServer(server);
                             galleryItem.setFarm(farm);
                             galleryItem.setIsFavorite(isFavorite);
+                            galleryItem.setOriginalsecret(originalSecret);
+                            galleryItem.setOriginalformat(originalFormat);
                             galleryItem.setViews(views);
                         }
 

@@ -7,4 +7,7 @@
           app:showAsAction="always"
           android:icon="@android:drawable/ic_menu_save"/>
 
+    <item android:id="@+id/view_original_photo"
+          android:title="@string/view_original_photo"/>
+
 </menu>

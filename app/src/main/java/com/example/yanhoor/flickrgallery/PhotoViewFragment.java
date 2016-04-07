@@ -18,6 +18,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.yanhoor.flickrgallery.model.GalleryItem;
+
 import org.kymjs.kjframe.KJBitmap;
 import org.kymjs.kjframe.bitmap.BitmapCallBack;
 
@@ -34,16 +36,16 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 public class PhotoViewFragment extends Fragment {
     private static final String TAG="PhotoViewFragment";
 
-    public static final String EXTRA_PHOTO_URL="photo_url";
+    public static final String EXTRA_GALLERY_ITEM ="gallery_item";
 
-    private String photoUrl;
+    private GalleryItem mGalleryItem;
     private ImageView mImageView;
     private Bitmap mBitmap;
     private Activity mActivity;
 
-    public static PhotoViewFragment newInstance(String url){
+    public static PhotoViewFragment newInstance(GalleryItem galleryItem){
         Bundle args=new Bundle();
-        args.putString(EXTRA_PHOTO_URL,url);
+        args.putSerializable(EXTRA_GALLERY_ITEM,galleryItem);
         PhotoViewFragment fragment=new PhotoViewFragment();
         fragment.setArguments(args);
 
@@ -60,8 +62,7 @@ public class PhotoViewFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        photoUrl=getArguments().getString(EXTRA_PHOTO_URL);
-        Log.d(TAG, "onCreate: photoUrl is "+photoUrl);
+        mGalleryItem=(GalleryItem)getArguments().getSerializable(EXTRA_GALLERY_ITEM);
     }
 
     @Nullable
@@ -76,8 +77,8 @@ public class PhotoViewFragment extends Fragment {
         progressDialog.setCancelable(true);
         progressDialog.show();
 
-        final KJBitmap kjBitmap=new KJBitmap();
-        kjBitmap.doDisplay(mImageView, photoUrl, 0, 0, null, 0, null, 0, new BitmapCallBack() {
+        Log.d(TAG, "onCreateView: Getting Largest photo from "+mGalleryItem.getLargestPhotoUrl());
+        new KJBitmap().doDisplay(mImageView, mGalleryItem.getLargestPhotoUrl(), 0, 0, null, 0, null, 0, new BitmapCallBack() {
             @Override
             public void onFinish() {
                 super.onFinish();
@@ -128,6 +129,29 @@ public class PhotoViewFragment extends Fragment {
                 if (mBitmap!=null){
                     saveImage(mBitmap);
                 }
+                return true;
+
+            case R.id.view_original_photo:
+                final ProgressDialog progressDialog=new ProgressDialog(getActivity());
+                progressDialog.setMessage(getResources().getString(R.string.downloading_photo_progressdialog));;
+                progressDialog.setCancelable(true);
+                progressDialog.show();
+                Log.d(TAG, "onOptionsItemSelected: Getting original photo from "+mGalleryItem.getOriginalPhotoUrl());
+
+                new KJBitmap().doDisplay(mImageView, mGalleryItem.getOriginalPhotoUrl(), 0, 0, null, 0, null, 0, new BitmapCallBack() {
+                    @Override
+                    public void onFinish() {
+                        super.onFinish();
+                        progressDialog.dismiss();
+                        new PhotoViewAttacher(mImageView);
+                    }
+
+                    @Override
+                    public void onSuccess(Bitmap bitmap) {
+                        super.onSuccess(bitmap);
+                        mBitmap=bitmap;
+                    }
+                });
                 return true;
 
             default:

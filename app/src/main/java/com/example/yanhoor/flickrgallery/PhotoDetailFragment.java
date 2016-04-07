@@ -253,9 +253,9 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
                 break;
 
             case R.id.photo_imageView:
-                if (mGalleryItem.getlargestPhotoUrl()!=null){
+                if (mGalleryItem!=null){
                     Intent viewPhotoIntent=new Intent(getActivity(),PhotoViewActivity.class);
-                    viewPhotoIntent.putExtra(PhotoViewFragment.EXTRA_PHOTO_URL,mGalleryItem.getlargestPhotoUrl());
+                    viewPhotoIntent.putExtra(PhotoViewFragment.EXTRA_GALLERY_ITEM,mGalleryItem);
                     startActivity(viewPhotoIntent);
                 }
                 break;
