@@ -45,6 +45,8 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
     RelativeLayout followingLayout;
     TextView groupNumber;
     RelativeLayout groupLayout;
+    RelativeLayout photosetLayout;
+    TextView photosetNumber;
     TextView locationTextView;
     RelativeLayout locationLayout;
     TextView location;
@@ -107,6 +109,10 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
         groupLayout=(RelativeLayout)v.findViewById(R.id.groupLayout_profile);
         groupLayout.setOnClickListener(this);
 
+        photosetLayout=(RelativeLayout)v.findViewById(R.id.photoset_layout_profile);
+        photosetNumber=(TextView)v.findViewById(R.id.photoset_num_profile);
+        photosetLayout.setOnClickListener(this);
+
         locationLayout=(RelativeLayout)v.findViewById(R.id.location_layout);
         locationTextView=(TextView)v.findViewById(R.id.location_profile);
         location=(TextView)v.findViewById(R.id.location_text_profile);
@@ -167,6 +173,15 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
                 startActivity(i);
                 break;
 
+            case R.id.photoset_layout_profile:
+                if (mUser.getPhotosetNum()!=null&&!mUser.getPhotosetNum().equals("0")){
+                    Intent photosetIntent=new Intent(getActivity(),ListActivity.class);
+                    photosetIntent.putExtra(ListPhotosetFragment.EXTRA_PHOTOSET_DATA,mUser.getPhotoSets());
+                    ListActivity.dataType="photosets";
+                    startActivity(photosetIntent);
+                }
+                break;
+
             default:
                 break;
         }
@@ -192,6 +207,10 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
 
         if (mUser.getGroups().size()>0){
             groupNumber.setText(String.valueOf(mUser.getGroups().size()));
+        }
+
+        if (mUser.getPhotosetNum()!=null){
+            photosetNumber.setText(mUser.getPhotosetNum());
         }
 
         Log.d(TAG,"location is "+mUser.getLocation());

@@ -89,7 +89,7 @@ public class ListTopicsFragment extends Fragment {
             return v;
         }
 
-        class ViewHolder{
+        private class ViewHolder{
             TextView subject;
         }
     }

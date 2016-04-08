@@ -37,6 +37,7 @@ public class GalleryItem implements Serializable{
     private String mDescription=null;
     private String mPostedTime;
     private String mViews;
+    private String mPhotoSetId;
     private String mTotalFavoritesNum;
     private ArrayList<User>mFavorites=new ArrayList<>();
 
@@ -212,6 +213,14 @@ public class GalleryItem implements Serializable{
 
     public void setOriginalsecret(String originalsecret) {
         mOriginalsecret = originalsecret;
+    }
+
+    public String getPhotoSetId() {
+        return mPhotoSetId;
+    }
+
+    public void setPhotoSetId(String photoSetId) {
+        mPhotoSetId = photoSetId;
     }
 
     public String getPhotoPageUrl(){

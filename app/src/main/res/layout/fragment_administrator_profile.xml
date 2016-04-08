@@ -91,10 +91,36 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/location_layout_administratorProfile"
+                android:id="@+id/photoset_layout_administratorProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/groupLayout_administratorProfile"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp">
+
+                <TextView
+                    android:id="@+id/photoset_text_administratorProfile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/photoset"
+                    android:textStyle="bold|italic"
+                    android:textColor="@color/colorPrimaryDark"/>
+
+                <TextView
+                    android:id="@+id/photoset_num_administratorProfile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/photoset_text_administratorProfile"
+                    android:layout_marginStart="10dp"
+                    android:text="0"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/location_layout_administratorProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/photoset_layout_administratorProfile"
                 android:layout_marginTop="10dp"
                 android:layout_marginStart="10dp"
                 android:visibility="gone">

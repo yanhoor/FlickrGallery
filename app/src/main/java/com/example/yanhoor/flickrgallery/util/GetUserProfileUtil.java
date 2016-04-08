@@ -9,6 +9,7 @@ import com.example.yanhoor.flickrgallery.LogInFragment;
 import com.example.yanhoor.flickrgallery.MainLayoutActivity;
 import com.example.yanhoor.flickrgallery.model.GalleryItem;
 import com.example.yanhoor.flickrgallery.model.Group;
+import com.example.yanhoor.flickrgallery.model.PhotoSet;
 import com.example.yanhoor.flickrgallery.model.User;
 
 import org.kymjs.kjframe.KJHttp;
@@ -36,6 +37,7 @@ public class GetUserProfileUtil {
     private User mUser;
     private ArrayList<GalleryItem>mGalleryItems;
     private ArrayList<Group>mGroups;
+    private ArrayList<PhotoSet>mPhotoSets;
 
     listener mPersonalProfileListener;
 
@@ -54,6 +56,7 @@ public class GetUserProfileUtil {
         getUserInfo();
         getFollowings();
         getUserPhoto();
+        getPhotoSetList();
         Log.d(TAG,"user name is "+mUser.getUserName());
         return mUser;
     }
@@ -334,16 +337,32 @@ public class GetUserProfileUtil {
 
     }
 
-    public void getPublicGroups(){
-        mGroups=new ArrayList<>();
+    public void getPhotoSetList(){
+        mPhotoSets=new ArrayList<>();
+
+        String[] mSignFullTokenStringArray = {"method" + "flickr.photosets.getList",
+                "api_key" + LogInFragment.API_KEY, "auth_token" + MainLayoutActivity.fullToken,
+                LogInFragment.PUBLIC_CODE, "user_id" + mUser.getId(),
+        "primary_photo_extras"+"url_s"};
+        Arrays.sort(mSignFullTokenStringArray);
+        StringBuilder mSB = new StringBuilder();
+        for (String s : mSignFullTokenStringArray) {
+            mSB.append(s);
+        }
+        String apiSig = StaticMethodUtil.countMD5OfString(mSB.toString());
 
         String url= Uri.parse(ENDPOINT).buildUpon()
-                .appendQueryParameter("method","flickr.people.getPublicGroups")
+                .appendQueryParameter("method","flickr.photosets.getList")
                 .appendQueryParameter("api_key",API_KEY)
                 .appendQueryParameter("user_id",mUser.getId())
+                .appendQueryParameter("auth_token", MainLayoutActivity.fullToken)
+                .appendQueryParameter( "primary_photo_extras","url_s")
+                .appendQueryParameter("api_sig", apiSig)
                 .build().toString();
 
-        new KJHttp().get(url, new HttpCallBack() {
+        HttpConfig config=new HttpConfig();
+        config.cacheTime=0;
+        new KJHttp(config).get(url, new HttpCallBack() {
             @Override
             public void onFinish() {
                 super.onFinish();
@@ -352,9 +371,10 @@ public class GetUserProfileUtil {
 
             @Override
             public void onSuccess(String t) {
-                mGroups=new ArrayList<>();
                 super.onSuccess(t);
-                Log.d(TAG,"Getting group info from "+t);
+                Log.d(TAG, "onSuccess: Getting photosets from "+t);
+                mPhotoSets.clear();
+
                 try {
                     XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
                     XmlPullParser parser=factory.newPullParser();
@@ -362,23 +382,30 @@ public class GetUserProfileUtil {
 
                     int eventType=parser.getEventType();
                     while (eventType!=XmlPullParser.END_DOCUMENT){
-                        if (eventType==XmlPullParser.START_TAG&&"group".equals(parser.getName())){
-                            Group group=new Group();
-                            String id=parser.getAttributeValue(null,"nsid");
-                            String name=parser.getAttributeValue(null,"name");
-                            String iconFarm=parser.getAttributeValue(null,"iconfarm");
-                            String iconServer=parser.getAttributeValue(null,"iconserver");
-                            String members=parser.getAttributeValue(null,"members");
-                            String poolCount=parser.getAttributeValue(null,"pool_count");
+                        PhotoSet photoSet=new PhotoSet();
 
-                            group.setId(id);
-                            group.setGroupName(name);
-                            group.setIconFarm(iconFarm);
-                            group.setIconServer(iconServer);
-                            group.setMemberNumber(members);
-                            group.setPool_count(poolCount);
-                            mGroups.add(group);
+                        if (eventType==XmlPullParser.START_TAG&&"photosets".equals(parser.getName())){
+                            String total=parser.getAttributeValue(null,"total");
+                            mUser.setPhotosetNum(total);
                         }
+
+                        if (eventType==XmlPullParser.START_TAG&&"photoset".equals(parser.getName())){
+                            String id=parser.getAttributeValue(null,"id");
+
+                            photoSet.setId(id);
+                        }
+
+                        if (eventType==XmlPullParser.START_TAG&&"title".equals(parser.getName())){
+                            String title=parser.nextText();
+                            photoSet.setTitle(title);
+                        }
+
+                        if (eventType==XmlPullParser.START_TAG&&"primary_photo_extras".equals(parser.getName())){
+                            String url=parser.getAttributeValue(null,"url_s");
+                            photoSet.setPrimaryPhotoUrl(url);
+                        }
+                        mPhotoSets.add(photoSet);
+
                         eventType=parser.next();
                     }
                 }catch (XmlPullParserException xppe){
@@ -386,10 +413,10 @@ public class GetUserProfileUtil {
                 }catch (IOException ioe){
                     ioe.printStackTrace();
                 }
-                mUser.setGroups(mGroups);
+                mUser.getPhotoSets().clear();
+                mUser.setPhotoSets(mPhotoSets);
             }
         });
-
     }
 
 }

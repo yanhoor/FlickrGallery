@@ -66,6 +66,8 @@ public class AdministratorProfileFragment extends Fragment implements View.OnCli
     RelativeLayout followingLayout;
     TextView groupNumber;
     RelativeLayout groupLayout;
+    RelativeLayout photosetLayout;
+    TextView photosetNumber;
     RelativeLayout locationLayout;
     TextView locationTextView;
     ImageView buddyIconImageView;
@@ -118,6 +120,10 @@ public class AdministratorProfileFragment extends Fragment implements View.OnCli
         groupNumber=(TextView)v.findViewById(R.id.group_number_administratorProfile);
         groupLayout=(RelativeLayout)v.findViewById(R.id.groupLayout_administratorProfile);
         groupLayout.setOnClickListener(this);
+
+        photosetLayout=(RelativeLayout)v.findViewById(R.id.photoset_layout_administratorProfile);
+        photosetNumber=(TextView)v.findViewById(R.id.photoset_num_administratorProfile);
+        photosetLayout.setOnClickListener(this);
 
         locationLayout=(RelativeLayout)v.findViewById(R.id.location_layout_administratorProfile);
         locationTextView=(TextView)v.findViewById(R.id.location_administratorProfile);
@@ -231,6 +237,15 @@ public class AdministratorProfileFragment extends Fragment implements View.OnCli
                 }
                 break;
 
+            case R.id.photoset_layout_administratorProfile:
+                if (mUser.getPhotosetNum()!=null&&!mUser.getPhotosetNum().equals("0")){
+                    Intent photosetIntent=new Intent(getActivity(),ListActivity.class);
+                    photosetIntent.putExtra(ListPhotosetFragment.EXTRA_PHOTOSET_DATA,mUser.getPhotoSets());
+                    ListActivity.dataType="photosets";
+                    startActivity(photosetIntent);
+                }
+                break;
+
             default:
                 break;
         }
@@ -254,6 +269,10 @@ public class AdministratorProfileFragment extends Fragment implements View.OnCli
 
         if (mUser.getGroups().size()>0){
             groupNumber.setText(String.valueOf(mUser.getGroups().size()));
+        }
+
+        if (mUser.getPhotosetNum()!=null){
+            photosetNumber.setText(mUser.getPhotosetNum());
         }
 
         //Log.d(TAG,"location length is "+mUser.getLocation().length());

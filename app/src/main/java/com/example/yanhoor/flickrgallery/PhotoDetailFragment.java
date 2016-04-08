@@ -102,6 +102,7 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
         //获取照片信息，userName,description,location等
         mGalleryItem=mPhotoInfoUtil.getPhotoInfo(mGalleryItem);
         mGalleryItem=mPhotoInfoUtil.getFavorites(mGalleryItem);
+        mGalleryItem=mPhotoInfoUtil.getAllContexts(mGalleryItem);
         getComments(mComments,mGalleryId);//获取评论
     }
 

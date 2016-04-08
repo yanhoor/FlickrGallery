@@ -201,4 +201,49 @@ public class PhotoInfoUtil {
         return galleryItem;
     }
 
+    public GalleryItem getAllContexts(final GalleryItem galleryItem){
+        String photo_id=galleryItem.getId();
+        String url= Uri.parse(ENDPOINT).buildUpon()
+                .appendQueryParameter("method","flickr.photos.getAllContexts")
+                .appendQueryParameter("api_key",API_KEY)
+                .appendQueryParameter("photo_id",photo_id)
+                .build().toString();
+
+        HttpConfig config=new HttpConfig();
+        config.cacheTime=0;
+        new KJHttp(config).get(url, new HttpCallBack() {
+            @Override
+            public void onFinish() {
+                super.onFinish();
+                mMainThreadListener.onUpdateFinish(galleryItem);
+            }
+
+            @Override
+            public void onSuccess(String t) {
+                super.onSuccess(t);
+                try {
+                    XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
+                    XmlPullParser parser=factory.newPullParser();
+                    parser.setInput(new StringReader(t));
+
+                    int eventType=parser.getEventType();
+                    while (eventType!=XmlPullParser.END_DOCUMENT){
+                        if (eventType==XmlPullParser.START_TAG&&"set".equals(parser.getName())){
+                            String setId=parser.getAttributeValue(null,"id");
+                            galleryItem.setPhotoSetId(setId);
+                        }
+
+                        eventType=parser.next();
+                    }
+                }catch (XmlPullParserException xppe){
+                    xppe.printStackTrace();
+                }catch (IOException ioe){
+                    ioe.printStackTrace();
+                }
+            }
+        });
+
+        return galleryItem;
+    }
+
 }

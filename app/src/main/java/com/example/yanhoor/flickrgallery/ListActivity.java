@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.example.yanhoor.flickrgallery.model.Group;
+import com.example.yanhoor.flickrgallery.model.PhotoSet;
 import com.example.yanhoor.flickrgallery.model.Topic;
 import com.example.yanhoor.flickrgallery.model.User;
 
@@ -35,6 +36,10 @@ public class ListActivity extends SingleFragmentActivity {
             ArrayList<Topic>mTopics=(ArrayList<Topic>)getIntent()
                     .getSerializableExtra(ListTopicsFragment.EXTRA_TOPICS_DATA);
             return ListTopicsFragment.newInstance(mTopics);
+        }else if (dataType.equals("photosets")){
+            ArrayList<PhotoSet>mPhotosets=(ArrayList<PhotoSet>)getIntent()
+                    .getSerializableExtra(ListPhotosetFragment.EXTRA_PHOTOSET_DATA);
+            return ListPhotosetFragment.newInstance(mPhotosets);
         }else {
             return null;
         }

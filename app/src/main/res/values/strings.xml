@@ -19,6 +19,7 @@
     <string name="views">Views: </string>
     <string name="fullToken_unavailable">You haven\'t login</string>
     <string name="following">Followings: </string>
+    <string name="photoset">Photosets:</string>
     <string name="location">Location: </string>
     <string name="posted_time">Posted at: </string>
     <string name="description_title_profile">Description: </string>
