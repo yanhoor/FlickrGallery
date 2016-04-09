@@ -72,6 +72,7 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
     TextView title;
     ExpandableTextView description;
     TextView location;
+    TextView checkPhotoset;
     TextView postedTime;
     ImageView mImageView;
     TextView commentNumber;
@@ -154,6 +155,7 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
         title=(TextView)v.findViewById(R.id.photo_title);
         description=(ExpandableTextView) v.findViewById(R.id.Photo_description);
         location=(TextView)v.findViewById(R.id.location_text);
+        checkPhotoset=(TextView)v.findViewById(R.id.check_photoSet);
         postedTime=(TextView)v.findViewById(R.id.posted_time_text);
         mImageView=(ImageView) v.findViewById(R.id.photo_imageView);
         commentNumber=(TextView)v.findViewById(R.id.comment_number);
@@ -169,6 +171,7 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
         ownerLayout.setOnClickListener(this);
         sendComment.setOnClickListener(this);
         mImageView.setOnClickListener(this);
+        checkPhotoset.setOnClickListener(this);
         updateUI();
 
         return v;
@@ -198,6 +201,10 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
         description.setText(mGalleryItem.getDescription());
 
         location.setText(mGalleryItem.getLocation());
+
+        if (mGalleryItem.getPhotoSetId()!=null){
+            checkPhotoset.setVisibility(View.VISIBLE);
+        }
 
         postedTime.setText(mGalleryItem.getPostedTime());
 
@@ -263,6 +270,13 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
                     viewPhotoIntent.putExtra(PhotoViewFragment.EXTRA_GALLERY_ITEM,mGalleryItem);
                     startActivity(viewPhotoIntent);
                 }
+                break;
+
+            case R.id.check_photoSet:
+                Intent checkPhotosetIntent=new Intent(getActivity(),PhotosetDetailActivity.class);
+                checkPhotosetIntent.putExtra(PhotosetDetailFragment.EXTRA_PHOTOSET_ID,mGalleryItem.getPhotoSetId());
+                checkPhotosetIntent.putExtra(PhotosetDetailFragment.EXTRA_USER_ID,mGalleryItem.getUserId());
+                startActivity(checkPhotosetIntent);
                 break;
 
             default:

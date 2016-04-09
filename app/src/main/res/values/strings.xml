@@ -75,4 +75,5 @@
     <string name="save_photo_title_menu">Save</string>
     <string name="save_photo_success">Saved the photo</string>
     <string name="view_original_photo">Original photo</string>
+    <string name="check_photoset">Check photoset</string>
 </resources>
