@@ -6,8 +6,7 @@
 
     <RelativeLayout
         android:id="@+id/list_layout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/common_style_layout"
         android:layout_marginTop="8dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -19,12 +18,10 @@
 
         <TextView
             android:id="@+id/following_user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/common_style_text"
             android:layout_toEndOf="@+id/following_icon"
             android:layout_marginStart="10dp"
             android:layout_centerVertical="true"
-            android:textColor="@color/colorPrimary"
             android:maxLines="1"
             android:gravity="center_vertical"/>
 

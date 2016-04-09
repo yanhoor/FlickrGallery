@@ -43,4 +43,5 @@ dependencies {
     compile 'de.hdodenhof:circleimageview:2.0.0'
     compile 'com.ms-square:expandableTextView:0.1.4'
     compile 'com.commit451:PhotoView:1.2.5'
+    compile 'com.github.nicolasjafelle:paginggridview:1.0'
 }

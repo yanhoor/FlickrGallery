@@ -22,13 +22,11 @@
 
         <TextView
             android:id="@+id/user_name_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/common_style_text"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="12dp"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/colorPrimaryDark"/>
+            android:textStyle="bold"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -43,26 +41,21 @@
             android:layout_marginStart="10dp">
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                style="@style/common_style_layout">
 
                 <RelativeLayout
                     android:id="@+id/following_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    style="@style/common_style_layout">
 
                     <TextView
                         android:id="@+id/following_text_profile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/common_style_text"
                         android:text="@string/following"
-                        android:textStyle="bold|italic"
-                        android:textColor="@color/colorPrimaryDark"/>
+                        android:textStyle="bold|italic"/>
 
                     <TextView
                         android:id="@+id/following_number_profile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/common_style_layout"
                         android:layout_toEndOf="@+id/following_text_profile"
                         android:layout_marginStart="10dp"
                         android:text="0"/>
@@ -71,23 +64,19 @@
 
                 <RelativeLayout
                     android:id="@+id/groupLayout_profile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/common_style_layout"
                     android:layout_below="@+id/following_layout"
                     android:layout_marginTop="10dp">
 
                     <TextView
                         android:id="@+id/group_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/common_style_text"
                         android:text="@string/group_profile"
-                        android:textStyle="bold|italic"
-                        android:textColor="@color/colorPrimaryDark"/>
+                        android:textStyle="bold|italic"/>
 
                     <TextView
                         android:id="@+id/group_number_profile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/common_style_layout"
                         android:layout_toEndOf="@+id/group_title"
                         android:layout_marginStart="10dp"
                         android:text="0"/>
@@ -96,23 +85,19 @@
 
                 <RelativeLayout
                     android:id="@+id/photoset_layout_profile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/common_style_layout"
                     android:layout_below="@+id/groupLayout_profile"
                     android:layout_marginTop="10dp">
 
                     <TextView
                         android:id="@+id/photoset_text_profile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/common_style_text"
                         android:text="@string/photoset"
-                        android:textStyle="bold|italic"
-                        android:textColor="@color/colorPrimaryDark"/>
+                        android:textStyle="bold|italic"/>
 
                     <TextView
                         android:id="@+id/photoset_num_profile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/common_style_layout"
                         android:layout_toEndOf="@+id/photoset_text_profile"
                         android:layout_marginStart="10dp"
                         android:text="0"/>
@@ -121,24 +106,20 @@
 
                 <RelativeLayout
                     android:id="@+id/location_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/common_style_layout"
                     android:layout_below="@+id/photoset_layout_profile"
                     android:layout_marginTop="10dp"
                     android:visibility="gone">
 
                     <TextView
                         android:id="@+id/location_text_profile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/common_style_text"
                         android:text="@string/location"
-                        android:textStyle="bold|italic"
-                        android:textColor="@color/colorPrimaryDark"/>
+                        android:textStyle="bold|italic"/>
 
                     <TextView
                         android:id="@+id/location_profile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/common_style_layout"
                         android:layout_toEndOf="@+id/location_text_profile"
                         android:layout_marginStart="10dp"/>
 
@@ -148,13 +129,11 @@
 
             <TextView
                 android:id="@+id/personal_page_text_profile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/common_style_text"
                 android:layout_gravity="center_vertical"
                 android:layout_alignParentEnd="true"
                 android:layout_marginEnd="10dp"
                 android:text="@string/view_user_page"
-                android:textColor="@color/colorPrimaryDark"
                 android:textStyle="bold|italic"
                 android:textSize="18sp"
                 android:paddingStart="10dp"
@@ -173,11 +152,9 @@
 
             <TextView
                 android:id="@+id/description_title_profile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/common_style_text"
                 android:text="@string/description_title_profile"
-                android:textStyle="bold|italic"
-                android:textColor="@color/colorPrimaryDark"/>
+                android:textStyle="bold|italic"/>
 
             <com.ms.square.android.expandabletextview.ExpandableTextView
                 android:id="@+id/user_description_profile"

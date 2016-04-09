@@ -8,8 +8,7 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        style="@style/common_style_layout">
 
         <RelativeLayout
                         android:layout_width="match_parent"
@@ -33,18 +32,15 @@
 
                 <TextView
                     android:id="@+id/topic_author"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/common_style_text"
                     android:layout_marginStart="10dp"
                     android:textStyle="bold"
-                    android:textColor="@color/colorPrimaryDark"
                     android:maxLines="1"
                     android:layout_toEndOf="@+id/topic_author_icon"/>
 
                 <TextView
                     android:id="@+id/topic_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/common_style_layout"
                     android:layout_marginStart="10dp"
                     android:textSize="12sp"
                     android:layout_below="@+id/topic_author"
@@ -101,23 +97,20 @@
 
                 <RelativeLayout
                     android:id="@+id/topic_reply_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/common_style_layout"
                     android:layout_alignParentStart="true"
                     android:layout_marginTop="12dp">
 
                     <TextView
                         android:id="@+id/topic_reply_sum_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/common_style_layout"
                         android:textStyle="bold|italic"
                         android:text="@string/topic_reply_sum_title"
                         android:layout_marginEnd="10dp"/>
 
                     <TextView
                         android:id="@+id/topic_reply_num"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/common_style_layout"
                         android:layout_toEndOf="@+id/topic_reply_sum_title"
                         android:layout_marginStart="10dp"
                         android:text="0"/>

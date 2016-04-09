@@ -11,8 +11,7 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/common_style_layout"
         android:layout_marginStart="10dp"
         android:layout_above="@+id/mini_token_editText"
         android:text="@string/log_in_text"
@@ -20,8 +19,7 @@
 
     <Button
         android:id="@+id/confirm_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/common_style_layout"
         android:layout_below="@id/mini_token_editText"
         android:layout_marginTop="12dp"
         android:layout_alignParentEnd="true"
@@ -30,8 +28,7 @@
 
     <Button
         android:id="@+id/get_token_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/common_style_layout"
         android:layout_toStartOf="@id/confirm_button"
         android:layout_below="@+id/mini_token_editText"
         android:layout_marginTop="12dp"

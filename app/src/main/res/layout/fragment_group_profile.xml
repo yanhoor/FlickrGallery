@@ -22,13 +22,11 @@
 
         <TextView
             android:id="@+id/group_name_profile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/common_style_text"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="12dp"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:textColor="@color/colorPrimaryDark"/>
+            android:textStyle="bold"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -44,26 +42,21 @@
             android:layout_marginEnd="10dp">
 
             <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                style="@style/common_style_layout">
 
                 <RelativeLayout
                     android:id="@+id/member_layout_profile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    style="@style/common_style_layout">
 
                     <TextView
                         android:id="@+id/member_title_profile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/common_style_text"
                         android:text="@string/member_title_profile"
-                        android:textStyle="bold|italic"
-                        android:textColor="@color/colorPrimaryDark"/>
+                        android:textStyle="bold|italic"/>
 
                     <TextView
                         android:id="@+id/member_number_profile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/common_style_layout"
                         android:layout_toEndOf="@+id/member_title_profile"
                         android:layout_marginStart="10dp"
                         android:text="0"/>
@@ -72,23 +65,19 @@
 
                 <RelativeLayout
                     android:id="@+id/topic_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/common_style_layout"
                     android:layout_below="@+id/member_layout_profile"
                     android:layout_marginTop="10dp">
 
                     <TextView
                         android:id="@+id/topic_title_profile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/common_style_text"
                         android:text="@string/topic_title_profile"
-                        android:textStyle="bold|italic"
-                        android:textColor="@color/colorPrimaryDark"/>
+                        android:textStyle="bold|italic"/>
 
                     <TextView
                         android:id="@+id/topic_number_profile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/common_style_layout"
                         android:layout_toEndOf="@+id/topic_title_profile"
                         android:layout_marginStart="10dp"
                         android:text="0"/>
@@ -99,8 +88,7 @@
 
             <Button
                 android:id="@+id/join_group_button_groupProfile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/common_style_layout"
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="center_vertical"
                 android:layout_marginEnd="10dp"
@@ -119,11 +107,9 @@
 
             <TextView
                 android:id="@+id/rule_title_groupProfile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/common_style_text"
                 android:text="@string/rule_title"
-                android:textStyle="bold|italic"
-                android:textColor="@color/colorPrimaryDark"/>
+                android:textStyle="bold|italic"/>
 
             <com.ms.square.android.expandabletextview.ExpandableTextView
                 android:id="@+id/rule_content_groupProfile"
@@ -143,8 +129,7 @@
                     android:textColor="#666666" />
                 <ImageButton
                     android:id="@id/expand_collapse"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/common_style_layout"
                     android:padding="16dp"
                     android:layout_gravity="right|bottom"
                     android:background="@android:color/transparent"/>
@@ -163,11 +148,9 @@
 
             <TextView
                 android:id="@+id/description_title_groupProfile"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                style="@style/common_style_text"
                 android:text="@string/description_title_profile"
-                android:textStyle="bold|italic"
-                android:textColor="@color/colorPrimaryDark"/>
+                android:textStyle="bold|italic"/>
 
             <com.ms.square.android.expandabletextview.ExpandableTextView
                 android:id="@+id/description_content_groupProfile"
@@ -187,8 +170,7 @@
                     android:textColor="#666666" />
                 <ImageButton
                     android:id="@id/expand_collapse"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    style="@style/common_style_layout"
                     android:padding="16dp"
                     android:layout_gravity="right|bottom"
                     android:background="@android:color/transparent"/>
