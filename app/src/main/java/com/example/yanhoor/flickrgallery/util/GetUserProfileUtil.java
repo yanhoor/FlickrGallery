@@ -382,29 +382,37 @@ public class GetUserProfileUtil {
 
                     int eventType=parser.getEventType();
                     while (eventType!=XmlPullParser.END_DOCUMENT){
-                        PhotoSet photoSet=new PhotoSet();
 
                         if (eventType==XmlPullParser.START_TAG&&"photosets".equals(parser.getName())){
                             String total=parser.getAttributeValue(null,"total");
                             mUser.setPhotosetNum(total);
                         }
 
-                        if (eventType==XmlPullParser.START_TAG&&"photoset".equals(parser.getName())){
+                        if ("photoset".equals(parser.getName())){
+                            PhotoSet photoSet=new PhotoSet();
                             String id=parser.getAttributeValue(null,"id");
-
                             photoSet.setId(id);
-                        }
 
-                        if (eventType==XmlPullParser.START_TAG&&"title".equals(parser.getName())){
-                            String title=parser.nextText();
-                            photoSet.setTitle(title);
-                        }
+                            while(true){
+                                eventType=parser.next();
 
-                        if (eventType==XmlPullParser.START_TAG&&"primary_photo_extras".equals(parser.getName())){
-                            String url=parser.getAttributeValue(null,"url_s");
-                            photoSet.setPrimaryPhotoUrl(url);
+                                if ("title".equals(parser.getName())){
+                                    String title=parser.nextText();
+                                    photoSet.setTitle(title);
+                                }
+
+                                if ("primary_photo_extras".equals(parser.getName())){
+                                    String url=parser.getAttributeValue(null,"url_s");
+                                    photoSet.setPrimaryPhotoUrl(url);
+                                }
+
+                                if (eventType==XmlPullParser.END_TAG&&"photoset".equals(parser.getName())){
+                                    mPhotoSets.add(photoSet);
+                                    break;
+                                }
+                            }
+
                         }
-                        mPhotoSets.add(photoSet);
 
                         eventType=parser.next();
                     }
@@ -414,7 +422,9 @@ public class GetUserProfileUtil {
                     ioe.printStackTrace();
                 }
                 mUser.getPhotoSets().clear();
+                Log.d(TAG, "onSuccess: mPhotosets size is "+mUser.getPhotoSets().size());
                 mUser.setPhotoSets(mPhotoSets);
+                Log.d(TAG, "onSuccess: mPhotosets size is "+mUser.getPhotoSets().size());
             }
         });
     }

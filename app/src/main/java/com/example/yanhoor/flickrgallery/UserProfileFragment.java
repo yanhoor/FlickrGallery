@@ -176,6 +176,7 @@ public class UserProfileFragment extends Fragment  implements View.OnClickListen
             case R.id.photoset_layout_profile:
                 if (mUser.getPhotosetNum()!=null&&!mUser.getPhotosetNum().equals("0")){
                     Intent photosetIntent=new Intent(getActivity(),ListActivity.class);
+                    Log.d(TAG, "onClick: mPhotosets size is "+mUser.getPhotoSets().size());
                     photosetIntent.putExtra(ListPhotosetFragment.EXTRA_PHOTOSET_DATA,mUser.getPhotoSets());
                     ListActivity.dataType="photosets";
                     startActivity(photosetIntent);
