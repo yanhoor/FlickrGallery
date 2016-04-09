@@ -40,8 +40,10 @@ public class GetPhotoSetInfoUtil {
     }
 
     public PhotoSet getPhotoSetInfo(String photoSetId,String userId){
+        Log.d(TAG, "getPhotoSetInfo: photoset id and user id "+photoSetId+" , "+userId);
         mPhotoSet=new PhotoSet();
         mPhotoSet.setId(photoSetId);
+        mPhotoSet.setOwnerId(userId);
         mUserId=userId;
 
         getInfo();
@@ -144,6 +146,7 @@ public class GetPhotoSetInfoUtil {
             public void onSuccess(String t) {
                 super.onSuccess(t);
                 mGalleryItems.clear();
+                Log.d(TAG, "onSuccess: Getting photoset photos from "+t);
 
                 try {
                     XmlPullParserFactory factory=XmlPullParserFactory.newInstance();
@@ -170,6 +173,7 @@ public class GetPhotoSetInfoUtil {
                 }catch (IOException ioe){
                     ioe.printStackTrace();
                 }
+                Log.d(TAG, "onSuccess: mGalleryItem size is"+mGalleryItems.size());
                 mPhotoSet.getGalleryItems().clear();
                 mPhotoSet.setGalleryItems(mGalleryItems);
             }

@@ -390,7 +390,9 @@ public class GetUserProfileUtil {
 
                         if ("photoset".equals(parser.getName())){
                             PhotoSet photoSet=new PhotoSet();
+                            photoSet.setOwnerId(mUser.getId());
                             String id=parser.getAttributeValue(null,"id");
+                            Log.d(TAG, "onSuccess: photoset id "+id);
                             photoSet.setId(id);
 
                             while(true){

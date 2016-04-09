@@ -1,5 +1,8 @@
 package com.example.yanhoor.flickrgallery.util;
 
+import android.graphics.drawable.BitmapDrawable;
+import android.widget.ImageView;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -42,6 +45,14 @@ public class StaticMethodUtil {
         }
         // 字符数组组合成字符串返回
         return new String(resultCharArray);
+    }
+
+    public static void cleanImageView(ImageView imageView){
+        if (!(imageView.getDrawable() instanceof BitmapDrawable))
+            return;
+        BitmapDrawable drawable=(BitmapDrawable)imageView.getDrawable();
+        drawable.getBitmap().recycle();
+        imageView.setImageDrawable(null);
     }
 
 }

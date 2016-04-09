@@ -233,8 +233,8 @@ public class GalleryItem implements Serializable{
     }
 
     public String getLargestPhotoUrl(){
-        //<1600
-        return "https://farm"+mFarm+".staticflickr.com/"+mServer+"/"+mId+"_"+mSecret+"_h.jpg";
+        //<1024
+        return "https://farm"+mFarm+".staticflickr.com/"+mServer+"/"+mId+"_"+mSecret+"_b.jpg";
     }
 
     public String getOriginalPhotoUrl(){

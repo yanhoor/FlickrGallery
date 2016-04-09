@@ -58,6 +58,8 @@
         
         <activity android:name=".PhotoViewActivity"/>
 
+        <activity android:name=".PhotosetDetailActivity"/>
+
         <service android:name="com.example.yanhoor.flickrgallery.PollService"/>
 
         <receiver android:name="com.example.yanhoor.flickrgallery.StartupReceiver">

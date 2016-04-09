@@ -175,6 +175,10 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
     }
 
     void updateUI(){
+        if (getActivity()==null){
+            return;
+        }
+
         mOwner=mGalleryItem.getOwner();
 
         Log.d(TAG,"icon url is "+mOwner.getUserIconUrl());
@@ -591,4 +595,9 @@ public class PhotoDetailFragment extends Fragment  implements View.OnClickListen
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        StaticMethodUtil.cleanImageView(mImageView);
+    }
 }
